@@ -79,6 +79,8 @@ void MainForm::selection_changed( QListBoxItem * item )
 		if( strcmp( ptr->filename.c_str(), item->text().ascii() ) == 0 )
 		{
 			textModule->setText( tr( ptr->description.c_str() ) );
+			textModule->insertParagraph( tr( mt_description[ptr->type] ), 1 );
+			textModule->insertParagraph( tr( ptr->filename.c_str() ), 2 );
 		}
 	}
 }

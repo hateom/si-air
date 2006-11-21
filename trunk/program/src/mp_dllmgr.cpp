@@ -27,6 +27,7 @@ int mpdllMgr::read_module_directory( std::string directory )
 {
 	WIN32_FIND_DATA find_data;
 	HANDLE			hfind;
+	int				err_no;
 
 	std::string dir_ext;
 	dir_ext = directory + std::string("\\*.dll");
@@ -45,7 +46,7 @@ int mpdllMgr::read_module_directory( std::string directory )
 			printf( "* found: %s ", find_data.cFileName );
 			mp_dll_module * item = new mp_dll_module;
 			item->filename = directory + std::string("\\") + std::string(find_data.cFileName);
-			if( get_module_information( item ) == 0 )
+			if( ( err_no = get_module_information( item ) ) == 0 )
 			{
 				list.push_back( item );
 				printf( "[%s], [%s] - OK\n", item->description.c_str(), mt_description[item->type] );
@@ -53,7 +54,7 @@ int mpdllMgr::read_module_directory( std::string directory )
 			else
 			{
 				delete item;
-				printf( "\tFailed!\n" );
+				printf( "\tFailed! (%d)\n", err_no );
 			}
 		}
 	} while( FindNextFile( hfind, &find_data ));

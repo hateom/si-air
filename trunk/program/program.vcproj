@@ -119,6 +119,19 @@
 			<File
 				RelativePath=".\src\mp_main.cpp">
 			</File>
+			<Filter
+				Name="qt"
+				Filter="">
+				<File
+					RelativePath=".\src\mainform.cpp">
+				</File>
+				<File
+					RelativePath=".\src\mainform.h">
+				</File>
+				<File
+					RelativePath=".\src\moc_mainform.cpp">
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -135,6 +148,13 @@
 			Name="Resource Files"
 			Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx"
 			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}">
+		</Filter>
+		<Filter
+			Name="qt_gui"
+			Filter="">
+			<File
+				RelativePath=".\src\mainform.ui">
+			</File>
 		</Filter>
 	</Files>
 	<Globals>

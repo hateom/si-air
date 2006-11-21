@@ -55,7 +55,7 @@ MainForm::MainForm( QWidget* parent, const char* name, bool modal, WFlags fl )
  */
 MainForm::~MainForm()
 {
-    // no need to delete child widgets, Qt does it all for us
+	mgr.free();
 }
 
 /*
@@ -71,16 +71,14 @@ void MainForm::languageChange()
 
 void MainForm::selection_changed( QListBoxItem * item )
 {
-	printf( "Zaznaczono\n" );
-
 	mp_dll_module * ptr;
 
 	for( int i=0; i<mgr.count(); ++i )
 	{
 		ptr = mgr.get_module_info( i );
-		if( item->text.compare( tr( ptr->filename.c_str() ) )
+		if( strcmp( ptr->filename.c_str(), item->text().ascii() ) == 0 )
 		{
-			textModule->setText( ptr->description );
+			textModule->setText( tr( ptr->description.c_str() ) );
 		}
 	}
 }
@@ -100,6 +98,5 @@ void MainForm::loadModules( const char * directory )
 			qWarning( "ERROR: Cannot find any modules!\n" );
 		}
 	}
-	mgr.free();
 }
 

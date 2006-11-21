@@ -1,6 +1,8 @@
 #include <cstdio>
 #include "mp_dllmgr.h"
-// NOTE: Dla tomka :)
+
+// dla jaœka
+
 // NOTE: Bla bla Bla :-)
 // NOTE: Teraz ja
 //////////////////////////////////////////////////////////////////////////

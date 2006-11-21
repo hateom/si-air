@@ -1,17 +1,17 @@
 Microsoft Visual Studio Solution File, Format Version 8.00
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "module_base", "..\si_project\modules\module_base\module_base.vcproj", "{EAD829AE-8100-4A6E-A260-09073577BB10}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "module_base", "modules\module_base\module_base.vcproj", "{EAD829AE-8100-4A6E-A260-09073577BB10}"
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "video_acq_base", "..\si_project\modules\video_acq_base\video_acq_base.vcproj", "{EF86F415-9129-4639-B91D-0CE7AEDF4AD6}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "video_acq_base", "modules\video_acq_base\video_acq_base.vcproj", "{EF86F415-9129-4639-B91D-0CE7AEDF4AD6}"
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "video_acq_opencv", "..\si_project\modules\video_acq_opencv\video_acq_opencv.vcproj", "{3DD44580-7C1F-4041-ACF4-41EBA0CE7EBC}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "video_acq_opencv", "modules\video_acq_opencv\video_acq_opencv.vcproj", "{3DD44580-7C1F-4041-ACF4-41EBA0CE7EBC}"
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "program", "..\si_project\program\program.vcproj", "{20CB0D7E-A9E4-40EB-A04E-73549FC3D39A}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "program", "program\program.vcproj", "{20CB0D7E-A9E4-40EB-A04E-73549FC3D39A}"
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject

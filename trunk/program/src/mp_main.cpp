@@ -6,7 +6,6 @@
 int main( int argc, char * argv[] )
 {
 	mpdllMgr mgr;
-	dLib::dGraphics::dImage img;
 
 	mgr.read_module_directory( "G:\\si_project\\modules\\video_acq_opencv\\bin" );
 	mp_dll_module * mod = mgr.get_module_info( 0 );
@@ -20,6 +19,8 @@ int main( int argc, char * argv[] )
 			{
 				int result = 0;
 				frame_data * data;
+
+				data = va_mod->process_frame( &result );
 
 				if( result == 0 )
 				{

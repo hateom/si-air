@@ -1,6 +1,6 @@
 #include <cstdio>
 #include "mp_dllmgr.h"
-
+// NOTE: Dla tomka :)
 //////////////////////////////////////////////////////////////////////////
 
 int main( int argc, char * argv[] )

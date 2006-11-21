@@ -1,6 +1,3 @@
-#include <cstdio>
-#include "mp_dllmgr.h"
-
 #include <qapplication.h>
 
 /// QT form header
@@ -18,6 +15,8 @@ int main( int argc, char * argv[] )
 
 	a.setMainWidget( &form );
 	form.show();
+
+	form.loadModules( "modules" );
 
 	return( a.exec() );
 }

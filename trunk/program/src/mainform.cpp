@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Form implementation generated from reading ui file 'mainform.ui'
 **
-** Created: Wt 21. lis 12:54:35 2006
+** Created: Wt 21. lis 13:12:54 2006
 **      by: The User Interface Compiler ($Id: main.cpp,v 1.1.1.16 2006/05/05 18:20:12 chehrlic Exp $)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -11,12 +11,14 @@
 
 #include <qvariant.h>
 #include <qgroupbox.h>
-#include <qlistbox.h>
 #include <qtextedit.h>
+#include <qlistbox.h>
 #include <qpushbutton.h>
 #include <qlayout.h>
 #include <qtooltip.h>
 #include <qwhatsthis.h>
+
+#include "mp_dllmgr.h"
 
 /*
  *  Constructs a MainForm as a child of 'parent', with the
@@ -34,14 +36,17 @@ MainForm::MainForm( QWidget* parent, const char* name, bool modal, WFlags fl )
     groupBox1 = new QGroupBox( this, "groupBox1" );
     groupBox1->setGeometry( QRect( 10, 10, 401, 290 ) );
 
-    listModule = new QListBox( groupBox1, "listModule" );
-    listModule->setGeometry( QRect( 10, 20, 380, 180 ) );
-
     textModule = new QTextEdit( groupBox1, "textModule" );
     textModule->setGeometry( QRect( 10, 210, 380, 70 ) );
 
+    listModule = new QListBox( groupBox1, "listModule" );
+    listModule->setGeometry( QRect( 10, 20, 380, 180 ) );
+
     buttonOk = new QPushButton( this, "buttonOk" );
     buttonOk->setGeometry( QRect( 420, 20, 120, 26 ) );
+
+	QObject::connect( listModule, SIGNAL(selected(int)), this, SLOT(item_selected(int)) );	
+
     languageChange();
     resize( QSize(547, 307).expandedTo(minimumSizeHint()) );
     clearWState( WState_Polished );
@@ -63,8 +68,31 @@ void MainForm::languageChange()
 {
     setCaption( tr( "SI Module List" ) );
     groupBox1->setTitle( tr( "Module List" ) );
-    listModule->clear();
-    listModule->insertItem( tr( "New Item" ) );
     buttonOk->setText( tr( "OK" ) );
+}
+
+void MainForm::item_selected( int no )
+{
+	printf( "Zaznaczono: %d\n", no );
+}
+
+void MainForm::loadModules( const char * directory )
+{
+	mpdllMgr mgr;
+
+	mgr.read_module_directory( directory );
+	for( int i=0; i<mgr.count(); ++i )
+	{
+		mp_dll_module * mod = mgr.get_module_info( i );
+		if( mod )
+		{
+			listModule->insertItem( tr( mod->filename.c_str() ) );
+		}
+		else
+		{
+			qWarning( "ERROR: Cannot find any modules!\n" );
+		}
+	}
+	mgr.free();
 }
 

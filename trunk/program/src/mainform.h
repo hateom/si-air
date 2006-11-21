@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Form interface generated from reading ui file 'mainform.ui'
 **
-** Created: Wt 21. lis 12:54:35 2006
+** Created: Wt 21. lis 13:12:53 2006
 **      by: The User Interface Compiler ($Id: main.cpp,v 1.1.1.16 2006/05/05 18:20:12 chehrlic Exp $)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -18,9 +18,9 @@ class QHBoxLayout;
 class QGridLayout;
 class QSpacerItem;
 class QGroupBox;
+class QTextEdit;
 class QListBox;
 class QListBoxItem;
-class QTextEdit;
 class QPushButton;
 
 class MainForm : public QDialog
@@ -32,11 +32,15 @@ public:
     ~MainForm();
 
     QGroupBox* groupBox1;
-    QListBox* listModule;
     QTextEdit* textModule;
+    QListBox* listModule;
     QPushButton* buttonOk;
 
+    virtual void loadModules( const char * directory );
+
 protected:
+public slots:
+	virtual void item_selected( int no );
 
 protected slots:
     virtual void languageChange();

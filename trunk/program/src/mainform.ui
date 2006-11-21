@@ -30,24 +30,6 @@
         <property name="title">
             <string>Module List</string>
         </property>
-        <widget class="QListBox">
-            <item>
-                <property name="text">
-                    <string>New Item</string>
-                </property>
-            </item>
-            <property name="name">
-                <cstring>listModule</cstring>
-            </property>
-            <property name="geometry">
-                <rect>
-                    <x>10</x>
-                    <y>20</y>
-                    <width>380</width>
-                    <height>180</height>
-                </rect>
-            </property>
-        </widget>
         <widget class="QTextEdit">
             <property name="name">
                 <cstring>textModule</cstring>
@@ -58,6 +40,19 @@
                     <y>210</y>
                     <width>380</width>
                     <height>70</height>
+                </rect>
+            </property>
+        </widget>
+        <widget class="QListBox">
+            <property name="name">
+                <cstring>listModule</cstring>
+            </property>
+            <property name="geometry">
+                <rect>
+                    <x>10</x>
+                    <y>20</y>
+                    <width>380</width>
+                    <height>180</height>
                 </rect>
             </property>
         </widget>
@@ -79,5 +74,8 @@
         </property>
     </widget>
 </widget>
+<functions>
+    <function>loadModules()</function>
+</functions>
 <layoutdefaults spacing="6" margin="11"/>
 </UI>

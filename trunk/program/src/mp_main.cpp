@@ -2,6 +2,7 @@
 #include "mp_dllmgr.h"
 // NOTE: Dla tomka :)
 // NOTE: Bla bla Bla :-)
+// NOTE: Teraz ja
 //////////////////////////////////////////////////////////////////////////
 
 int main( int argc, char * argv[] )

@@ -16,7 +16,7 @@ int main( int argc, char * argv[] )
 	a.setMainWidget( &form );
 	form.show();
 
-	form.loadModules( "G:\\si_svn\\program\\bin\\modules" );
+	form.loadModules( "modules" );
 
 	return( a.exec() );
 }

@@ -1,9 +1,5 @@
-//#include <dlib.h>
-
 #include <cstdio>
 #include "mp_dllmgr.h"
-
-//#pragma comment( lib, "dlib.lib" )
 
 //////////////////////////////////////////////////////////////////////////
 
@@ -24,19 +20,6 @@ int main( int argc, char * argv[] )
 			{
 				int result = 0;
 				frame_data * data;
-
-//				char fn[128];
-
-//				for( int j=0; j<100 && !result; ++j )
-//				{
-//					data = va_mod->process_frame( &result );
-
-//					img.Create( 320, 240, 3 );
-//					memcpy( img.Data(), data->bits, 320*240*3 );
-//					sprintf( fn, "G:\\si_project\\program\\bin\\frame_%01d.bmp", j );
-//					img.Save( fn );
-//					img.Free();
-//				}
 
 				if( result == 0 )
 				{

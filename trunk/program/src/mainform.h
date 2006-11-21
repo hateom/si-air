@@ -23,6 +23,8 @@ class QListBox;
 class QListBoxItem;
 class QPushButton;
 
+#include "mp_dllmgr.h"
+
 class MainForm : public QDialog
 {
     Q_OBJECT
@@ -40,10 +42,13 @@ public:
 
 protected:
 public slots:
-	virtual void item_selected( int no );
+	virtual void selection_changed( QListBoxItem * );
 
 protected slots:
     virtual void languageChange();
+
+private:
+	mpdllMgr mgr;
 
 };
 

@@ -18,8 +18,6 @@
 #include <qtooltip.h>
 #include <qwhatsthis.h>
 
-#include "mp_dllmgr.h"
-
 /*
  *  Constructs a MainForm as a child of 'parent', with the
  *  name 'name' and widget flags set to 'f'.
@@ -45,7 +43,7 @@ MainForm::MainForm( QWidget* parent, const char* name, bool modal, WFlags fl )
     buttonOk = new QPushButton( this, "buttonOk" );
     buttonOk->setGeometry( QRect( 420, 20, 120, 26 ) );
 
-	QObject::connect( listModule, SIGNAL(selected(int)), this, SLOT(item_selected(int)) );	
+	connect( listModule, SIGNAL(selectionChanged(QListBoxItem*)), this, SLOT(selection_changed(QListBoxItem*)) );	
 
     languageChange();
     resize( QSize(547, 307).expandedTo(minimumSizeHint()) );
@@ -71,15 +69,24 @@ void MainForm::languageChange()
     buttonOk->setText( tr( "OK" ) );
 }
 
-void MainForm::item_selected( int no )
+void MainForm::selection_changed( QListBoxItem * item )
 {
-	printf( "Zaznaczono: %d\n", no );
+	printf( "Zaznaczono\n" );
+
+	mp_dll_module * ptr;
+
+	for( int i=0; i<mgr.count(); ++i )
+	{
+		ptr = mgr.get_module_info( i );
+		if( item->text.compare( tr( ptr->filename.c_str() ) )
+		{
+			textModule->setText( ptr->description );
+		}
+	}
 }
 
 void MainForm::loadModules( const char * directory )
 {
-	mpdllMgr mgr;
-
 	mgr.read_module_directory( directory );
 	for( int i=0; i<mgr.count(); ++i )
 	{

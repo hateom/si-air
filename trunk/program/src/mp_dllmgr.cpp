@@ -35,6 +35,8 @@ int mpdllMgr::read_module_directory( std::string directory )
 
 	hfind = FindFirstFile( dir_ext.c_str(), &find_data );
 
+	printf( "loading modules:\n" );
+
 	do 
 	{
 		if( hfind == INVALID_HANDLE_VALUE )
@@ -50,12 +52,12 @@ int mpdllMgr::read_module_directory( std::string directory )
 			if( ( err_no = get_module_information( item ) ) == 0 )
 			{
 				list.push_back( item );
-				printf( "[%s], [%s] - OK\n", item->description.c_str(), mt_description[item->type] );
+				printf( "OK\n", item->description.c_str(), mt_description[item->type] );
 			}
 			else
 			{
 				delete item;
-				printf( "\tFailed! (%d)\n", err_no );
+				printf( "Failed! (errno: %d)\n", err_no );
 			}
 		}
 	} while( FindNextFile( hfind, &find_data ));

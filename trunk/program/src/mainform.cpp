@@ -48,6 +48,8 @@ MainForm::MainForm( QWidget* parent, const char* name, bool modal, WFlags fl )
 	connect( listModule, SIGNAL(selectionChanged(QListBoxItem*)), this, SLOT(selection_changed(QListBoxItem*)) );	
 	connect( listModule, SIGNAL(selected(int)), this, SLOT(selected(int)) );	
 
+	connect( buttonOk, SIGNAL(clicked()), this, SLOT(close()) );
+
     languageChange();
     resize( QSize(547, 307).expandedTo(minimumSizeHint()) );
     clearWState( WState_Polished );

@@ -18,6 +18,8 @@
 #include <qtooltip.h>
 #include <qwhatsthis.h>
 
+#include "optform.h"
+
 /*
  *  Constructs a MainForm as a child of 'parent', with the
  *  name 'name' and widget flags set to 'f'.
@@ -44,6 +46,7 @@ MainForm::MainForm( QWidget* parent, const char* name, bool modal, WFlags fl )
     buttonOk->setGeometry( QRect( 420, 20, 120, 26 ) );
 
 	connect( listModule, SIGNAL(selectionChanged(QListBoxItem*)), this, SLOT(selection_changed(QListBoxItem*)) );	
+	connect( listModule, SIGNAL(selected(int)), this, SLOT(selected(int)) );	
 
     languageChange();
     resize( QSize(547, 307).expandedTo(minimumSizeHint()) );
@@ -85,6 +88,28 @@ void MainForm::selection_changed( QListBoxItem * item )
 	}
 }
 
+void MainForm::selected( int item )
+{
+	mp_dll_module * mod;
+
+	if( mod = mgr.get_module_info( item ) )
+	{
+		if( mod->type != MT_VIDEO_ACQ )
+		{
+			printf( "Only VIDEO_ACQ module is supported by now." );
+			return;
+		}
+
+		vaBase * base;
+		base = mgr.load_va_module( mod );
+		if( base )
+		{
+			OptForm * opt_form = new OptForm( 0, 0, TRUE, 0, base );
+			opt_form->show();
+		}
+	}
+}
+
 void MainForm::loadModules( const char * directory )
 {
 	mgr.read_module_directory( directory );
@@ -94,10 +119,6 @@ void MainForm::loadModules( const char * directory )
 		if( mod )
 		{
 			listModule->insertItem( tr( mod->filename.c_str() ) );
-		}
-		else
-		{
-			qWarning( "ERROR: Cannot find any modules!\n" );
 		}
 	}
 }

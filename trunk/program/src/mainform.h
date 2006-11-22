@@ -40,9 +40,9 @@ public:
 
     virtual void loadModules( const char * directory );
 
-protected:
 public slots:
 	virtual void selection_changed( QListBoxItem * );
+	virtual void selected( int item );
 
 protected slots:
     virtual void languageChange();

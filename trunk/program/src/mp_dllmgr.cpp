@@ -6,6 +6,7 @@
 
 typedef moduleBase * (*t_export_func)();
 typedef vaBase *	 (*t_export_va_func)();
+typedef piBase *	 (*t_export_pi_func)();
 
 //////////////////////////////////////////////////////////////////////////
 
@@ -104,6 +105,41 @@ int mpdllMgr::get_module_information( mp_dll_module * item )
 
 	FreeLibrary( hdll );
 	return( 0 );
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+piBase * load_pi_module( mp_dll_module * item )
+{
+	if( !item ) return( NULL );
+
+	t_export_pi_func export_func;
+	piBase * base;
+
+	HMODULE hdll;
+
+	hdll = LoadLibrary( item->filename.c_str() );
+
+	export_func = (t_export_pi_func)GetProcAddress( hdll, "export_module" );
+	if( !export_func )
+	{
+		FreeLibrary( hdll );
+		return( NULL );
+	}
+
+	base = export_func();
+	if( base )
+	{
+		base->assign_library_handle( hdll );
+		return( base );
+	}
+	else
+	{
+		FreeLibrary( hdll );
+		return( NULL );
+	}
+
+	return( NULL );
 }
 
 //////////////////////////////////////////////////////////////////////////

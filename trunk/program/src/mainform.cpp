@@ -94,11 +94,13 @@ void MainForm::selected( int item )
 
 	if( mod = mgr.get_module_info( item ) )
 	{
+		/*
 		if( mod->type != MT_VIDEO_ACQ )
 		{
 			printf( "Only VIDEO_ACQ module is supported by now." );
 			return;
 		}
+		*/
 
 		vaBase * base;
 		base = mgr.load_va_module( mod );

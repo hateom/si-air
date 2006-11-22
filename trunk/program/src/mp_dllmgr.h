@@ -7,6 +7,7 @@
 #include <vector>
 
 #include "../../modules/video_acq_base/src/va_base.h"
+#include "../../modules/prob_image_base/src/pi_base.h"
 
 //////////////////////////////////////////////////////////////////////////
 
@@ -37,6 +38,7 @@ public:
 	void free();
 
 	vaBase * load_va_module( mp_dll_module * module_info );
+	piBase * load_pi_module( mp_dll_module * module_info );
 
 	int count();
 	mp_dll_module * get_module_info( int item_no );

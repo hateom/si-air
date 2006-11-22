@@ -1,7 +1,7 @@
 /****************************************************************************
 ** MainForm meta object code from reading C++ file 'mainform.h'
 **
-** Created: Wt 21. lis 14:17:35 2006
+** Created: ?r 22. lis 18:12:40 2006
 **      by: The Qt MOC ($Id: moc_yacc.cpp,v 1.1.1.13 2006/05/05 17:43:42 chehrlic Exp $)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -56,14 +56,19 @@ QMetaObject* MainForm::staticMetaObject()
 	{ 0, &static_QUType_ptr, "QListBoxItem", QUParameter::In }
     };
     static const QUMethod slot_0 = {"selection_changed", 1, param_slot_0 };
-    static const QUMethod slot_1 = {"languageChange", 0, 0 };
+    static const QUParameter param_slot_1[] = {
+	{ "item", &static_QUType_int, 0, QUParameter::In }
+    };
+    static const QUMethod slot_1 = {"selected", 1, param_slot_1 };
+    static const QUMethod slot_2 = {"languageChange", 0, 0 };
     static const QMetaData slot_tbl[] = {
 	{ "selection_changed(QListBoxItem*)", &slot_0, QMetaData::Public },
-	{ "languageChange()", &slot_1, QMetaData::Protected }
+	{ "selected(int)", &slot_1, QMetaData::Public },
+	{ "languageChange()", &slot_2, QMetaData::Protected }
     };
     metaObj = QMetaObject::new_metaobject(
 	"MainForm", parentObject,
-	slot_tbl, 2,
+	slot_tbl, 3,
 	0, 0,
 #ifndef QT_NO_PROPERTIES
 	0, 0,
@@ -85,7 +90,8 @@ bool MainForm::qt_invoke( int _id, QUObject* _o )
 {
     switch ( _id - staticMetaObject()->slotOffset() ) {
     case 0: selection_changed((QListBoxItem*)static_QUType_ptr.get(_o+1)); break;
-    case 1: languageChange(); break;
+    case 1: selected((int)static_QUType_int.get(_o+1)); break;
+    case 2: languageChange(); break;
     default:
 	return QDialog::qt_invoke( _id, _o );
     }

@@ -131,6 +131,15 @@
 				<File
 					RelativePath=".\src\moc_mainform.cpp">
 				</File>
+				<File
+					RelativePath=".\src\moc_optform.cpp">
+				</File>
+				<File
+					RelativePath=".\src\optform.cpp">
+				</File>
+				<File
+					RelativePath=".\src\optform.h">
+				</File>
 			</Filter>
 		</Filter>
 		<Filter

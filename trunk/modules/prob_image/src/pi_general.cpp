@@ -15,7 +15,7 @@
 
 piGeneral::piGeneral()
 {
-
+	REG_PARAM( PT_INT, temp_param, "1. parametr testowy", 666 );
 }
 
 //////////////////////////////////////////////////////////////////////////

@@ -16,6 +16,12 @@
 
 //////////////////////////////////////////////////////////////////////////
 
+#define MK_PARAM( PP ) ((void*)&PP)
+#define REG_PARAM( TYPE, NAME, DESC, DEF_VAL ) \
+	register_param( TYPE, MK_PARAM(NAME), #NAME, DESC ); NAME = DEF_VAL;
+
+//////////////////////////////////////////////////////////////////////////
+
 /// Typy modu³ów - wartosci zwracane przez get_module_type
 
 #define MT_VIDEO_ACQ		0x01

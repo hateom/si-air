@@ -25,6 +25,7 @@ public:
 	virtual int process_frame( void * frame );
 
 protected:
+	int temp_param;
 };
 
 //////////////////////////////////////////////////////////////////////////

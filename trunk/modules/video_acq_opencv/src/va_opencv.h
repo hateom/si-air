@@ -29,6 +29,10 @@ public:
 protected:
 	CvCapture * capture;
 	int alloc_mem;
+
+	int		param1;
+	float	param2;
+	long	param3;
 };
 
 //////////////////////////////////////////////////////////////////////////

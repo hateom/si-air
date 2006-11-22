@@ -11,9 +11,16 @@
 
 //////////////////////////////////////////////////////////////////////////
 
+#define MK_PARAM( PP ) ((void*)&PP)
+#define REG_PARAM( TYPE, NAME, DESC ) register_param( TYPE, MK_PARAM(NAME), #NAME, DESC )
+
+//////////////////////////////////////////////////////////////////////////
+
 vaOpenCV::vaOpenCV() : capture(NULL), alloc_mem(0)
 {
-
+	REG_PARAM( PT_INT,   param1, "1. parametr testowy" );
+	REG_PARAM( PT_FLOAT, param2, "2. parametr testowy" );
+	REG_PARAM( PT_LONG,  param3, "3. parametr testowy" );
 }
 
 //////////////////////////////////////////////////////////////////////////

@@ -77,6 +77,12 @@ int mpdllMgr::get_module_information( mp_dll_module * item )
 
 	hdll = LoadLibrary( item->filename.c_str() );
 
+	if( !hdll && GetLastError() == 112 )
+	{
+		// missing static linked dll
+		return( -4 );
+	}
+
 	export_func = (t_export_func)GetProcAddress( hdll, "export_module" );
 	if( !export_func )
 	{

@@ -130,6 +130,9 @@
 			<File
 				RelativePath=".\src\pi_general.h">
 			</File>
+			<File
+				RelativePath="..\include\types.h">
+			</File>
 		</Filter>
 		<Filter
 			Name="Resource Files"

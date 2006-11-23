@@ -1,4 +1,6 @@
 #include "pi_general.h"
+#include "../../include/types.h"
+#include "../../video_acq_base/src/va_base.h"
 
 #include <cv.h>
 #include <highgui.h>
@@ -11,11 +13,17 @@
 #pragma comment(lib,"ml")
 #pragma comment(lib,"highgui")
 
+#pragma warning ( disable: 4244 )	// convertion float->int (RGBtoHSV)
+
 //////////////////////////////////////////////////////////////////////////
 
 piGeneral::piGeneral()
 {
-	REG_PARAM( PT_INT, temp_param, "1. parametr testowy", 666 );
+	REG_PARAM( PT_INT, Hmax, "1. Wart. maxymalna H", 20 );
+	REG_PARAM( PT_INT, Hmin, "2. Wart. minimalna H", 30 );
+	REG_PARAM( PT_INT, Vmax, "3. Wart. maxymalna V", 10 );
+	REG_PARAM( PT_INT, Vmin, "4. Wart. minimalna V", 20 );
+	REG_PARAM( PT_INT, Smin, "5. Wart. minimalna H", 15 );
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -45,92 +53,51 @@ int piGeneral::get_module_type()
 
 //////////////////////////////////////////////////////////////////////////
 
-int piGeneral::process_frame( void * out_frame )
+pi_struct * piGeneral::process_frame( frame_data * inFrame )
 {
-	/*
-	VLCVideoDataAccess InDataAccess = InBuffer->Data();
-	TVLCVideoDataAccess OutDataAccess = OutBuffer->Data();
+	int R, G, B;
+	int i=0;
+	float H, S, V;
+	pi_struct * pImage;
+	frame_data * temp_frame;
+	float * temp_piTable;
+	
+	if(!inFrame){
+		return NULL;
+	}
 
-	IsReady = false;                                                // Bo rozpoczecie obliczen
+	unsigned int height=inFrame->height, width=inFrame->height, depth = inFrame->depth;
+	if (!(pImage = new pi_struct())) return NULL;
 
-	register TColor PixelColor;
-	register int R, G, B;
-	register float H, S, V;
+	if (!(temp_piTable = new float[height*width])) return NULL;
 
-	register int Xs;
-	register int Xk;
-	register int Ys;
-	register int Yk;
-	register float M00;
-	register float M10;
-	register float M01;
-	register float M20;
-	register float M02;
-	register float M11;
-	register float Max_Val;
-	register float tan_fi;
-
-	for(register int i=0;i<RepositionCount;i++)
-	{
-		Xs = MSCWindowXc-CWDx;
-		Xk = MSCWindowXc+CWDx;
-		Ys = MSCWindowYc-CWDy;
-		Yk = MSCWindowYc+CWDy;
-		M00 = 0.0;
-		M10 = 0.0;
-		M01 = 0.0;
-		M11 = 0.0;
-		M02 = 0.0;
-		M20 = 0.0;
-		Max_Val = 0.0;
-
-		for(register int x=Xs;x<Xk;x++)
-		{
-			if((x >= 0) && (x < Width))
-				for(register int y=Ys;y<Yk;y++)
-				{
-					if((y < 0) || (y >= Height)) continue;
-
-					PixelColor = InDataAccess.GetPixel(x,y);
-					R = PixelColor & 0xFF;
-					G = (PixelColor >> 8) & 0xFF;
-					B = (PixelColor >> 16) & 0xFF;
-					RGBtoHSV(R, G, B, H, S, V);
-					PImg[y][x] = 0.0;
-					if((InitialValue) && (H >= HMin) && (H < HMax) && (V >= Vmin) && (V < Vmax) && (Smin < S))
-						PImg[y][x] = 1;
-
-					if((Calibration) && (V >= Vmin) && (V < Vmax) && (Smin < S))
-					{
-						if((HHist != NULL) && (Inv_HHistMaxVal)) PImg[y][x] += (float)HHist[int(H)]*Inv_HHistMaxVal;
-						if((DHist != NULL) && (Inv_DHistMaxVal)) PImg[y][x] -= (float)DHist[int(H)]*Inv_DHistMaxVal;
-						PImg[y][x] = PImg[y][x]<0.?0.:PImg[y][x];
-					}
-
-
-					// Wyszukiwanie max_wartosci prawdopodobienstwa
-					if(PImg[y][x] > Max_Val)
-						Max_Val = PImg[y][x];
-
-					// Obliczanie momentow
-					M00 += PImg[y][x];
-					M10 += PImg[y][x]*(float)x;
-					M01 += PImg[y][x]*(float)y;
-					M20 += PImg[y][x]*(float)x*(float)x;
-					M02 += PImg[y][x]*(float)y*(float)y;
-					M11 += PImg[y][x]*(float)x*(float)y;
-
-					if(ProbabilityImage)
-					{
-						register float channelval = PImg[y][x]*255.0;
-						channelval = channelval>255?255:channelval;
-						OutDataAccess.Pixels[x][y] = (TColor)RGB(channelval, channelval, channelval);
-					}
-				}
+	if (!(temp_frame = new frame_data())) return NULL;
+	temp_frame->bits = new unsigned char[width*height*depth];
+	temp_frame->depth = inFrame->depth;
+	temp_frame->height = inFrame->height;
+	temp_frame->width = inFrame->width;
+// petla po wszystkich pikselach, tablica wygl¹da nastêpuj¹co
+	for (unsigned int x=0;x<width*height*depth;i++) {
+		B=inFrame->bits[x++];
+		G=inFrame->bits[x++];
+		R=inFrame->bits[x++];
+		RGBtoHSV(R,G,B,H,S,V);
+		temp_piTable[i] = 0.0;
+		if((H >= Hmin) && (H < Hmax) && (V >= Vmin) && (V < Vmax) && (Smin < S))
+			temp_piTable[i]=1.0;
+		if(1){
+			float chVal = temp_piTable[i]*255;
+			chVal = chVal>255?255:chVal;
+			temp_frame->bits[i] = (unsigned char)chVal;
+			temp_frame->bits[i+1] = (unsigned char)chVal;
+			temp_frame->bits[i+2] = (unsigned char)chVal;
 		}
 	}
-	*/
-	return 0;
+
+// kopiowanie do struktury i zwrocenie
+	pImage->prob_table = temp_piTable;
+	pImage->frame = temp_frame;
+	return pImage;
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -139,6 +106,42 @@ int piGeneral::process_frame( void * out_frame )
 void piGeneral::free()
 {
 	
+}
+//////////////////////////////////////////////////////////////////////////
+// funkcja z poprzedniego projektu, podobna jest w internecie
+//////////////////////////////////////////////////////////////////////////
+
+void piGeneral::RGBtoHSV(int& r, int& g, int& b, float& h, float& s, float& v)
+{
+	float min_v, max_v, delta;
+	min_v = r;
+	min_v = min_v<g?min_v:g;
+	min_v = min_v<b?min_v:b;
+
+	max_v = r;
+	max_v = max_v>g?max_v:g;
+	max_v = max_v>b?max_v:b;
+	v = max_v;                              // v
+
+	delta = max_v - min_v;
+
+	if( max_v != 0 )
+		s = delta / max_v;		// s
+	else {
+		// r = g = b = 0		// s = 0, v is undefined
+		s = 0;
+		h = -1;
+		return;
+	}
+	if( r == max_v )
+		h = ( (float)g - (float)b ) / delta;		// between yellow & magenta
+	else if( g == max_v )
+		h = 2.0 + ( (float)b - (float)r ) / delta;	// between cyan & yellow
+	else
+		h = 4.0 + ( (float)r - (float)g ) / delta;	// between magenta & cyan
+	h *= 60.0;				// degrees
+	if( h < 0.0 )
+		h += 360.0;
 }
 
 //////////////////////////////////////////////////////////////////////////

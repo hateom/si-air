@@ -5,7 +5,7 @@
 
 #include "../../module_base/src/module_base.h"
 #include "../../include/types.h"
-#include "../../video_acq_base/src/va_base.h"
+//#include "../../video_acq_base/src/va_base.h"
 
 //////////////////////////////////////////////////////////////////////////
 

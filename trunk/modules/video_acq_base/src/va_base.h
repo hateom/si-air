@@ -4,9 +4,10 @@
 //////////////////////////////////////////////////////////////////////////
 
 #include "../../module_base/src/module_base.h"
+#include "../../include/types.h"
 
 //////////////////////////////////////////////////////////////////////////
-
+/*
 struct frame_data
 {
 	unsigned int  width;
@@ -14,7 +15,7 @@ struct frame_data
 	unsigned int  depth;
 	unsigned char * bits;
 };
-
+*/
 /// klasa bazowa dla modulow akwizycji wideo
 class __declspec(dllexport) vaBase: public moduleBase
 {

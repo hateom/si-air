@@ -1,6 +1,6 @@
 #include "pi_general.h"
 #include "../../include/types.h"
-#include "../../video_acq_base/src/va_base.h"
+//#include "../../video_acq_base/src/va_base.h"
 
 #include <cv.h>
 #include <highgui.h>

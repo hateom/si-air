@@ -4,7 +4,7 @@
 
 #include "../../prob_image_base/src/pi_base.h"
 #include "../../include/types.h"
-#include "../../video_acq_base/src/va_base.h"
+//#include "../../video_acq_base/src/va_base.h"
 
 //////////////////////////////////////////////////////////////////////////
 

@@ -126,8 +126,6 @@ void MainForm::selected( int item )
 		{
 			if( base->get_module_type() == MT_VIDEO_ACQ )
 			{
-				printf( "starting video capturing\n" );
-				
 				PrevForm * prev = new PrevForm;
 				prev->show();
 

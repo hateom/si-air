@@ -59,7 +59,7 @@ int vaOpenCV::init( int device, char * filename )
 	/// load AVI from file
 	if( filename != NULL )
 	{
-		cvcamPlayAVI( 0, 0, 0, 0, 0 );
+		cvcamPlayAVI( 0, (void*)hwnd, 0, 0, 0 );
 	}
 	/// capture video from camera
 	else
@@ -69,13 +69,9 @@ int vaOpenCV::init( int device, char * filename )
 		cvcamSetProperty( 0, CVCAM_PROP_RENDER, CVCAMTRUE );
 		if( hwnd )
 		{
-			printf( "window found" );
 			cvcamSetProperty( 0, CVCAM_PROP_WINDOW, (void*)(hwnd) );
 		}
-		else
-		{
-			printf( "window not found" );
-		}
+
 		cvcamSetProperty( 0, CVCAM_PROP_CALLBACK, cvcam_callback );
 
 		cvcamInit();

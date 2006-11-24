@@ -1,6 +1,19 @@
 #ifndef __INCLUDE_H__
 #define __INCLUDE_H__
-/*Struktura z zawartoscia ramki*/
+
+//////////////////////////////////////////////////////////////////////////
+
+#define FRAME_OFFSET( X, Y, W ) ((X)+((Y)*(W))
+#define FRAME_PIXEL( X, Y, FRAMEDATA ) FRAMEDATA->bits[ FRAME_OFFSET( X, Y, FRAMEDATA->width )]
+
+#define FRAME_PIXEL_B FRAME_PIXEL
+#define FRAME_PIXEL_G( X, Y, FRAMEDATA ) FRAMEDATA->bits[ FRAME_OFFSET( X, Y, FRAMEDATA->width )+1]
+#define FRAME_PIXEL_R( X, Y, FRAMEDATA ) FRAMEDATA->bits[ FRAME_OFFSET( X, Y, FRAMEDATA->width )+2]
+
+//////////////////////////////////////////////////////////////////////////
+
+/// Struktura z zawartoscia ramki
+
 struct frame_data
 {
 	unsigned int  width;
@@ -17,12 +30,16 @@ struct frame_data
 	unsigned char * bits;
 };
 
-/*struktura przechowujaca informacje o prawdopodb. i obraz prawdopodob. */
+//////////////////////////////////////////////////////////////////////////
+
+/// struktura przechowujaca informacje o prawdopodb. i obraz prawdopodob.
 struct pi_struct{
-	/*przechowywana ramka*/
+	/// przechowywana ramka
 	frame_data * frame;
-	/*tablica prawdopodobienstw dla kazdego piksela */
+	/// tablica prawdopodobienstw dla kazdego piksela
 	float * prob_table;
 };
+
+//////////////////////////////////////////////////////////////////////////
 
 #endif // __INCLUDE_H__

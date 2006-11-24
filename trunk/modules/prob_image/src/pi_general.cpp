@@ -1,6 +1,6 @@
 #include "pi_general.h"
-#include "../../include/types.h"
-//#include "../../video_acq_base/src/va_base.h"
+#include "../../module_base/src/types.h"
+#include "../../module_base/src/status_codes.h"
 
 #include <cv.h>
 #include <highgui.h>
@@ -53,7 +53,7 @@ int piGeneral::get_module_type()
 
 //////////////////////////////////////////////////////////////////////////
 
-pi_struct * piGeneral::process_frame( frame_data * inFrame )
+pi_struct * piGeneral::process_frame( frame_data * inFrame, int * status )
 {
 	int R, G, B;
 	int i=0;
@@ -90,7 +90,11 @@ pi_struct * piGeneral::process_frame( frame_data * inFrame )
 	{
 		alloc_mem = static_frame.depth*static_frame.height*static_frame.width;
 		static_frame.bits = new unsigned char[alloc_mem];
-		if (!(piTable = new float[height*width])) return NULL;
+		if (!(piTable = new float[height*width]))
+		{
+			*status  = ST_ALLOC_ERROR;
+			return NULL;
+		}
 	}
 	else
 	{
@@ -100,7 +104,11 @@ pi_struct * piGeneral::process_frame( frame_data * inFrame )
 			delete [] piTable;
 			alloc_mem = depth*height*width;
 			static_frame.bits = new unsigned char[alloc_mem];
-			if (!(piTable = new float[height*width])) return NULL;
+			if (!(piTable = new float[height*width])) 
+			{
+				*status = ST_ALLOC_ERROR;
+				return NULL;
+			}
 		}
 	}
 
@@ -126,6 +134,7 @@ pi_struct * piGeneral::process_frame( frame_data * inFrame )
 // kopiowanie do struktury i zwrocenie
 	pImage.prob_table = piTable;
 	pImage.frame = &static_frame;
+	*status = ST_OK;
 	return ( &pImage );
 }
 

@@ -4,7 +4,7 @@
 //////////////////////////////////////////////////////////////////////////
 
 #include "../../module_base/src/module_base.h"
-#include "../../include/types.h"
+#include "../../module_base/src/types.h"
 //#include "../../video_acq_base/src/va_base.h"
 
 //////////////////////////////////////////////////////////////////////////
@@ -16,7 +16,7 @@ public:
 	piBase() {}
 	virtual ~piBase() {}
 
-	virtual pi_struct * process_frame( frame_data * inFrame ) = 0;
+	virtual pi_struct * process_frame( frame_data * inFrame, int * status ) = 0;
 
 	/// metoda zwalniajaca zasoby
 	virtual void free() = 0;

@@ -127,7 +127,7 @@
 				RelativePath="..\module_base\src\module_base.h">
 			</File>
 			<File
-				RelativePath="..\include\types.h">
+				RelativePath="..\module_base\src\types.h">
 			</File>
 			<File
 				RelativePath="..\video_acq_base\src\va_base.h">

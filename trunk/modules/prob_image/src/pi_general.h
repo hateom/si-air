@@ -3,8 +3,7 @@
 //////////////////////////////////////////////////////////////////////////
 
 #include "../../prob_image_base/src/pi_base.h"
-#include "../../include/types.h"
-//#include "../../video_acq_base/src/va_base.h"
+#include "../../module_base/src/types.h"
 
 //////////////////////////////////////////////////////////////////////////
 
@@ -23,13 +22,14 @@ public:
 
 	virtual void free();
 
-	virtual pi_struct * process_frame( frame_data * inFrame );
+	virtual pi_struct * process_frame( frame_data * inFrame, int * status );
 
 protected:
 	int temp_param;
 	int alloc_mem;
-	void piGeneral::RGBtoHSV(int& r, int& g, int& b, float& h, float& s, float& v);
 	int Hmax,Hmin,Vmax,Vmin,Smin;
+
+	void piGeneral::RGBtoHSV(int& r, int& g, int& b, float& h, float& s, float& v);
 };
 
 //////////////////////////////////////////////////////////////////////////

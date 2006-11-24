@@ -131,7 +131,10 @@
 				RelativePath=".\src\pi_general.h">
 			</File>
 			<File
-				RelativePath="..\include\types.h">
+				RelativePath="..\module_base\src\status_codes.h">
+			</File>
+			<File
+				RelativePath="..\module_base\src\types.h">
 			</File>
 		</Filter>
 		<Filter

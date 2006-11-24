@@ -1,5 +1,5 @@
 #include "va_opencv.h"
-#include "../../include/types.h"
+#include "../../module_base/src/types.h"
 
 #include <cv.h>
 #include <highgui.h>

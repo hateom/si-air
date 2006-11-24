@@ -27,7 +27,7 @@ public:
 
 protected:
 	int temp_param;
-
+	int alloc_mem;
 	void piGeneral::RGBtoHSV(int& r, int& g, int& b, float& h, float& s, float& v);
 	int Hmax,Hmin,Vmax,Vmin,Smin;
 };

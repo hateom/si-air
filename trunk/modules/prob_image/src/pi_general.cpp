@@ -58,46 +58,75 @@ pi_struct * piGeneral::process_frame( frame_data * inFrame )
 	int R, G, B;
 	int i=0;
 	float H, S, V;
-	pi_struct * pImage;
-	frame_data * temp_frame;
-	float * temp_piTable;
+//	pi_struct * pImage;
+	//frame_data * temp_frame;
 	
-	if(!inFrame){
+	if(!inFrame)
+	{
 		return NULL;
 	}
 
 	unsigned int height=inFrame->height, width=inFrame->height, depth = inFrame->depth;
-	if (!(pImage = new pi_struct())) return NULL;
+//	if (!(pImage = new pi_struct())) return NULL;
 
-	if (!(temp_piTable = new float[height*width])) return NULL;
-
+//	if (!(temp_piTable = new float[height*width])) return NULL;
+/*
 	if (!(temp_frame = new frame_data())) return NULL;
 	temp_frame->bits = new unsigned char[width*height*depth];
 	temp_frame->depth = inFrame->depth;
 	temp_frame->height = inFrame->height;
 	temp_frame->width = inFrame->width;
+*/
+
+	static frame_data static_frame;
+	static pi_struct pImage;
+	static float * piTable;
+
+	static_frame.depth = 3;
+	static_frame.width = inFrame->width;
+	static_frame.height = inFrame->height;
+
+	if( alloc_mem == 0 )
+	{
+		alloc_mem = static_frame.depth*static_frame.height*static_frame.width;
+		static_frame.bits = new unsigned char[alloc_mem];
+		if (!(piTable = new float[height*width])) return NULL;
+	}
+	else
+	{
+		if( alloc_mem != depth*height*width )
+		{
+			delete [] static_frame.bits;
+			delete [] piTable;
+			alloc_mem = depth*height*width;
+			static_frame.bits = new unsigned char[alloc_mem];
+			if (!(piTable = new float[height*width])) return NULL;
+		}
+	}
+
 // petla po wszystkich pikselach, tablica wygl¹da nastêpuj¹co
-	for (unsigned int x=0;x<width*height*depth;i++) {
+	for (unsigned int x=0;x<width*height*depth;i++) 
+	{
 		B=inFrame->bits[x++];
 		G=inFrame->bits[x++];
 		R=inFrame->bits[x++];
 		RGBtoHSV(R,G,B,H,S,V);
-		temp_piTable[i] = 0.0;
+		piTable[i] = 0.0;
 		if((H >= Hmin) && (H < Hmax) && (V >= Vmin) && (V < Vmax) && (Smin < S))
-			temp_piTable[i]=1.0;
+			piTable[i]=1.0;
 		if(1){
-			float chVal = temp_piTable[i]*255;
+			float chVal = piTable[i]*255;
 			chVal = chVal>255?255:chVal;
-			temp_frame->bits[i] = (unsigned char)chVal;
-			temp_frame->bits[i+1] = (unsigned char)chVal;
-			temp_frame->bits[i+2] = (unsigned char)chVal;
+			static_frame.bits[i] = (unsigned char)chVal;
+			static_frame.bits[i+1] = (unsigned char)chVal;
+			static_frame.bits[i+2] = (unsigned char)chVal;
 		}
 	}
 
 // kopiowanie do struktury i zwrocenie
-	pImage->prob_table = temp_piTable;
-	pImage->frame = temp_frame;
-	return pImage;
+	pImage.prob_table = piTable;
+	pImage.frame = &static_frame;
+	return ( &pImage );
 }
 
 //////////////////////////////////////////////////////////////////////////

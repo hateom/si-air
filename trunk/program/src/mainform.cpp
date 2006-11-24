@@ -14,11 +14,13 @@
 #include <qtextedit.h>
 #include <qlistbox.h>
 #include <qpushbutton.h>
+#include <qcombobox.h>
 #include <qlayout.h>
 #include <qtooltip.h>
 #include <qwhatsthis.h>
 
 #include "optform.h"
+#include "prevform.h"
 
 /*
  *  Constructs a MainForm as a child of 'parent', with the
@@ -45,13 +47,25 @@ MainForm::MainForm( QWidget* parent, const char* name, bool modal, WFlags fl )
     buttonOk = new QPushButton( this, "buttonOk" );
     buttonOk->setGeometry( QRect( 420, 20, 120, 26 ) );
 
+	groupBoxVI = new QGroupBox( this, "groupBoxVI" );
+	groupBoxVI->setGeometry( QRect( 10, 310, 195, 90 ) );
+
+	comboVI = new QComboBox( groupBoxVI, "comboVI" );
+	comboVI->setGeometry( QRect( 10, 20, 120, 25 ) );
+
+	groupBoxPI = new QGroupBox( this, "groupBoxPI" );
+	groupBoxPI->setGeometry( QRect( 215, 310, 195, 90 ) );
+
+	comboPI = new QComboBox( groupBoxPI, "comboPI" );
+	comboPI->setGeometry( QRect( 10, 20, 120, 25 ) );
+
 	connect( listModule, SIGNAL(selectionChanged(QListBoxItem*)), this, SLOT(selection_changed(QListBoxItem*)) );	
 	connect( listModule, SIGNAL(selected(int)), this, SLOT(selected(int)) );	
 
 	connect( buttonOk, SIGNAL(clicked()), this, SLOT(close()) );
 
     languageChange();
-    resize( QSize(547, 307).expandedTo(minimumSizeHint()) );
+    resize( QSize(550, 410).expandedTo(minimumSizeHint()) );
     clearWState( WState_Polished );
 }
 
@@ -71,6 +85,8 @@ void MainForm::languageChange()
 {
     setCaption( tr( "SI Module List" ) );
     groupBox1->setTitle( tr( "Module List" ) );
+	groupBoxVI->setTitle( tr( "Video ACQ" ) );
+	groupBoxPI->setTitle( tr( "Probability M" ) );
     buttonOk->setText( tr( "OK" ) );
 }
 
@@ -108,6 +124,25 @@ void MainForm::selected( int item )
 		base = mgr.load_va_module( mod );
 		if( base )
 		{
+			if( base->get_module_type() == MT_VIDEO_ACQ )
+			{
+				printf( "starting video capturing\n" );
+				
+				PrevForm * prev = new PrevForm;
+				prev->show();
+
+				for( int i=0; i<base->param_count(); ++i )
+				{
+					mb_param * p = base->get_param( i );
+					if( strcmp( p->name, "hwnd" ) == 0 )
+					{
+						long * ptr = (long*)(p->data);
+						*ptr = (long)(prev->get_handle());
+					}
+				}
+				base->init( 0, "something" );
+			}
+
 			OptForm * opt_form = new OptForm( 0, 0, TRUE, 0, base );
 			opt_form->show();
 		}
@@ -116,6 +151,8 @@ void MainForm::selected( int item )
 
 void MainForm::loadModules( const char * directory )
 {
+	bool found[2] = { false, false };
+
 	mgr.read_module_directory( directory );
 	for( int i=0; i<mgr.count(); ++i )
 	{
@@ -123,7 +160,28 @@ void MainForm::loadModules( const char * directory )
 		if( mod )
 		{
 			listModule->insertItem( tr( mod->filename.c_str() ) );
+			switch( mod->type )
+			{
+			case MT_VIDEO_ACQ:
+				comboVI->insertItem( tr( mod->description.c_str() ) );
+				found[0] = true;
+				break;
+			case MT_PROBABILITY:
+				comboPI->insertItem( tr( mod->description.c_str() ) );
+				found[1] = true;
+				break;
+			}
 		}
+	}
+
+	if( !found[0] )
+	{
+		comboVI->insertItem( tr( "!!! Not Found !!!" ) );
+	}
+
+	if( !found[1] )
+	{
+		comboPI->insertItem( tr( "!!! Not Found !!!") );
 	}
 }
 

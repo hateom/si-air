@@ -22,6 +22,7 @@ class QTextEdit;
 class QListBox;
 class QListBoxItem;
 class QPushButton;
+class QComboBox;
 
 #include "mp_dllmgr.h"
 
@@ -33,7 +34,13 @@ public:
     MainForm( QWidget* parent = 0, const char* name = 0, bool modal = FALSE, WFlags fl = 0 );
     ~MainForm();
 
-    QGroupBox* groupBox1;
+    QGroupBox* groupBox1;	// module list
+	QGroupBox* groupBoxVI;	// module path
+	QGroupBox* groupBoxPI;	// module path
+
+	QComboBox * comboVI;
+	QComboBox * comboPI;
+
     QTextEdit* textModule;
     QListBox* listModule;
     QPushButton* buttonOk;

@@ -1,7 +1,7 @@
 /****************************************************************************
 ** MainForm meta object code from reading C++ file 'mainform.h'
 **
-** Created: ?r 22. lis 18:12:40 2006
+** Created: Pt 24. lis 21:58:24 2006
 **      by: The Qt MOC ($Id: moc_yacc.cpp,v 1.1.1.13 2006/05/05 17:43:42 chehrlic Exp $)
 **
 ** WARNING! All changes made in this file will be lost!

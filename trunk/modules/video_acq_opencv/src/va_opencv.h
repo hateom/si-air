@@ -28,12 +28,13 @@ public:
 	virtual frame_data * process_frame( int * result );
 
 protected:
-	CvCapture * capture;
+//	int cam_count;
+//	CvCapture * capture;
 	int alloc_mem;
 
 	int		param1;
 	float	param2;
-	long	param3;
+	long	hwnd;
 };
 
 //////////////////////////////////////////////////////////////////////////

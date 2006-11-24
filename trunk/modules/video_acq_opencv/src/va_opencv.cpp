@@ -3,8 +3,10 @@
 
 #include <cv.h>
 #include <highgui.h>
+#include <cvcam.h>
 
 #pragma comment(lib,"cv.lib")
+#pragma comment(lib,"cvcam.lib")
 #pragma comment(lib,"cxcore.lib")
 #pragma comment(lib,"cvaux.lib")
 #pragma comment(lib,"ml.lib")
@@ -12,11 +14,11 @@
 
 //////////////////////////////////////////////////////////////////////////
 
-vaOpenCV::vaOpenCV() : capture(NULL), alloc_mem(0)
+vaOpenCV::vaOpenCV() : /*capture(NULL),*/ alloc_mem(0)/*, cam_count(0)*/
 {
 	REG_PARAM( PT_INT,   param1, "1. parametr testowy", 13 );
 	REG_PARAM( PT_FLOAT, param2, "2. parametr testowy", 3.1415f );
-	REG_PARAM( PT_LONG,  param3, "3. parametr testowy", 100100100L );
+	REG_PARAM( PT_LONG,  hwnd,   "uchwyt okna prev", 0 );
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -43,14 +45,47 @@ int vaOpenCV::get_module_type()
 
 //////////////////////////////////////////////////////////////////////////
 
+static IplImage * current_frame;
+
+static void cvcam_callback( IplImage * image )
+{
+	current_frame = image;
+}
+
+//////////////////////////////////////////////////////////////////////////
+
 int vaOpenCV::init( int device, char * filename )
 {
-	if( capture != NULL ) free();
+	/// load AVI from file
+	if( filename != NULL )
+	{
+		cvcamPlayAVI( 0, 0, 0, 0, 0 );
+	}
+	/// capture video from camera
+	else
+	{
+//		int ncams = cvcamGetCamerascount();
+		cvcamSetProperty( 0, CVCAM_PROP_ENABLE, CVCAMTRUE );
+		cvcamSetProperty( 0, CVCAM_PROP_RENDER, CVCAMTRUE );
+		if( hwnd )
+		{
+			printf( "window found" );
+			cvcamSetProperty( 0, CVCAM_PROP_WINDOW, (void*)(hwnd) );
+		}
+		else
+		{
+			printf( "window not found" );
+		}
+		cvcamSetProperty( 0, CVCAM_PROP_CALLBACK, cvcam_callback );
 
-	capture = ( filename != NULL ) ? cvCaptureFromFile( filename ) : cvCaptureFromCAM( device );
-	
+		cvcamInit();
+		cvcamStart();
+	}
 
-	if( !capture ) return -1;
+
+//	if( capture != NULL ) free();
+//	capture = ( filename != NULL ) ? cvCaptureFromFile( filename ) : cvCaptureFromCAM( device );
+//	if( !capture ) return -1;
 
 	return( 0 );
 }
@@ -59,11 +94,13 @@ int vaOpenCV::init( int device, char * filename )
 
 frame_data * vaOpenCV::process_frame( int * result )
 {
+	/*
 	if( !capture ) 
 	{
 		*result = -1;
 		return( NULL );
 	}
+
 
 	IplImage * frame = cvQueryFrame( capture );
 	if( !frame )
@@ -71,10 +108,19 @@ frame_data * vaOpenCV::process_frame( int * result )
 		*result = -2;
 		return( NULL );
 	}
+*/
+
+	if( !current_frame )
+	{
+		*result = -1;
+		return( NULL );
+	}
+
+	IplImage * frame = current_frame;
 
 	static frame_data static_frame;
 
-	static_frame.depth = 3;//frame->depth/8;
+	static_frame.depth = (3*frame->depth)/8;
 	static_frame.width = frame->width;
 	static_frame.height = frame->height;
 
@@ -108,11 +154,15 @@ frame_data * vaOpenCV::process_frame( int * result )
 
 void vaOpenCV::free()
 {
+	cvcamStop();
+	cvcamExit();
+
+	/*
 	if( capture != NULL )
 	{
 		cvReleaseCapture( &capture );
 		capture = NULL;
-	}
+	}*/
 }
 
 //////////////////////////////////////////////////////////////////////////

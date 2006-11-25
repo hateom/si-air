@@ -40,6 +40,13 @@ struct pi_struct{
 	float * prob_table;
 };
 
+// Struktura do opisu po³ozenia obiektu int x,y; float angle;
+struct Tpos
+{
+	int x,y;
+	int gesture;
+	float angle;
+};
 //////////////////////////////////////////////////////////////////////////
 
 #endif // __INCLUDE_H__

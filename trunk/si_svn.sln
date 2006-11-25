@@ -23,6 +23,14 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "prob_image", "modules\prob_
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "posdetect_base", "modules\posdetect_base\posdetect_base.vcproj", "{A843CB61-9C78-4D06-B1C0-BE56DCD5DD73}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "posdetect", "modules\posdetect\posdetect.vcproj", "{72F37CC9-5263-4BC0-B3B0-F73F7600F2C0}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfiguration) = preSolution
 		Debug = Debug
@@ -45,6 +53,14 @@ Global
 		{20CB0D7E-A9E4-40EB-A04E-73549FC3D39A}.Debug.Build.0 = Debug|Win32
 		{20CB0D7E-A9E4-40EB-A04E-73549FC3D39A}.Release.ActiveCfg = Release|Win32
 		{20CB0D7E-A9E4-40EB-A04E-73549FC3D39A}.Release.Build.0 = Release|Win32
+		{A843CB61-9C78-4D06-B1C0-BE56DCD5DD73}.Debug.ActiveCfg = Debug|Win32
+		{A843CB61-9C78-4D06-B1C0-BE56DCD5DD73}.Debug.Build.0 = Debug|Win32
+		{A843CB61-9C78-4D06-B1C0-BE56DCD5DD73}.Release.ActiveCfg = Release|Win32
+		{A843CB61-9C78-4D06-B1C0-BE56DCD5DD73}.Release.Build.0 = Release|Win32
+		{72F37CC9-5263-4BC0-B3B0-F73F7600F2C0}.Debug.ActiveCfg = Debug|Win32
+		{72F37CC9-5263-4BC0-B3B0-F73F7600F2C0}.Debug.Build.0 = Debug|Win32
+		{72F37CC9-5263-4BC0-B3B0-F73F7600F2C0}.Release.ActiveCfg = Release|Win32
+		{72F37CC9-5263-4BC0-B3B0-F73F7600F2C0}.Release.Build.0 = Release|Win32
 		{A843CB61-9C78-4D06-B1C0-BE56DCD5DD73}.Debug.ActiveCfg = Debug|Win32
 		{A843CB61-9C78-4D06-B1C0-BE56DCD5DD73}.Debug.Build.0 = Debug|Win32
 		{A843CB61-9C78-4D06-B1C0-BE56DCD5DD73}.Release.ActiveCfg = Release|Win32

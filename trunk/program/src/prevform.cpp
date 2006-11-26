@@ -36,11 +36,14 @@ void PrevForm::anim()
 		timer->stop();
 		delete timer;
 		timer = NULL;
+		base->free();
+		this->close();
 		return;
 	}
 
 	try
 	{
+		resize( QSize( frame->width, frame->height ).expandedTo(minimumSizeHint()) );
 		QImage img( (uchar*)frame->bits, frame->width, frame->height, 32, NULL, 256, QImage::LittleEndian );
 		QPainter painter( this );
 		painter.drawImage( QPoint(0, 0), img );

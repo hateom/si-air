@@ -259,6 +259,6 @@ void MainForm::run()
 	timer = new QTimer( this );
 	connect( timer, SIGNAL(timeout()), this, SLOT(process_frame()));
 
-	timer->start( 100 );
+	timer->start( 4 );
 }
 

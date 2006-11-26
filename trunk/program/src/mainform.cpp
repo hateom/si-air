@@ -51,13 +51,19 @@ MainForm::MainForm( QWidget* parent, const char* name, bool modal, WFlags fl )
 	groupBoxVI->setGeometry( QRect( 10, 310, 195, 90 ) );
 
 	comboVI = new QComboBox( groupBoxVI, "comboVI" );
-	comboVI->setGeometry( QRect( 10, 20, 120, 25 ) );
+	comboVI->setGeometry( QRect( 10, 20, 175, 25 ) );
 
 	groupBoxPI = new QGroupBox( this, "groupBoxPI" );
 	groupBoxPI->setGeometry( QRect( 215, 310, 195, 90 ) );
 
 	comboPI = new QComboBox( groupBoxPI, "comboPI" );
-	comboPI->setGeometry( QRect( 10, 20, 120, 25 ) );
+	comboPI->setGeometry( QRect( 10, 20, 175, 25 ) );
+
+	groupBoxPD = new QGroupBox( this, "groupBoxPD" );
+	groupBoxPD->setGeometry( QRect( 420, 310, 195, 90 ) );
+
+	comboPD = new QComboBox( groupBoxPD, "comboPD" );
+	comboPD->setGeometry( QRect( 10, 20, 175, 25 ) );
 
 	connect( listModule, SIGNAL(selectionChanged(QListBoxItem*)), this, SLOT(selection_changed(QListBoxItem*)) );	
 	connect( listModule, SIGNAL(selected(int)), this, SLOT(selected(int)) );	
@@ -65,7 +71,7 @@ MainForm::MainForm( QWidget* parent, const char* name, bool modal, WFlags fl )
 	connect( buttonOk, SIGNAL(clicked()), this, SLOT(close()) );
 
     languageChange();
-    resize( QSize(550, 410).expandedTo(minimumSizeHint()) );
+    resize( QSize(630, 410).expandedTo(minimumSizeHint()) );
     clearWState( WState_Polished );
 }
 
@@ -87,6 +93,7 @@ void MainForm::languageChange()
     groupBox1->setTitle( tr( "Module List" ) );
 	groupBoxVI->setTitle( tr( "Video ACQ" ) );
 	groupBoxPI->setTitle( tr( "Probability M" ) );
+	groupBoxPD->setTitle( tr( "Gestures and Position" ) );
     buttonOk->setText( tr( "OK" ) );
 }
 
@@ -149,7 +156,7 @@ void MainForm::selected( int item )
 
 void MainForm::loadModules( const char * directory )
 {
-	bool found[2] = { false, false };
+	bool found[3] = { false, false, false };
 
 	mgr.read_module_directory( directory );
 	for( int i=0; i<mgr.count(); ++i )
@@ -168,6 +175,10 @@ void MainForm::loadModules( const char * directory )
 				comboPI->insertItem( tr( mod->description.c_str() ) );
 				found[1] = true;
 				break;
+			case MT_GESTURES:
+				comboPD->insertItem( tr( mod->description.c_str() ) );
+				found[2] = true;
+				break;
 			}
 		}
 	}
@@ -180,6 +191,11 @@ void MainForm::loadModules( const char * directory )
 	if( !found[1] )
 	{
 		comboPI->insertItem( tr( "!!! Not Found !!!") );
+	}
+
+	if( !found[2] )
+	{
+		comboPD->insertItem( tr( "!!! Not Found !!!") );
 	}
 }
 

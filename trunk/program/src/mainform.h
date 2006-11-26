@@ -34,16 +34,18 @@ public:
     MainForm( QWidget* parent = 0, const char* name = 0, bool modal = FALSE, WFlags fl = 0 );
     ~MainForm();
 
-    QGroupBox* groupBox1;	// module list
-	QGroupBox* groupBoxVI;	// module path
-	QGroupBox* groupBoxPI;	// module path
+    QGroupBox * groupBox1;	// module list
+	QGroupBox * groupBoxVI;	// module path
+	QGroupBox * groupBoxPI;	// module path
+	QGroupBox * groupBoxPD;  // position detection
 
 	QComboBox * comboVI;
 	QComboBox * comboPI;
+	QComboBox * comboPD;
 
-    QTextEdit* textModule;
-    QListBox* listModule;
-    QPushButton* buttonOk;
+    QTextEdit   * textModule;
+    QListBox    * listModule;
+    QPushButton * buttonOk;
 
     virtual void loadModules( const char * directory );
 

@@ -157,10 +157,10 @@ frame_data * vaOpenCV::process_frame( int * result )
 	{
 		for( int y=0; y<(int)static_frame.height; ++y )
 		{
-			static_frame.bits[(x+y*static_frame.width)*4+0] = frame->imageData[(x+y*static_frame.width)*3+0];
-			static_frame.bits[(x+y*static_frame.width)*4+1] = frame->imageData[(x+y*static_frame.width)*3+1];
-			static_frame.bits[(x+y*static_frame.width)*4+2] = frame->imageData[(x+y*static_frame.width)*3+2];
-			static_frame.bits[(x+y*static_frame.width)*4+3] = 0;
+			static_frame.bits[(x+(static_frame.height-y-1)*static_frame.width)*4+0] = frame->imageData[(x+y*static_frame.width)*3+0];
+			static_frame.bits[(x+(static_frame.height-y-1)*static_frame.width)*4+1] = frame->imageData[(x+y*static_frame.width)*3+1];
+			static_frame.bits[(x+(static_frame.height-y-1)*static_frame.width)*4+2] = frame->imageData[(x+y*static_frame.width)*3+2];
+			static_frame.bits[(x+(static_frame.height-y-1)*static_frame.width)*4+3] = 0;
 		}
 	}
 

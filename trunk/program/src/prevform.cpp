@@ -24,6 +24,14 @@ void PrevForm::languageChange()
 	setCaption( tr( "Preview Window" ) );
 }
 
+void PrevForm::render_frame( frame_data * frame )
+{
+	resize( QSize( frame->width, frame->height ).expandedTo(minimumSizeHint()) );
+	QImage img( (uchar*)frame->bits, frame->width, frame->height, 32, NULL, 256, QImage::LittleEndian );
+	QPainter painter( this );
+	painter.drawImage( QPoint(0, 0), img );
+}
+
 void PrevForm::anim()
 {
 	int result;

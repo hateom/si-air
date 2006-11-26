@@ -20,6 +20,8 @@ public:
 	HWND get_handle() { return( this->QWidget::winId() ); }
 	void set_video_module( vaBase * base );
 
+	void render_frame( frame_data * frame );
+
 protected slots:
 	virtual void languageChange();
 	virtual void anim();

@@ -17,7 +17,7 @@
 
 //////////////////////////////////////////////////////////////////////////
 
-piGeneral::piGeneral()
+piGeneral::piGeneral() : alloc_mem(0)
 {
 	REG_PARAM( PT_INT, Hmax, "1. Wart. maxymalna H", 20 );
 	REG_PARAM( PT_INT, Hmin, "2. Wart. minimalna H", 30 );
@@ -80,9 +80,11 @@ pi_struct * piGeneral::process_frame( frame_data * inFrame, int * status )
 
 	static frame_data static_frame;
 	static pi_struct pImage;
-	static float * piTable;
+	static float * piTable = NULL;
 
-	static_frame.depth = 3;
+	static_frame.bits = NULL;
+
+	static_frame.depth = 4;
 	static_frame.width = inFrame->width;
 	static_frame.height = inFrame->height;
 
@@ -90,11 +92,16 @@ pi_struct * piGeneral::process_frame( frame_data * inFrame, int * status )
 	{
 		alloc_mem = static_frame.depth*static_frame.height*static_frame.width;
 		static_frame.bits = new unsigned char[alloc_mem];
-		if (!(piTable = new float[height*width]))
-		{
-			*status  = ST_ALLOC_ERROR;
+		
+		/*
+		if (!(piTable = new float[height*width]))		<-- to sprawdzanie nie ma sensu, gdyz w c++
+		{													w razie braku pamieci zostanie rzucony wyjatek
+			*status  = ST_ALLOC_ERROR;						i sprawdzenie i tak sie nie wykona
 			return NULL;
 		}
+		*/
+
+		piTable = new float[height*width];
 	}
 	else
 	{
@@ -104,30 +111,50 @@ pi_struct * piGeneral::process_frame( frame_data * inFrame, int * status )
 			delete [] piTable;
 			alloc_mem = depth*height*width;
 			static_frame.bits = new unsigned char[alloc_mem];
+			/*														<-- j/w
 			if (!(piTable = new float[height*width])) 
 			{
 				*status = ST_ALLOC_ERROR;
 				return NULL;
 			}
+			*/
+			piTable = new float[height*width];
 		}
 	}
 
 // petla po wszystkich pikselach, tablica wygl¹da nastêpuj¹co
-	for (unsigned int x=0;x<width*height*depth;i++) 
+	//for( unsigned int x=0; x<width*height*depth; i++ )
+	for( int x=0; x<(int)width; ++x )
 	{
-		B=inFrame->bits[x++];
-		G=inFrame->bits[x++];
-		R=inFrame->bits[x++];
-		RGBtoHSV(R,G,B,H,S,V);
-		piTable[i] = 0.0;
-		if((H >= Hmin) && (H < Hmax) && (V >= Vmin) && (V < Vmax) && (Smin < S))
-			piTable[i]=1.0;
-		if(1){
-			float chVal = piTable[i]*255;
-			chVal = chVal>255?255:chVal;
-			static_frame.bits[i] = (unsigned char)chVal;
-			static_frame.bits[i+1] = (unsigned char)chVal;
-			static_frame.bits[i+2] = (unsigned char)chVal;
+		for( int y=0; y<(int)height; ++y )
+		{
+			//B=inFrame->bits[x++];
+			//G=inFrame->bits[x++];
+			//R=inFrame->bits[x++];
+			//x++;
+
+			B = inFrame->bits[(x+y*width)*4+0];
+			G = inFrame->bits[(x+y*width)*4+1];
+			R = inFrame->bits[(x+y*width)*4+2];
+
+			RGBtoHSV( R, G, B, H, S, V );
+
+			piTable[x+y*width] = 0.0;
+		
+			if((H >= Hmin) && (H < Hmax) && (V >= Vmin) && (V < Vmax) && (Smin < S))
+			{
+				piTable[x+y*width] = 1.0;
+			}
+
+			if( 1 )
+			{
+				float chVal = piTable[i]*255.0f;
+				chVal = (chVal > 255.0f) ? 255.0f : chVal;
+				static_frame.bits[(x+y*width)*4+0] = (unsigned char)chVal;
+				static_frame.bits[(x+y*width)*4+1] = (unsigned char)chVal;
+				static_frame.bits[(x+y*width)*4+2] = (unsigned char)chVal;
+				static_frame.bits[(x+y*width)*4+3] = 0;
+			}
 		}
 	}
 

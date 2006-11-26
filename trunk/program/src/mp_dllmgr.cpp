@@ -111,7 +111,7 @@ int mpdllMgr::get_module_information( mp_dll_module * item )
 
 //////////////////////////////////////////////////////////////////////////
 
-piBase * load_pi_module( mp_dll_module * item )
+piBase * mpdllMgr::load_pi_module( mp_dll_module * item )
 {
 	if( !item ) return( NULL );
 

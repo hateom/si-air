@@ -23,8 +23,23 @@ class QListBox;
 class QListBoxItem;
 class QPushButton;
 class QComboBox;
+class QTimer;
 
 #include "mp_dllmgr.h"
+
+#include "../../modules/video_acq_base/src/va_base.h"
+#include "../../modules/prob_image_base/src/pi_base.h"
+#include "../../modules/posdetect_base/src/posdetect_base.h"
+
+#include "prevform.h"
+
+struct processing_data
+{
+	vaBase			* va_base;
+	piBase			* pi_base;
+	cPosdetectBase	* pd_base;
+	PrevForm		* prevForm;
+};
 
 class MainForm : public QDialog
 {
@@ -46,18 +61,28 @@ public:
     QTextEdit   * textModule;
     QListBox    * listModule;
     QPushButton * buttonOk;
+	QPushButton * buttonRun;
 
     virtual void loadModules( const char * directory );
 
 public slots:
 	virtual void selection_changed( QListBoxItem * );
 	virtual void selected( int item );
+	virtual void run();
+	virtual void process_frame();
 
 protected slots:
     virtual void languageChange();
 
 private:
 	mpdllMgr mgr;
+	processing_data p_data;
+
+	std::vector<mp_dll_module*>	va_list;
+	std::vector<mp_dll_module*>	pi_list;
+	std::vector<mp_dll_module*>	pd_list;
+
+	QTimer * timer;
 
 };
 

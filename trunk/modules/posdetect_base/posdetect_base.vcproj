@@ -121,7 +121,7 @@
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}">
 			<File
-				RelativePath=".\src\posdetect_base.h">
+				RelativePath=".\src\pd_base.h">
 			</File>
 		</Filter>
 		<Filter

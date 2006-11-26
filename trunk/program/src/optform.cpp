@@ -18,7 +18,6 @@ OptForm::OptForm( QWidget* parent, const char* name, bool modal, WFlags fl, modu
 	groupBox = new QGroupBox( this, "paramSpace" );
 	groupBox->setGeometry( QRect( 10, 10, 340, space_height ) );
 
-	QTextEdit ** edit;
 	QLabel ** label;
 
 	edit = new QTextEdit*[pcount];
@@ -53,14 +52,45 @@ OptForm::OptForm( QWidget* parent, const char* name, bool modal, WFlags fl, modu
 	QPushButton * btn_ok;
 
 	btn_ok = new QPushButton( this, tr("btnOK") );
-	btn_ok->setGeometry( QRect( 360, 10, 140, 30 ) );
+	btn_ok->setGeometry( QRect( 360, 10, 140, 26 ) );
 	btn_ok->setText( tr("OK") );
 
-	connect( btn_ok, SIGNAL(clicked()), this, SLOT(close()) );
+	QPushButton * btn_cancel;
+
+	btn_cancel = new QPushButton( this, tr("btnCancel") );
+	btn_cancel->setGeometry( QRect( 360, 40, 140, 30 ) );
+	btn_cancel->setText( tr("Cancel") );
+
+	connect( btn_ok, SIGNAL(clicked()), this, SLOT(save_conf()) );
+	connect( btn_cancel, SIGNAL(clicked()), this, SLOT(close()) );
 
 	languageChange();
 	resize( QSize( 525, space_height + 20 ).expandedTo(minimumSizeHint()) );
 	clearWState( WState_Polished );
+}
+
+void OptForm::save_conf()
+{
+	int pcount = module->param_count();
+
+	for( int i=0; i<pcount; ++i )
+	{
+		switch( module->get_param(i)->type )
+		{
+		case PT_INT:
+		case PT_LONG:
+			long * ptrl;
+			ptrl = ((long*)(module->get_param(i)->data));
+			*ptrl = edit[i]->text().toLong();
+			break;
+		case PT_FLOAT:
+			float * ptrf;
+			ptrf = ((float*)(module->get_param(i)->data));
+			*ptrf = edit[i]->text().toFloat();
+			break;
+		}
+	}
+	close();
 }
 
 OptForm::~OptForm()

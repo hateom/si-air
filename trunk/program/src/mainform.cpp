@@ -39,23 +39,14 @@ MainForm::MainForm( QWidget* parent, const char* name, bool modal, WFlags fl )
     if ( !name )
 	setName( "MainForm" );
 
-    groupBox1 = new QGroupBox( this, "groupBox1" );
-    groupBox1->setGeometry( QRect( 10, 10, 401, 290 ) );
-
-    textModule = new QTextEdit( groupBox1, "textModule" );
-    textModule->setGeometry( QRect( 10, 210, 380, 70 ) );
-
-    listModule = new QListBox( groupBox1, "listModule" );
-    listModule->setGeometry( QRect( 10, 20, 380, 180 ) );
-
     buttonOk = new QPushButton( this, "buttonOk" );
-    buttonOk->setGeometry( QRect( 420, 20, 195, 26 ) );
+    buttonOk->setGeometry( QRect( 10, 160, 195, 26 ) );
 
 	buttonRun = new QPushButton( this, "buttonRun" );
-	buttonRun->setGeometry( QRect( 420, 50, 195, 26 ) );
+	buttonRun->setGeometry( QRect( 10, 190, 195, 26 ) );
 
 	groupBoxVI = new QGroupBox( this, "groupBoxVI" );
-	groupBoxVI->setGeometry( QRect( 10, 310, 195, 90 ) );
+	groupBoxVI->setGeometry( QRect( 10, 10, 195, 130 ) );
 
 	comboVI = new QComboBox( groupBoxVI, "comboVI" );
 	comboVI->setGeometry( QRect( 10, 20, 175, 25 ) );
@@ -65,7 +56,7 @@ MainForm::MainForm( QWidget* parent, const char* name, bool modal, WFlags fl )
 	checkVI->setChecked( true );
 
 	groupBoxPI = new QGroupBox( this, "groupBoxPI" );
-	groupBoxPI->setGeometry( QRect( 215, 310, 195, 90 ) );
+	groupBoxPI->setGeometry( QRect( 215, 10, 195, 130 ) );
 
 	comboPI = new QComboBox( groupBoxPI, "comboPI" );
 	comboPI->setGeometry( QRect( 10, 20, 175, 25 ) );
@@ -75,7 +66,7 @@ MainForm::MainForm( QWidget* parent, const char* name, bool modal, WFlags fl )
 	checkPI->setChecked( true );
 
 	groupBoxPD = new QGroupBox( this, "groupBoxPD" );
-	groupBoxPD->setGeometry( QRect( 420, 310, 195, 90 ) );
+	groupBoxPD->setGeometry( QRect( 420, 10, 195, 130 ) );
 
 	comboPD = new QComboBox( groupBoxPD, "comboPD" );
 	comboPD->setGeometry( QRect( 10, 20, 175, 25 ) );
@@ -84,16 +75,26 @@ MainForm::MainForm( QWidget* parent, const char* name, bool modal, WFlags fl )
 	checkPD->setGeometry( QRect( 10, 50, 175, 25 ) );
 	checkPD->setChecked( false );
 
-	memset( &p_data, 0, sizeof(processing_data) );
+	buttonVIcfg = new QPushButton( groupBoxVI, "buttonVIcfg" );
+	buttonVIcfg->setGeometry( QRect( 10, 80, 175, 26 ) );
 
-	connect( listModule, SIGNAL(selectionChanged(QListBoxItem*)), this, SLOT(selection_changed(QListBoxItem*)) );	
-	connect( listModule, SIGNAL(selected(int)), this, SLOT(selected(int)) );	
+	buttonPIcfg = new QPushButton( groupBoxPI, "buttonPIcfg" );
+	buttonPIcfg->setGeometry( QRect( 10, 80, 175, 26 ) );
+
+	buttonPDcfg = new QPushButton( groupBoxPD, "buttonPDcfg" );
+	buttonPDcfg->setGeometry( QRect( 10, 80, 175, 26 ) );
+
+	connect( buttonVIcfg, SIGNAL(clicked()), this, SLOT(configure_va_mod()) );
+	connect( buttonPIcfg, SIGNAL(clicked()), this, SLOT(configure_pi_mod()) );
+	connect( buttonPDcfg, SIGNAL(clicked()), this, SLOT(configure_pd_mod()) );
+
+	memset( &p_data, 0, sizeof(processing_data) );
 
 	connect( buttonOk, SIGNAL(clicked()), this, SLOT(close_app()) );
 	connect( buttonRun, SIGNAL(clicked()), this, SLOT(run()) );
 
     languageChange();
-    resize( QSize(630, 410).expandedTo(minimumSizeHint()) );
+    resize( QSize(630, 225).expandedTo(minimumSizeHint()) );
     clearWState( WState_Polished );
 }
 
@@ -118,7 +119,6 @@ MainForm::~MainForm()
 void MainForm::languageChange()
 {
     setCaption( tr( "SI Module List" ) );
-    groupBox1->setTitle( tr( "Module List" ) );
 	groupBoxVI->setTitle( tr( "Video ACQ" ) );
 	groupBoxPI->setTitle( tr( "Probability M" ) );
 	groupBoxPD->setTitle( tr( "Gestures and Position" ) );
@@ -128,46 +128,34 @@ void MainForm::languageChange()
 	checkVI->setText( tr("Preview") );
 	checkPI->setText( tr("Preview") );
 	checkPD->setText( tr("Preview") );
+
+	buttonVIcfg->setText( tr("Configure") );
+	buttonPIcfg->setText( tr("Configure") );
+	buttonPDcfg->setText( tr("Configure") );
 }
 
-void MainForm::selection_changed( QListBoxItem * item )
+void MainForm::configure_va_mod()
 {
-	mp_dll_module * ptr;
+	OptForm * opt_form;
 
-	for( int i=0; i<mgr.count(); ++i )
-	{
-		ptr = mgr.get_module_info( i );
-		if( strcmp( ptr->filename.c_str(), item->text().ascii() ) == 0 )
-		{
-			textModule->setText( tr( ptr->description.c_str() ) );
-			textModule->insertParagraph( tr( mt_description[ptr->type] ), 1 );
-			textModule->insertParagraph( tr( ptr->filename.c_str() ), 2 );
-		}
-	}
+	opt_form = new OptForm( 0, 0, TRUE, 0, va_list[comboVI->currentItem()] );
+	opt_form->show();
 }
 
-void MainForm::selected( int item )
+void MainForm::configure_pi_mod()
 {
-	mp_dll_module * mod;
+	OptForm * opt_form;
 
-	if( mod = mgr.get_module_info( item ) )
-	{
-		/*
-		if( mod->type != MT_VIDEO_ACQ )
-		{
-			printf( "Only VIDEO_ACQ module is supported by now." );
-			return;
-		}
-		*/
+	opt_form = new OptForm( 0, 0, TRUE, 0, pi_list[comboPI->currentItem()] );
+	opt_form->show();
+}
 
-		vaBase * base;
-		base = mgr.load_va_module( mod );
-		if( base )
-		{
-			OptForm * opt_form = new OptForm( 0, 0, TRUE, 0, base );
-			opt_form->show();
-		}
-	}
+void MainForm::configure_pd_mod()
+{
+	OptForm * opt_form;
+
+	opt_form = new OptForm( 0, 0, TRUE, 0, pd_list[comboPD->currentItem()] );
+	opt_form->show();
 }
 
 void MainForm::loadModules( const char * directory )
@@ -180,22 +168,22 @@ void MainForm::loadModules( const char * directory )
 		mp_dll_module * mod = mgr.get_module_info( i );
 		if( mod )
 		{
-			listModule->insertItem( tr( mod->filename.c_str() ) );
+//			listModule->insertItem( tr( mod->filename.c_str() ) );
 			switch( mod->type )
 			{
 			case MT_VIDEO_ACQ:
 				comboVI->insertItem( tr( mod->description.c_str() ) );
-				va_list.push_back( mod );
+				va_list.push_back( mgr.load_va_module( mod ) );
 				found[0] = true;
 				break;
 			case MT_PROBABILITY:
 				comboPI->insertItem( tr( mod->description.c_str() ) );
-				pi_list.push_back( mod );
+				pi_list.push_back( mgr.load_pi_module( mod ) );
 				found[1] = true;
 				break;
 			case MT_GESTURES:
 				comboPD->insertItem( tr( mod->description.c_str() ) );
-				pd_list.push_back( mod );
+				pd_list.push_back( mgr.load_pd_module( mod ) );
 				found[2] = true;
 				break;
 			}
@@ -255,8 +243,8 @@ void MainForm::run()
 	pi_item = comboPI->currentItem();
 	pd_item = comboPD->currentItem();
 
-	p_data.va_base = mgr.load_va_module( va_list[va_item] );
-	p_data.pi_base = mgr.load_pi_module( pi_list[va_item] );
+	p_data.va_base = va_list[va_item];
+	p_data.pi_base = pi_list[va_item];
 	p_data.pd_base = NULL;
 
 	QFileDialog* fd = new QFileDialog( this, "file dialog", TRUE );
@@ -270,6 +258,8 @@ void MainForm::run()
 		"Choose a file" );
 
 	p_data.va_base->init( 0, (char *)s.ascii() );
+
+//	p_data.va_base->init( 0, 0 );
 
 	if( checkVI->isChecked() )
 	{

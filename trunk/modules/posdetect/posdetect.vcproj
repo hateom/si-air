@@ -125,6 +125,9 @@
 				RelativePath="..\module_base\src\module_base.h">
 			</File>
 			<File
+				RelativePath="..\posdetect_base\src\pd_base.h">
+			</File>
+			<File
 				RelativePath=".\src\posdetect.h">
 			</File>
 			<File

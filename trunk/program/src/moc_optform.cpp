@@ -1,7 +1,7 @@
 /****************************************************************************
 ** OptForm meta object code from reading C++ file 'optform.h'
 **
-** Created: ?r 22. lis 16:56:27 2006
+** Created: Pn 27. lis 00:37:28 2006
 **      by: The Qt MOC ($Id: moc_yacc.cpp,v 1.1.1.13 2006/05/05 17:43:42 chehrlic Exp $)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -52,13 +52,15 @@ QMetaObject* OptForm::staticMetaObject()
     if ( metaObj )
 	return metaObj;
     QMetaObject* parentObject = QDialog::staticMetaObject();
-    static const QUMethod slot_0 = {"languageChange", 0, 0 };
+    static const QUMethod slot_0 = {"save_conf", 0, 0 };
+    static const QUMethod slot_1 = {"languageChange", 0, 0 };
     static const QMetaData slot_tbl[] = {
-	{ "languageChange()", &slot_0, QMetaData::Protected }
+	{ "save_conf()", &slot_0, QMetaData::Protected },
+	{ "languageChange()", &slot_1, QMetaData::Protected }
     };
     metaObj = QMetaObject::new_metaobject(
 	"OptForm", parentObject,
-	slot_tbl, 1,
+	slot_tbl, 2,
 	0, 0,
 #ifndef QT_NO_PROPERTIES
 	0, 0,
@@ -79,7 +81,8 @@ void* OptForm::qt_cast( const char* clname )
 bool OptForm::qt_invoke( int _id, QUObject* _o )
 {
     switch ( _id - staticMetaObject()->slotOffset() ) {
-    case 0: languageChange(); break;
+    case 0: save_conf(); break;
+    case 1: languageChange(); break;
     default:
 	return QDialog::qt_invoke( _id, _o );
     }

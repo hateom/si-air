@@ -1,7 +1,7 @@
 /****************************************************************************
 ** MainForm meta object code from reading C++ file 'mainform.h'
 **
-** Created: N 26. lis 23:11:54 2006
+** Created: Pn 27. lis 00:37:28 2006
 **      by: The Qt MOC ($Id: moc_yacc.cpp,v 1.1.1.13 2006/05/05 17:43:42 chehrlic Exp $)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -52,31 +52,27 @@ QMetaObject* MainForm::staticMetaObject()
     if ( metaObj )
 	return metaObj;
     QMetaObject* parentObject = QDialog::staticMetaObject();
-    static const QUParameter param_slot_0[] = {
-	{ 0, &static_QUType_ptr, "QListBoxItem", QUParameter::In }
-    };
-    static const QUMethod slot_0 = {"selection_changed", 1, param_slot_0 };
-    static const QUParameter param_slot_1[] = {
-	{ "item", &static_QUType_int, 0, QUParameter::In }
-    };
-    static const QUMethod slot_1 = {"selected", 1, param_slot_1 };
-    static const QUMethod slot_2 = {"run", 0, 0 };
-    static const QUMethod slot_3 = {"stop", 0, 0 };
-    static const QUMethod slot_4 = {"process_frame", 0, 0 };
-    static const QUMethod slot_5 = {"close_app", 0, 0 };
-    static const QUMethod slot_6 = {"languageChange", 0, 0 };
+    static const QUMethod slot_0 = {"run", 0, 0 };
+    static const QUMethod slot_1 = {"stop", 0, 0 };
+    static const QUMethod slot_2 = {"process_frame", 0, 0 };
+    static const QUMethod slot_3 = {"close_app", 0, 0 };
+    static const QUMethod slot_4 = {"configure_va_mod", 0, 0 };
+    static const QUMethod slot_5 = {"configure_pi_mod", 0, 0 };
+    static const QUMethod slot_6 = {"configure_pd_mod", 0, 0 };
+    static const QUMethod slot_7 = {"languageChange", 0, 0 };
     static const QMetaData slot_tbl[] = {
-	{ "selection_changed(QListBoxItem*)", &slot_0, QMetaData::Public },
-	{ "selected(int)", &slot_1, QMetaData::Public },
-	{ "run()", &slot_2, QMetaData::Public },
-	{ "stop()", &slot_3, QMetaData::Public },
-	{ "process_frame()", &slot_4, QMetaData::Public },
-	{ "close_app()", &slot_5, QMetaData::Public },
-	{ "languageChange()", &slot_6, QMetaData::Protected }
+	{ "run()", &slot_0, QMetaData::Public },
+	{ "stop()", &slot_1, QMetaData::Public },
+	{ "process_frame()", &slot_2, QMetaData::Public },
+	{ "close_app()", &slot_3, QMetaData::Public },
+	{ "configure_va_mod()", &slot_4, QMetaData::Public },
+	{ "configure_pi_mod()", &slot_5, QMetaData::Public },
+	{ "configure_pd_mod()", &slot_6, QMetaData::Public },
+	{ "languageChange()", &slot_7, QMetaData::Protected }
     };
     metaObj = QMetaObject::new_metaobject(
 	"MainForm", parentObject,
-	slot_tbl, 7,
+	slot_tbl, 8,
 	0, 0,
 #ifndef QT_NO_PROPERTIES
 	0, 0,
@@ -97,13 +93,14 @@ void* MainForm::qt_cast( const char* clname )
 bool MainForm::qt_invoke( int _id, QUObject* _o )
 {
     switch ( _id - staticMetaObject()->slotOffset() ) {
-    case 0: selection_changed((QListBoxItem*)static_QUType_ptr.get(_o+1)); break;
-    case 1: selected((int)static_QUType_int.get(_o+1)); break;
-    case 2: run(); break;
-    case 3: stop(); break;
-    case 4: process_frame(); break;
-    case 5: close_app(); break;
-    case 6: languageChange(); break;
+    case 0: run(); break;
+    case 1: stop(); break;
+    case 2: process_frame(); break;
+    case 3: close_app(); break;
+    case 4: configure_va_mod(); break;
+    case 5: configure_pi_mod(); break;
+    case 6: configure_pd_mod(); break;
+    case 7: languageChange(); break;
     default:
 	return QDialog::qt_invoke( _id, _o );
     }

@@ -9,11 +9,11 @@
 //////////////////////////////////////////////////////////////////////////
 
 /// klasa bazowa dla modulow tworzenia binarnego obrazu prawdopodobieñstwa
-class __declspec(dllexport) cPosdetectBase: public moduleBase
+class __declspec(dllexport) pdBase: public moduleBase
 {
 public:
-	cPosdetectBase() {}
-	virtual ~cPosdetectBase() {}
+	pdBase() {}
+	virtual ~pdBase() {}
 
 	virtual Tpos * calc_position( float * piTable , int * status ) = 0;
 

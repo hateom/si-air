@@ -4,6 +4,8 @@
 #include <qvariant.h>
 #include <qdialog.h>
 
+class QTextEdit;
+
 #include "../../modules/module_base/src/module_base.h"
 
 class QGroupBox;
@@ -17,8 +19,10 @@ public:
 	~OptForm();
 
 	QGroupBox * groupBox;
+	QTextEdit ** edit;
 
 protected slots:
+	virtual void save_conf();
 	virtual void languageChange();
 
 private:

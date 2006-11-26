@@ -36,11 +36,11 @@ class QCheckBox;
 
 struct processing_data
 {
-	vaBase			* va_base;
-	piBase			* pi_base;
-	cPosdetectBase	* pd_base;
-	PrevForm		* prevForm1;
-	PrevForm		* prevForm2;
+	vaBase		* va_base;
+	piBase		* pi_base;
+	pdBase		* pd_base;
+	PrevForm	* prevForm1;
+	PrevForm	* prevForm2;
 };
 
 class MainForm : public QDialog
@@ -51,7 +51,6 @@ public:
     MainForm( QWidget* parent = 0, const char* name = 0, bool modal = FALSE, WFlags fl = 0 );
     ~MainForm();
 
-    QGroupBox * groupBox1;	// module list
 	QGroupBox * groupBoxVI;	// module path
 	QGroupBox * groupBoxPI;	// module path
 	QGroupBox * groupBoxPD;  // position detection
@@ -64,20 +63,23 @@ public:
 	QCheckBox * checkPI;
 	QCheckBox * checkPD;
 
-    QTextEdit   * textModule;
-    QListBox    * listModule;
+	QPushButton * buttonVIcfg;
+	QPushButton * buttonPIcfg;
+	QPushButton * buttonPDcfg;
+
     QPushButton * buttonOk;
 	QPushButton * buttonRun;
 
     virtual void loadModules( const char * directory );
 
 public slots:
-	virtual void selection_changed( QListBoxItem * );
-	virtual void selected( int item );
 	virtual void run();
 	virtual void stop();
 	virtual void process_frame();
 	virtual void close_app();
+	virtual void configure_va_mod();
+	virtual void configure_pi_mod();
+	virtual void configure_pd_mod();
 
 protected slots:
     virtual void languageChange();
@@ -86,9 +88,9 @@ private:
 	mpdllMgr mgr;
 	processing_data p_data;
 
-	std::vector<mp_dll_module*>	va_list;
-	std::vector<mp_dll_module*>	pi_list;
-	std::vector<mp_dll_module*>	pd_list;
+	std::vector<vaBase*>	va_list;
+	std::vector<piBase*>	pi_list;
+	std::vector<pdBase*>	pd_list;
 
 	void release_proc_data( processing_data * data );
 

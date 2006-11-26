@@ -2,7 +2,7 @@
 #define __POSDETECT_H__
 //////////////////////////////////////////////////////////////////////////
 
-#include "../../posdetect_base/src/posdetect_base.h"
+#include "../../posdetect_base/src/pd_base.h"
 #include "../../module_base/src/types.h"
 
 //////////////////////////////////////////////////////////////////////////
@@ -11,7 +11,7 @@
 
 //////////////////////////////////////////////////////////////////////////
 
-class __declspec(dllexport) cPosdetect: public cPosdetectBase
+class __declspec(dllexport) cPosdetect: public pdBase
 {
 public:
 	cPosdetect();

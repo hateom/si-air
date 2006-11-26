@@ -20,6 +20,7 @@
 #include <qwhatsthis.h>
 #include <qtimer.h>
 #include <qfiledialog.h>
+#include <qcheckbox.h>
 
 #include "optform.h"
 #include "prevform.h"
@@ -59,17 +60,29 @@ MainForm::MainForm( QWidget* parent, const char* name, bool modal, WFlags fl )
 	comboVI = new QComboBox( groupBoxVI, "comboVI" );
 	comboVI->setGeometry( QRect( 10, 20, 175, 25 ) );
 
+	checkVI = new QCheckBox( groupBoxVI, "checkVI" );
+	checkVI->setGeometry( QRect( 10, 50, 175, 25 ) );
+	checkVI->setChecked( true );
+
 	groupBoxPI = new QGroupBox( this, "groupBoxPI" );
 	groupBoxPI->setGeometry( QRect( 215, 310, 195, 90 ) );
 
 	comboPI = new QComboBox( groupBoxPI, "comboPI" );
 	comboPI->setGeometry( QRect( 10, 20, 175, 25 ) );
 
+	checkPI = new QCheckBox( groupBoxPI, "checkPI" );
+	checkPI->setGeometry( QRect( 10, 50, 175, 25 ) );
+	checkPI->setChecked( true );
+
 	groupBoxPD = new QGroupBox( this, "groupBoxPD" );
 	groupBoxPD->setGeometry( QRect( 420, 310, 195, 90 ) );
 
 	comboPD = new QComboBox( groupBoxPD, "comboPD" );
 	comboPD->setGeometry( QRect( 10, 20, 175, 25 ) );
+
+	checkPD = new QCheckBox( groupBoxPD, "checkPD" );
+	checkPD->setGeometry( QRect( 10, 50, 175, 25 ) );
+	checkPD->setChecked( false );
 
 	memset( &p_data, 0, sizeof(processing_data) );
 
@@ -111,6 +124,10 @@ void MainForm::languageChange()
 	groupBoxPD->setTitle( tr( "Gestures and Position" ) );
     buttonOk->setText( tr( "OK" ) );
 	buttonRun->setText( tr( "Run!" ) );
+
+	checkVI->setText( tr("Preview") );
+	checkPI->setText( tr("Preview") );
+	checkPD->setText( tr("Preview") );
 }
 
 void MainForm::selection_changed( QListBoxItem * item )
@@ -226,8 +243,8 @@ void MainForm::process_frame()
 		printf( "not good :(\n" );
 	}
 
-	p_data.prevForm1->render_frame( frame );
-	p_data.prevForm2->render_frame( ps->frame );
+	if( p_data.prevForm1 ) p_data.prevForm1->render_frame( frame );
+	if( p_data.prevForm2 ) p_data.prevForm2->render_frame( ps->frame );
 }
 
 void MainForm::run()
@@ -254,18 +271,33 @@ void MainForm::run()
 
 	p_data.va_base->init( 0, (char *)s.ascii() );
 
-	p_data.prevForm1 = new PrevForm();
-	p_data.prevForm1->show();
-	p_data.prevForm2 = new PrevForm();
-	p_data.prevForm2->show();
+	if( checkVI->isChecked() )
+	{
+		p_data.prevForm1 = new PrevForm();
+		p_data.prevForm1->show();
+		p_data.prevForm1->move( QPoint( 100, 100 ) );
+	}
 
-	p_data.prevForm1->move( QPoint( 100, 100 ) );
-	p_data.prevForm2->move( QPoint( 500, 100 ) );
+	if( checkPI->isChecked() )
+	{
+		p_data.prevForm2 = new PrevForm();
+		p_data.prevForm2->show();
+		p_data.prevForm2->move( QPoint( 500, 100 ) );
+	}
 
 	timer = new QTimer( this );
 	connect( timer, SIGNAL(timeout()), this, SLOT(process_frame()));
 
 	timer->start( 4 );
+
+	connect( buttonRun, SIGNAL(clicked()), this, SLOT(stop()) );
+	disconnect( buttonRun, SIGNAL(clicked()), this, SLOT(run()) );
+	buttonRun->setText( "Stop!" );
+}
+
+void MainForm::stop()
+{
+	release_proc_data( &p_data );
 }
 
 void MainForm::release_proc_data( processing_data * data )
@@ -313,5 +345,9 @@ void MainForm::release_proc_data( processing_data * data )
 		delete data->prevForm2;
 		data->prevForm2 = NULL;
 	}
+
+	connect( buttonRun, SIGNAL(clicked()), this, SLOT(run()) );
+	disconnect( buttonRun, SIGNAL(clicked()), this, SLOT(stop()) );
+	buttonRun->setText( "Run!" );
 }
 

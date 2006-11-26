@@ -24,6 +24,7 @@ class QListBoxItem;
 class QPushButton;
 class QComboBox;
 class QTimer;
+class QCheckBox;
 
 #include "mp_dllmgr.h"
 
@@ -59,6 +60,10 @@ public:
 	QComboBox * comboPI;
 	QComboBox * comboPD;
 
+	QCheckBox * checkVI;
+	QCheckBox * checkPI;
+	QCheckBox * checkPD;
+
     QTextEdit   * textModule;
     QListBox    * listModule;
     QPushButton * buttonOk;
@@ -70,6 +75,7 @@ public slots:
 	virtual void selection_changed( QListBoxItem * );
 	virtual void selected( int item );
 	virtual void run();
+	virtual void stop();
 	virtual void process_frame();
 	virtual void close_app();
 

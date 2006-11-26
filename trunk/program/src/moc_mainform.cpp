@@ -1,7 +1,7 @@
 /****************************************************************************
 ** MainForm meta object code from reading C++ file 'mainform.h'
 **
-** Created: N 26. lis 22:49:04 2006
+** Created: N 26. lis 23:11:54 2006
 **      by: The Qt MOC ($Id: moc_yacc.cpp,v 1.1.1.13 2006/05/05 17:43:42 chehrlic Exp $)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -61,20 +61,22 @@ QMetaObject* MainForm::staticMetaObject()
     };
     static const QUMethod slot_1 = {"selected", 1, param_slot_1 };
     static const QUMethod slot_2 = {"run", 0, 0 };
-    static const QUMethod slot_3 = {"process_frame", 0, 0 };
-    static const QUMethod slot_4 = {"close_app", 0, 0 };
-    static const QUMethod slot_5 = {"languageChange", 0, 0 };
+    static const QUMethod slot_3 = {"stop", 0, 0 };
+    static const QUMethod slot_4 = {"process_frame", 0, 0 };
+    static const QUMethod slot_5 = {"close_app", 0, 0 };
+    static const QUMethod slot_6 = {"languageChange", 0, 0 };
     static const QMetaData slot_tbl[] = {
 	{ "selection_changed(QListBoxItem*)", &slot_0, QMetaData::Public },
 	{ "selected(int)", &slot_1, QMetaData::Public },
 	{ "run()", &slot_2, QMetaData::Public },
-	{ "process_frame()", &slot_3, QMetaData::Public },
-	{ "close_app()", &slot_4, QMetaData::Public },
-	{ "languageChange()", &slot_5, QMetaData::Protected }
+	{ "stop()", &slot_3, QMetaData::Public },
+	{ "process_frame()", &slot_4, QMetaData::Public },
+	{ "close_app()", &slot_5, QMetaData::Public },
+	{ "languageChange()", &slot_6, QMetaData::Protected }
     };
     metaObj = QMetaObject::new_metaobject(
 	"MainForm", parentObject,
-	slot_tbl, 6,
+	slot_tbl, 7,
 	0, 0,
 #ifndef QT_NO_PROPERTIES
 	0, 0,
@@ -98,9 +100,10 @@ bool MainForm::qt_invoke( int _id, QUObject* _o )
     case 0: selection_changed((QListBoxItem*)static_QUType_ptr.get(_o+1)); break;
     case 1: selected((int)static_QUType_int.get(_o+1)); break;
     case 2: run(); break;
-    case 3: process_frame(); break;
-    case 4: close_app(); break;
-    case 5: languageChange(); break;
+    case 3: stop(); break;
+    case 4: process_frame(); break;
+    case 5: close_app(); break;
+    case 6: languageChange(); break;
     default:
 	return QDialog::qt_invoke( _id, _o );
     }

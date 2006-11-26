@@ -29,7 +29,7 @@ public:
 
 protected:
 //	int cam_count;
-//	CvCapture * capture;
+	CvCapture * capture;
 	int alloc_mem;
 
 	int		param1;

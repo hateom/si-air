@@ -14,7 +14,7 @@
 
 //////////////////////////////////////////////////////////////////////////
 
-vaOpenCV::vaOpenCV() : /*capture(NULL),*/ alloc_mem(0)/*, cam_count(0)*/
+vaOpenCV::vaOpenCV() : capture(NULL), alloc_mem(0)/*, cam_count(0)*/
 {
 	REG_PARAM( PT_INT,   param1, "1. parametr testowy", 13 );
 	REG_PARAM( PT_FLOAT, param2, "2. parametr testowy", 3.1415f );
@@ -44,18 +44,19 @@ int vaOpenCV::get_module_type()
 }
 
 //////////////////////////////////////////////////////////////////////////
-
+/*
 static IplImage * current_frame;
 
 static void cvcam_callback( IplImage * image )
 {
 	current_frame = image;
 }
-
+*/
 //////////////////////////////////////////////////////////////////////////
 
 int vaOpenCV::init( int device, char * filename )
 {
+	/*
 	/// load AVI from file
 	if( filename != NULL )
 	{
@@ -77,11 +78,21 @@ int vaOpenCV::init( int device, char * filename )
 		cvcamInit();
 		cvcamStart();
 	}
+*/
 
-
-//	if( capture != NULL ) free();
-//	capture = ( filename != NULL ) ? cvCaptureFromFile( filename ) : cvCaptureFromCAM( device );
-//	if( !capture ) return -1;
+	if( capture != NULL ) free();
+	if( filename != NULL )
+	{
+		capture = cvCaptureFromFile( filename );
+		printf( "Capturing from file <%s> [%s]\n", filename, capture!=NULL?"OK":"!!!" );
+	}
+	else
+	{
+		capture = cvCaptureFromCAM( device );
+		printf( "Capturing from device <%d> [%s]\n", device, capture!=NULL?"OK":"!!!" );
+	}
+	
+	if( !capture ) return -1;
 
 	return( 0 );
 }
@@ -90,7 +101,6 @@ int vaOpenCV::init( int device, char * filename )
 
 frame_data * vaOpenCV::process_frame( int * result )
 {
-	/*
 	if( !capture ) 
 	{
 		*result = -1;
@@ -104,8 +114,8 @@ frame_data * vaOpenCV::process_frame( int * result )
 		*result = -2;
 		return( NULL );
 	}
-*/
 
+/*
 	if( !current_frame )
 	{
 		*result = -1;
@@ -113,6 +123,8 @@ frame_data * vaOpenCV::process_frame( int * result )
 	}
 
 	IplImage * frame = current_frame;
+*/
+	printf( "processing frame... <%d> <%d> ", frame->width, frame->height );
 
 	static frame_data static_frame;
 
@@ -130,18 +142,21 @@ frame_data * vaOpenCV::process_frame( int * result )
 		if( alloc_mem != frame->depth*frame->height*frame->width )
 		{
 			delete [] static_frame.bits;
-			alloc_mem = frame->depth*frame->height*frame->width;
+			alloc_mem = static_frame.depth*static_frame.height*static_frame.width;
 			static_frame.bits = new unsigned char[alloc_mem];
 		}
 	}
 
 	memcpy( static_frame.bits, frame->imageData, alloc_mem );
+
 /*	for( int i=0; i<alloc_mem; ++i ) 
 	{
 		static_frame.bits[i] = frame->imageData[i];
 	}	
 */
 	*result = 0;
+
+	printf( "done <%d>\n", *result );
 
 	return( &static_frame );
 }
@@ -150,15 +165,16 @@ frame_data * vaOpenCV::process_frame( int * result )
 
 void vaOpenCV::free()
 {
+/*
 	cvcamStop();
 	cvcamExit();
+*/
 
-	/*
 	if( capture != NULL )
 	{
 		cvReleaseCapture( &capture );
 		capture = NULL;
-	}*/
+	}
 }
 
 //////////////////////////////////////////////////////////////////////////

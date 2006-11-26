@@ -21,6 +21,7 @@
 
 #include "optform.h"
 #include "prevform.h"
+#include "mp_path.h"
 
 /*
  *  Constructs a MainForm as a child of 'parent', with the
@@ -135,21 +136,15 @@ void MainForm::selected( int item )
 			{
 				PrevForm * prev = new PrevForm;
 				prev->show();
+				base->init( 0, GETPATH("video.avi") );
 
-				for( int i=0; i<base->param_count(); ++i )
-				{
-					mb_param * p = base->get_param( i );
-					if( strcmp( p->name, "hwnd" ) == 0 )
-					{
-						long * ptr = (long*)(p->data);
-						*ptr = (long)(prev->get_handle());
-					}
-				}
-				base->init( 0, "something" );
+				prev->set_video_module( base );
 			}
-
-			OptForm * opt_form = new OptForm( 0, 0, TRUE, 0, base );
-			opt_form->show();
+			else
+			{
+				OptForm * opt_form = new OptForm( 0, 0, TRUE, 0, base );
+				opt_form->show();
+			}
 		}
 	}
 }

@@ -6,6 +6,8 @@
 
 #include <windows.h>
 
+#include "../../modules/video_acq_base/src/va_base.h"
+
 /// preview form
 class PrevForm : public QDialog
 {
@@ -16,9 +18,14 @@ public:
 	~PrevForm();
 
 	HWND get_handle() { return( this->QWidget::winId() ); }
+	void set_video_module( vaBase * base );
 
 protected slots:
 	virtual void languageChange();
+	virtual void anim();
+
+private:
+	vaBase * base;
 };
 
 #endif // __PREV_FORM_H__

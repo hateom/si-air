@@ -1,7 +1,7 @@
 /****************************************************************************
 ** PrevForm meta object code from reading C++ file 'prevform.h'
 **
-** Created: Pt 24. lis 21:58:24 2006
+** Created: N 26. lis 17:49:51 2006
 **      by: The Qt MOC ($Id: moc_yacc.cpp,v 1.1.1.13 2006/05/05 17:43:42 chehrlic Exp $)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -53,12 +53,14 @@ QMetaObject* PrevForm::staticMetaObject()
 	return metaObj;
     QMetaObject* parentObject = QDialog::staticMetaObject();
     static const QUMethod slot_0 = {"languageChange", 0, 0 };
+    static const QUMethod slot_1 = {"anim", 0, 0 };
     static const QMetaData slot_tbl[] = {
-	{ "languageChange()", &slot_0, QMetaData::Protected }
+	{ "languageChange()", &slot_0, QMetaData::Protected },
+	{ "anim()", &slot_1, QMetaData::Protected }
     };
     metaObj = QMetaObject::new_metaobject(
 	"PrevForm", parentObject,
-	slot_tbl, 1,
+	slot_tbl, 2,
 	0, 0,
 #ifndef QT_NO_PROPERTIES
 	0, 0,
@@ -80,6 +82,7 @@ bool PrevForm::qt_invoke( int _id, QUObject* _o )
 {
     switch ( _id - staticMetaObject()->slotOffset() ) {
     case 0: languageChange(); break;
+    case 1: anim(); break;
     default:
 	return QDialog::qt_invoke( _id, _o );
     }

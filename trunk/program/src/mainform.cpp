@@ -19,6 +19,7 @@
 #include <qtooltip.h>
 #include <qwhatsthis.h>
 #include <qtimer.h>
+#include <qfiledialog.h>
 
 #include "optform.h"
 #include "prevform.h"
@@ -235,7 +236,17 @@ void MainForm::run()
 	p_data.pi_base = mgr.load_pi_module( pi_list[va_item] );
 	p_data.pd_base = NULL;
 
-	p_data.va_base->init( 0, GETPATH("video.avi"));
+	QFileDialog* fd = new QFileDialog( this, "file dialog", TRUE );
+	fd->setMode( QFileDialog::AnyFile );
+
+	QString s = QFileDialog::getOpenFileName(
+		NULL,
+		"Videos (*.avi *.mpg *.mpeg)",
+		this,
+		"open file dialog"
+		"Choose a file" );
+
+	p_data.va_base->init( 0, (char *)s.ascii() );
 
 	p_data.prevForm1 = new PrevForm();
 	p_data.prevForm1->show();

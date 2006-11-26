@@ -26,6 +26,7 @@ protected slots:
 
 private:
 	vaBase * base;
+	QTimer * timer;
 };
 
 #endif // __PREV_FORM_H__

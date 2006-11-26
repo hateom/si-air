@@ -124,11 +124,9 @@ frame_data * vaOpenCV::process_frame( int * result )
 
 	IplImage * frame = current_frame;
 */
-	printf( "processing frame... <%d> <%d> ", frame->width, frame->height );
-
 	static frame_data static_frame;
 
-	static_frame.depth = (3*frame->depth)/8;
+	static_frame.depth = 4; //(3*frame->depth)/8;
 	static_frame.width = frame->width;
 	static_frame.height = frame->height;
 
@@ -147,16 +145,26 @@ frame_data * vaOpenCV::process_frame( int * result )
 		}
 	}
 
-	memcpy( static_frame.bits, frame->imageData, alloc_mem );
+//	memcpy( static_frame.bits, frame->imageData, alloc_mem );
 
 /*	for( int i=0; i<alloc_mem; ++i ) 
 	{
 		static_frame.bits[i] = frame->imageData[i];
 	}	
 */
-	*result = 0;
 
-	printf( "done <%d>\n", *result );
+	for( int x=0; x<(int)static_frame.width; ++x )
+	{
+		for( int y=0; y<(int)static_frame.height; ++y )
+		{
+			static_frame.bits[(x+y*static_frame.width)*4+0] = frame->imageData[(x+y*static_frame.width)*3+0];
+			static_frame.bits[(x+y*static_frame.width)*4+1] = frame->imageData[(x+y*static_frame.width)*3+1];
+			static_frame.bits[(x+y*static_frame.width)*4+2] = frame->imageData[(x+y*static_frame.width)*3+2];
+			static_frame.bits[(x+y*static_frame.width)*4+3] = 0;
+		}
+	}
+
+	*result = 0;
 
 	return( &static_frame );
 }

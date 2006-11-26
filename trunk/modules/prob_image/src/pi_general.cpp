@@ -61,7 +61,7 @@ pi_struct * piGeneral::process_frame( frame_data * inFrame, int * status )
 //	pi_struct * pImage;
 	//frame_data * temp_frame;
 	
-	if(!inFrame)
+	if( !inFrame )
 	{
 		return NULL;
 	}
@@ -105,11 +105,11 @@ pi_struct * piGeneral::process_frame( frame_data * inFrame, int * status )
 	}
 	else
 	{
-		if( alloc_mem != depth*height*width )
+		if( alloc_mem != static_frame.depth*static_frame.height*static_frame.width )
 		{
 			delete [] static_frame.bits;
 			delete [] piTable;
-			alloc_mem = depth*height*width;
+			alloc_mem = static_frame.depth*static_frame.height*static_frame.width;
 			static_frame.bits = new unsigned char[alloc_mem];
 			/*														<-- j/w
 			if (!(piTable = new float[height*width])) 
@@ -141,19 +141,19 @@ pi_struct * piGeneral::process_frame( frame_data * inFrame, int * status )
 
 			piTable[x+y*width] = 0.0;
 		
-			if((H >= Hmin) && (H < Hmax) && (V >= Vmin) && (V < Vmax) && (Smin < S))
+			if( ( H >= Hmin ) && ( H < Hmax ) && ( V >= Vmin ) && ( V < Vmax ) && ( Smin < S ) )
 			{
 				piTable[x+y*width] = 1.0;
 			}
 
-			if( 1 )
+			if( 0 )
 			{
-				float chVal = piTable[i]*255.0f;
+				float chVal = piTable[x+y*width]*255.0f;
 				chVal = (chVal > 255.0f) ? 255.0f : chVal;
 				static_frame.bits[(x+y*width)*4+0] = (unsigned char)chVal;
 				static_frame.bits[(x+y*width)*4+1] = (unsigned char)chVal;
 				static_frame.bits[(x+y*width)*4+2] = (unsigned char)chVal;
-				static_frame.bits[(x+y*width)*4+3] = 0;
+				//static_frame.bits[(x+y*width)*4+3] = 0;
 			}
 		}
 	}
@@ -191,22 +191,35 @@ void piGeneral::RGBtoHSV(int& r, int& g, int& b, float& h, float& s, float& v)
 	delta = max_v - min_v;
 
 	if( max_v != 0 )
+	{
 		s = delta / max_v;		// s
-	else {
+	}
+	else 
+	{
 		// r = g = b = 0		// s = 0, v is undefined
 		s = 0;
 		h = -1;
 		return;
 	}
 	if( r == max_v )
+	{
 		h = ( (float)g - (float)b ) / delta;		// between yellow & magenta
+	}
 	else if( g == max_v )
+	{
 		h = 2.0 + ( (float)b - (float)r ) / delta;	// between cyan & yellow
+	}
 	else
+	{
 		h = 4.0 + ( (float)r - (float)g ) / delta;	// between magenta & cyan
+	}
+
 	h *= 60.0;				// degrees
+
 	if( h < 0.0 )
+	{
 		h += 360.0;
+	}
 }
 
 //////////////////////////////////////////////////////////////////////////

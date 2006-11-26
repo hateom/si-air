@@ -29,6 +29,8 @@ void PrevForm::render_frame( frame_data * frame )
 	resize( QSize( frame->width, frame->height ).expandedTo(minimumSizeHint()) );
 	QImage img( (uchar*)frame->bits, frame->width, frame->height, 32, NULL, 256, QImage::LittleEndian );
 	QPainter painter( this );
+	painter.setWindow( 0, 0, frame->width, frame->height );
+	painter.setBackgroundColor( QColor( 0, 0, 0) );
 	painter.drawImage( QPoint(0, 0), img );
 }
 

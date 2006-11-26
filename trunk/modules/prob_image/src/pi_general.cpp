@@ -66,7 +66,7 @@ pi_struct * piGeneral::process_frame( frame_data * inFrame, int * status )
 		return NULL;
 	}
 
-	unsigned int height=inFrame->height, width=inFrame->height, depth = inFrame->depth;
+	unsigned int height=inFrame->height, width=inFrame->width, depth = inFrame->depth;
 //	if (!(pImage = new pi_struct())) return NULL;
 
 //	if (!(temp_piTable = new float[height*width])) return NULL;
@@ -139,7 +139,7 @@ pi_struct * piGeneral::process_frame( frame_data * inFrame, int * status )
 
 			piTable[x+y*width] = 0.0;
 		
-			if( ( H >= Hmin ) && ( H < Hmax ) && ( V >= Vmin ) && ( V < Vmax ) && ( Smin < S ) )
+			if( ( H >= Hmin ) && ( H < Hmax ) && ( V >= Vmin ) && ( V < Vmax ) /*&& ( Smin < S )*/ )
 			{
 				piTable[x+y*width] = 1.0;
 			}
@@ -152,7 +152,6 @@ pi_struct * piGeneral::process_frame( frame_data * inFrame, int * status )
 				static_frame.bits[(x+y*width)*4+0] = (unsigned char)chVal;
 				static_frame.bits[(x+y*width)*4+1] = (unsigned char)chVal;
 				static_frame.bits[(x+y*width)*4+2] = (unsigned char)chVal;
-				
 				static_frame.bits[(x+y*width)*4+3] = 0;
 			}
 		}

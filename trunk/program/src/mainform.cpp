@@ -33,7 +33,7 @@
  *  TRUE to construct a modal dialog.
  */
 MainForm::MainForm( QWidget* parent, const char* name, bool modal, WFlags fl )
-    : QDialog( parent, name, modal, fl )
+    : QDialog( parent, name, modal, fl ), timer(NULL)
 {
     if ( !name )
 	setName( "MainForm" );
@@ -71,15 +71,23 @@ MainForm::MainForm( QWidget* parent, const char* name, bool modal, WFlags fl )
 	comboPD = new QComboBox( groupBoxPD, "comboPD" );
 	comboPD->setGeometry( QRect( 10, 20, 175, 25 ) );
 
+	memset( &p_data, 0, sizeof(processing_data) );
+
 	connect( listModule, SIGNAL(selectionChanged(QListBoxItem*)), this, SLOT(selection_changed(QListBoxItem*)) );	
 	connect( listModule, SIGNAL(selected(int)), this, SLOT(selected(int)) );	
 
-	connect( buttonOk, SIGNAL(clicked()), this, SLOT(close()) );
+	connect( buttonOk, SIGNAL(clicked()), this, SLOT(close_app()) );
 	connect( buttonRun, SIGNAL(clicked()), this, SLOT(run()) );
 
     languageChange();
     resize( QSize(630, 410).expandedTo(minimumSizeHint()) );
     clearWState( WState_Polished );
+}
+
+void MainForm::close_app()
+{
+	release_proc_data( &p_data );
+	close();
 }
 
 /*
@@ -201,9 +209,7 @@ void MainForm::process_frame()
 	frame = p_data.va_base->process_frame( &result );
 	if( result < 0 )
 	{
-		timer->stop();
-		delete timer;
-		timer = NULL;
+		release_proc_data( &p_data );
 		return;
 	}
 
@@ -260,5 +266,52 @@ void MainForm::run()
 	connect( timer, SIGNAL(timeout()), this, SLOT(process_frame()));
 
 	timer->start( 4 );
+}
+
+void MainForm::release_proc_data( processing_data * data )
+{
+	if( !data ) return;
+
+	if( timer )
+	{
+		timer->stop();
+		delete timer;
+		timer = NULL;
+	}
+
+	if( data->va_base )
+	{
+		data->va_base->free();
+//		delete data->va_base;
+		data->va_base = NULL;
+	}
+
+	if( data->pi_base )
+	{
+		data->pi_base->free();
+//		delete data->pi_base;
+		data->pi_base = NULL;
+	}
+
+	if( data->pd_base )
+	{
+		data->pd_base->free();
+//		delete data->pd_base;
+		data->pd_base = NULL;
+	}
+
+	if( data->prevForm1 )
+	{
+		data->prevForm1->close();
+		delete data->prevForm1;
+		data->prevForm1 = NULL;
+	}
+
+	if( data->prevForm2 )
+	{
+		data->prevForm2->close();
+		delete data->prevForm2;
+		data->prevForm2 = NULL;
+	}
 }
 

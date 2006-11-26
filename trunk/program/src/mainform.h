@@ -71,6 +71,7 @@ public slots:
 	virtual void selected( int item );
 	virtual void run();
 	virtual void process_frame();
+	virtual void close_app();
 
 protected slots:
     virtual void languageChange();
@@ -82,6 +83,8 @@ private:
 	std::vector<mp_dll_module*>	va_list;
 	std::vector<mp_dll_module*>	pi_list;
 	std::vector<mp_dll_module*>	pd_list;
+
+	void release_proc_data( processing_data * data );
 
 	QTimer * timer;
 

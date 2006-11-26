@@ -213,26 +213,14 @@ void MainForm::process_frame()
 	try 
 	{
 		ps = p_data.pi_base->process_frame( frame, &result );
-
-		printf( "??? " );
-/*
-		for( int x=0; x<frame->width; ++x )
-		{
-			for( int y=0; y<frame->height; ++y )
-			{
-				frame->bits[(x+y*frame->width)*4+0] = (uchar)(ps->prob_table[x+y*frame->width]*256.0f);
-				frame->bits[(x+y*frame->width)*4+1] = (uchar)(ps->prob_table[x+y*frame->width]*256.0f);
-				frame->bits[(x+y*frame->width)*4+2] = (uchar)(ps->prob_table[x+y*frame->width]*256.0f);
-			}
-		}
-*/
 	}
 	catch( ... )
 	{
 		printf( "not good :(\n" );
 	}
 
-	p_data.prevForm->render_frame( frame );
+	//p_data.prevForm->render_frame( frame );
+	p_data.prevForm->render_frame( ps->frame );
 }
 
 void MainForm::run()
@@ -255,6 +243,6 @@ void MainForm::run()
 	timer = new QTimer( this );
 	connect( timer, SIGNAL(timeout()), this, SLOT(process_frame()));
 
-	timer->start( 10 );
+	timer->start( 100 );
 }
 

@@ -78,11 +78,9 @@ pi_struct * piGeneral::process_frame( frame_data * inFrame, int * status )
 	temp_frame->width = inFrame->width;
 */
 
-	static frame_data static_frame;
-	static pi_struct pImage;
+	static frame_data static_frame = { 0, 0, 0, 0 };
+	static pi_struct pImage = { 0, 0 };
 	static float * piTable = NULL;
-
-	static_frame.bits = NULL;
 
 	static_frame.depth = 4;
 	static_frame.width = inFrame->width;
@@ -146,14 +144,16 @@ pi_struct * piGeneral::process_frame( frame_data * inFrame, int * status )
 				piTable[x+y*width] = 1.0;
 			}
 
-			if( 0 )
+			if( 1 )
 			{
 				float chVal = piTable[x+y*width]*255.0f;
 				chVal = (chVal > 255.0f) ? 255.0f : chVal;
+				
 				static_frame.bits[(x+y*width)*4+0] = (unsigned char)chVal;
 				static_frame.bits[(x+y*width)*4+1] = (unsigned char)chVal;
 				static_frame.bits[(x+y*width)*4+2] = (unsigned char)chVal;
-				//static_frame.bits[(x+y*width)*4+3] = 0;
+				
+				static_frame.bits[(x+y*width)*4+3] = 0;
 			}
 		}
 	}

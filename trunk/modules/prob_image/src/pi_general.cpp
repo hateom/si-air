@@ -13,17 +13,17 @@
 #pragma comment(lib,"ml")
 #pragma comment(lib,"highgui")
 
-#pragma warning ( disable: 4244 )	// convertion float->int (RGBtoHSV)
+//#pragma warning ( disable: 4244 )	// convertion float->int (RGBtoHSV)
 
 //////////////////////////////////////////////////////////////////////////
 
 piGeneral::piGeneral() : alloc_mem(0)
 {
-	REG_PARAM( PT_INT, Hmax, "1. Wart. maxymalna H", 20 );
-	REG_PARAM( PT_INT, Hmin, "2. Wart. minimalna H", 30 );
-	REG_PARAM( PT_INT, Vmax, "3. Wart. maxymalna V", 10 );
+	REG_PARAM( PT_INT, Hmax, "1. Wart. maxymalna H", 35 );
+	REG_PARAM( PT_INT, Hmin, "2. Wart. minimalna H", 10 );
+	REG_PARAM( PT_INT, Vmax, "3. Wart. maxymalna V", 255 );
 	REG_PARAM( PT_INT, Vmin, "4. Wart. minimalna V", 20 );
-	REG_PARAM( PT_INT, Smin, "5. Wart. minimalna H", 15 );
+	REG_PARAM( PT_INT, Smin, "5. Wart. minimalna S", 30 );
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -179,13 +179,13 @@ void piGeneral::free()
 void piGeneral::RGBtoHSV(int& r, int& g, int& b, float& h, float& s, float& v)
 {
 	float min_v, max_v, delta;
-	min_v = r;
-	min_v = min_v<g?min_v:g;
-	min_v = min_v<b?min_v:b;
+	min_v = (float)r;
+	min_v = min_v < (float)g ? min_v : (float)g;
+	min_v = min_v < (float)b ? min_v : (float)b;
 
-	max_v = r;
-	max_v = max_v>g?max_v:g;
-	max_v = max_v>b?max_v:b;
+	max_v = (float)r;
+	max_v = max_v > (float)g ? max_v : (float)g;
+	max_v = max_v > (float)b ? max_v : (float)b;
 	v = max_v;                              // v
 
 	delta = max_v - min_v;
@@ -207,18 +207,18 @@ void piGeneral::RGBtoHSV(int& r, int& g, int& b, float& h, float& s, float& v)
 	}
 	else if( g == max_v )
 	{
-		h = 2.0 + ( (float)b - (float)r ) / delta;	// between cyan & yellow
+		h = 2.0f + ( (float)b - (float)r ) / delta;	// between cyan & yellow
 	}
 	else
 	{
-		h = 4.0 + ( (float)r - (float)g ) / delta;	// between magenta & cyan
+		h = 4.0f + ( (float)r - (float)g ) / delta;	// between magenta & cyan
 	}
 
-	h *= 60.0;				// degrees
+	h *= 60.0f;				// degrees
 
-	if( h < 0.0 )
+	if( h < 0.0f )
 	{
-		h += 360.0;
+		h += 360.0f;
 	}
 }
 

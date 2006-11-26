@@ -38,7 +38,8 @@ struct processing_data
 	vaBase			* va_base;
 	piBase			* pi_base;
 	cPosdetectBase	* pd_base;
-	PrevForm		* prevForm;
+	PrevForm		* prevForm1;
+	PrevForm		* prevForm2;
 };
 
 class MainForm : public QDialog

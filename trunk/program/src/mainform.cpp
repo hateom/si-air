@@ -219,8 +219,8 @@ void MainForm::process_frame()
 		printf( "not good :(\n" );
 	}
 
-	//p_data.prevForm->render_frame( frame );
-	p_data.prevForm->render_frame( ps->frame );
+	p_data.prevForm1->render_frame( frame );
+	p_data.prevForm2->render_frame( ps->frame );
 }
 
 void MainForm::run()
@@ -237,8 +237,13 @@ void MainForm::run()
 
 	p_data.va_base->init( 0, GETPATH("video.avi"));
 
-	p_data.prevForm = new PrevForm();
-	p_data.prevForm->show();
+	p_data.prevForm1 = new PrevForm();
+	p_data.prevForm1->show();
+	p_data.prevForm2 = new PrevForm();
+	p_data.prevForm2->show();
+
+	p_data.prevForm1->move( QPoint( 100, 100 ) );
+	p_data.prevForm2->move( QPoint( 500, 100 ) );
 
 	timer = new QTimer( this );
 	connect( timer, SIGNAL(timeout()), this, SLOT(process_frame()));

@@ -5,6 +5,8 @@
 #include <highgui.h>
 #include <cvcam.h>
 
+#include "../../module_base/src/types.h"
+
 #pragma comment(lib,"cv.lib")
 #pragma comment(lib,"cvcam.lib")
 #pragma comment(lib,"cxcore.lib")
@@ -92,9 +94,12 @@ int vaOpenCV::init( int device, char * filename )
 		printf( "Capturing from device <%d> [%s]\n", device, capture!=NULL?"OK":"!!!" );
 	}
 	
-	if( !capture ) return -1;
+	if( !capture )
+	{
+		return( ST_DEVICE_NOT_FOUND );
+	}
 
-	return( 0 );
+	return( ST_OK );
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -103,7 +108,7 @@ frame_data * vaOpenCV::process_frame( int * result )
 {
 	if( !capture ) 
 	{
-		*result = -1;
+		*result = ST_DEVICE_NOT_FOUND;
 		return( NULL );
 	}
 
@@ -111,7 +116,7 @@ frame_data * vaOpenCV::process_frame( int * result )
 	IplImage * frame = cvQueryFrame( capture );
 	if( !frame )
 	{
-		*result = -2;
+		*result = ST_FRAME_ERROR;
 		return( NULL );
 	}
 
@@ -164,7 +169,7 @@ frame_data * vaOpenCV::process_frame( int * result )
 		}
 	}
 
-	*result = 0;
+	*result = ST_OK;
 
 	return( &static_frame );
 }

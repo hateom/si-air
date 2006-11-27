@@ -7,6 +7,10 @@
 #define ST_ALLOC_ERROR		0x01
 #define ST_OPEN_ERROR		0x02
 #define ST_WRITE_ERROR		0x03
+
+#define ST_DEVICE_NOT_FOUND	0x04
+#define ST_FRAME_ERROR		0x05
+
 #define ST_UNDEFINED		0x99
 
 //////////////////////////////////////////////////////////////////////////

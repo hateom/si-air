@@ -1,17 +1,19 @@
-/****************************************************************************
-** Form interface generated from reading ui file 'mainform.ui'
-**
-** Created: Wt 21. lis 13:12:53 2006
-**      by: The User Interface Compiler ($Id: main.cpp,v 1.1.1.16 2006/05/05 18:20:12 chehrlic Exp $)
-**
-** WARNING! All changes made in this file will be lost!
-****************************************************************************/
-
 #ifndef MAINFORM_H
 #define MAINFORM_H
 
+//////////////////////////////////////////////////////////////////////////
+
 #include <qvariant.h>
 #include <qdialog.h>
+
+#include "mp_dllmgr.h"
+#include "prevform.h"
+
+#include "../../modules/video_acq_base/src/va_base.h"
+#include "../../modules/prob_image_base/src/pi_base.h"
+#include "../../modules/posdetect_base/src/pd_base.h"
+
+//////////////////////////////////////////////////////////////////////////
 
 class QVBoxLayout;
 class QHBoxLayout;
@@ -26,13 +28,7 @@ class QComboBox;
 class QTimer;
 class QCheckBox;
 
-#include "mp_dllmgr.h"
-
-#include "../../modules/video_acq_base/src/va_base.h"
-#include "../../modules/prob_image_base/src/pi_base.h"
-#include "../../modules/posdetect_base/src/pd_base.h"
-
-#include "prevform.h"
+//////////////////////////////////////////////////////////////////////////
 
 struct processing_data
 {
@@ -42,6 +38,8 @@ struct processing_data
 	PrevForm	* prevForm1;
 	PrevForm	* prevForm2;
 };
+
+//////////////////////////////////////////////////////////////////////////
 
 class MainForm : public QDialog
 {
@@ -99,5 +97,7 @@ private:
 	QTimer * timer;
 
 };
+
+//////////////////////////////////////////////////////////////////////////
 
 #endif // MAINFORM_H

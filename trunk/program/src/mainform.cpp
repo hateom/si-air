@@ -1,11 +1,4 @@
-/****************************************************************************
-** Form implementation generated from reading ui file 'mainform.ui'
-**
-** Created: Wt 21. lis 13:12:54 2006
-**      by: The User Interface Compiler ($Id: main.cpp,v 1.1.1.16 2006/05/05 18:20:12 chehrlic Exp $)
-**
-** WARNING! All changes made in this file will be lost!
-****************************************************************************/
+//////////////////////////////////////////////////////////////////////////
 
 #include "mainform.h"
 
@@ -27,13 +20,8 @@
 #include "mp_path.h"
 #include "../../modules/module_base/src/status_codes.h"
 
-/*
- *  Constructs a MainForm as a child of 'parent', with the
- *  name 'name' and widget flags set to 'f'.
- *
- *  The dialog will by default be modeless, unless you set 'modal' to
- *  TRUE to construct a modal dialog.
- */
+//////////////////////////////////////////////////////////////////////////
+
 MainForm::MainForm( QWidget* parent, const char* name, bool modal, WFlags fl )
     : QDialog( parent, name, modal, fl ), timer(NULL)
 {
@@ -103,24 +91,23 @@ MainForm::MainForm( QWidget* parent, const char* name, bool modal, WFlags fl )
     clearWState( WState_Polished );
 }
 
+//////////////////////////////////////////////////////////////////////////
+
 void MainForm::close_app()
 {
 	release_proc_data( &p_data );
 	close();
 }
 
-/*
- *  Destroys the object and frees any allocated resources
- */
+//////////////////////////////////////////////////////////////////////////
+
 MainForm::~MainForm()
 {
 	mgr.free();
 }
 
-/*
- *  Sets the strings of the subwidgets using the current
- *  language.
- */
+//////////////////////////////////////////////////////////////////////////
+
 void MainForm::languageChange()
 {
     setCaption( tr( "SI Module List" ) );
@@ -141,6 +128,8 @@ void MainForm::languageChange()
 	buttonPDcfg->setText( tr("Configure") );
 }
 
+//////////////////////////////////////////////////////////////////////////
+
 void MainForm::configure_va_mod()
 {
 	OptForm * opt_form;
@@ -148,6 +137,8 @@ void MainForm::configure_va_mod()
 	opt_form = new OptForm( 0, 0, TRUE, 0, va_list[comboVI->currentItem()] );
 	opt_form->show();
 }
+
+//////////////////////////////////////////////////////////////////////////
 
 void MainForm::configure_pi_mod()
 {
@@ -157,6 +148,8 @@ void MainForm::configure_pi_mod()
 	opt_form->show();
 }
 
+//////////////////////////////////////////////////////////////////////////
+
 void MainForm::configure_pd_mod()
 {
 	OptForm * opt_form;
@@ -164,6 +157,8 @@ void MainForm::configure_pd_mod()
 	opt_form = new OptForm( 0, 0, TRUE, 0, pd_list[comboPD->currentItem()] );
 	opt_form->show();
 }
+
+//////////////////////////////////////////////////////////////////////////
 
 void MainForm::loadModules( const char * directory )
 {
@@ -213,6 +208,8 @@ void MainForm::loadModules( const char * directory )
 	}
 }
 
+//////////////////////////////////////////////////////////////////////////
+
 void MainForm::process_frame()
 {
 	int result;
@@ -241,6 +238,8 @@ void MainForm::process_frame()
 	if( p_data.prevForm1 ) p_data.prevForm1->render_frame( frame );
 	if( p_data.prevForm2 ) p_data.prevForm2->render_frame( ps->frame );
 }
+
+//////////////////////////////////////////////////////////////////////////
 
 void MainForm::run()
 {
@@ -308,10 +307,14 @@ void MainForm::run()
 	buttonRun->setText( "Stop!" );
 }
 
+//////////////////////////////////////////////////////////////////////////
+
 void MainForm::stop()
 {
 	release_proc_data( &p_data );
 }
+
+//////////////////////////////////////////////////////////////////////////
 
 void MainForm::release_proc_data( processing_data * data )
 {
@@ -363,4 +366,6 @@ void MainForm::release_proc_data( processing_data * data )
 	disconnect( buttonRun, SIGNAL(clicked()), this, SLOT(stop()) );
 	buttonRun->setText( "Run!" );
 }
+
+//////////////////////////////////////////////////////////////////////////
 

@@ -1,9 +1,13 @@
+//////////////////////////////////////////////////////////////////////////
+
 #include "optform.h"
 
 #include <qgroupbox.h>
 #include <qtextedit.h>
 #include <qlabel.h>
 #include <qpushbutton.h>
+
+//////////////////////////////////////////////////////////////////////////
 
 OptForm::OptForm( QWidget* parent, const char* name, bool modal, WFlags fl, moduleBase * base )
 : QDialog( parent, name, modal, fl )
@@ -69,6 +73,8 @@ OptForm::OptForm( QWidget* parent, const char* name, bool modal, WFlags fl, modu
 	clearWState( WState_Polished );
 }
 
+//////////////////////////////////////////////////////////////////////////
+
 void OptForm::save_conf()
 {
 	int pcount = module->param_count();
@@ -93,13 +99,19 @@ void OptForm::save_conf()
 	close();
 }
 
+//////////////////////////////////////////////////////////////////////////
+
 OptForm::~OptForm()
 {
 
 }
+
+//////////////////////////////////////////////////////////////////////////
 
 void OptForm::languageChange()
 {
 	setCaption( tr( "SI Module Parameters Editor" ) );
 	groupBox->setTitle( tr( "Module Parameters" ) );
 }
+
+//////////////////////////////////////////////////////////////////////////

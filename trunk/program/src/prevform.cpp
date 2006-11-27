@@ -1,8 +1,12 @@
+//////////////////////////////////////////////////////////////////////////
+
 #include "prevform.h"
 
 #include <qtimer.h>
 #include <qimage.h>
 #include <qpainter.h>
+
+//////////////////////////////////////////////////////////////////////////
 
 PrevForm::PrevForm( QWidget* parent, const char* name, bool modal, WFlags fl )
 : QDialog( parent, name, modal, fl ), base(NULL), timer(NULL)
@@ -14,15 +18,21 @@ PrevForm::PrevForm( QWidget* parent, const char* name, bool modal, WFlags fl )
 	clearWState( WState_Polished );
 }
 
+//////////////////////////////////////////////////////////////////////////
+
 PrevForm::~PrevForm()
 {
 
 }
 
+//////////////////////////////////////////////////////////////////////////
+
 void PrevForm::languageChange()
 {
 	setCaption( tr( "Preview Window" ) );
 }
+
+//////////////////////////////////////////////////////////////////////////
 
 void PrevForm::render_frame( frame_data * frame )
 {
@@ -33,6 +43,8 @@ void PrevForm::render_frame( frame_data * frame )
 	painter.setBackgroundColor( QColor( 0, 0, 0) );
 	painter.drawImage( QPoint(0, 0), img );
 }
+
+//////////////////////////////////////////////////////////////////////////
 
 void PrevForm::anim()
 {
@@ -51,18 +63,13 @@ void PrevForm::anim()
 		return;
 	}
 
-	try
-	{
-		resize( QSize( frame->width, frame->height ).expandedTo(minimumSizeHint()) );
-		QImage img( (uchar*)frame->bits, frame->width, frame->height, 32, NULL, 256, QImage::LittleEndian );
-		QPainter painter( this );
-		painter.drawImage( QPoint(0, 0), img );
-	}
-	catch( ... )
-	{
-		printf( "fuck :] (%d)\n", result );
-	}
+	resize( QSize( frame->width, frame->height ).expandedTo(minimumSizeHint()) );
+	QImage img( (uchar*)frame->bits, frame->width, frame->height, 32, NULL, 256, QImage::LittleEndian );
+	QPainter painter( this );
+	painter.drawImage( QPoint(0, 0), img );
 }
+
+//////////////////////////////////////////////////////////////////////////
 
 void PrevForm::set_video_module( vaBase * base )
 {
@@ -74,3 +81,5 @@ void PrevForm::set_video_module( vaBase * base )
 	printf( "Callback saved. Setting frame capturing...\n" );
 	timer->start( 10 );
 }
+
+//////////////////////////////////////////////////////////////////////////

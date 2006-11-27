@@ -52,8 +52,12 @@ MainForm::MainForm( QWidget* parent, const char* name, bool modal, WFlags fl )
 	comboVI->setGeometry( QRect( 10, 20, 175, 25 ) );
 
 	checkVI = new QCheckBox( groupBoxVI, "checkVI" );
-	checkVI->setGeometry( QRect( 10, 50, 175, 25 ) );
+	checkVI->setGeometry( QRect( 10, 50, 85, 25 ) );
 	checkVI->setChecked( true );
+
+	checkAvi = new QCheckBox( groupBoxVI, "checkAvi" );
+	checkAvi->setGeometry( QRect( 100, 50, 85, 25 ) );
+	checkAvi->setChecked( true );
 
 	groupBoxPI = new QGroupBox( this, "groupBoxPI" );
 	groupBoxPI->setGeometry( QRect( 215, 10, 195, 130 ) );
@@ -128,6 +132,8 @@ void MainForm::languageChange()
 	checkVI->setText( tr("Preview") );
 	checkPI->setText( tr("Preview") );
 	checkPD->setText( tr("Preview") );
+
+	checkAvi->setText( tr("From File") );
 
 	buttonVIcfg->setText( tr("Configure") );
 	buttonPIcfg->setText( tr("Configure") );
@@ -250,16 +256,21 @@ void MainForm::run()
 	QFileDialog* fd = new QFileDialog( this, "file dialog", TRUE );
 	fd->setMode( QFileDialog::AnyFile );
 
-	QString s = QFileDialog::getOpenFileName(
-		NULL,
-		"Videos (*.avi *.mpg *.mpeg)",
-		this,
-		"open file dialog"
-		"Choose a file" );
+	if( checkAvi->isChecked() )
+	{
+		QString s = QFileDialog::getOpenFileName(
+			NULL,
+			"Videos (*.avi *.mpg *.mpeg)",
+			this,
+			"open file dialog"
+			"Choose a file" );
 
-	p_data.va_base->init( 0, (char *)s.ascii() );
-
-//	p_data.va_base->init( 0, 0 );
+		p_data.va_base->init( 0, (char *)s.ascii() );
+	}
+	else
+	{
+		p_data.va_base->init( 0, 0 );
+	}
 
 	if( checkVI->isChecked() )
 	{

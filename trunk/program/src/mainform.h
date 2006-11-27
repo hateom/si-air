@@ -63,6 +63,8 @@ public:
 	QCheckBox * checkPI;
 	QCheckBox * checkPD;
 
+	QCheckBox * checkAvi;
+
 	QPushButton * buttonVIcfg;
 	QPushButton * buttonPIcfg;
 	QPushButton * buttonPDcfg;

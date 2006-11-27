@@ -121,10 +121,16 @@
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}">
 			<File
+				RelativePath=".\src\mb_param.h">
+			</File>
+			<File
 				RelativePath=".\src\module_base.h">
 			</File>
 			<File
-				RelativePath="..\include\types.h">
+				RelativePath=".\src\status_codes.h">
+			</File>
+			<File
+				RelativePath=".\src\types.h">
 			</File>
 		</Filter>
 		<Filter

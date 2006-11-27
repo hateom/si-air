@@ -30,7 +30,7 @@ class QCheckBox;
 
 #include "../../modules/video_acq_base/src/va_base.h"
 #include "../../modules/prob_image_base/src/pi_base.h"
-#include "../../modules/posdetect_base/src/posdetect_base.h"
+#include "../../modules/posdetect_base/src/pd_base.h"
 
 #include "prevform.h"
 

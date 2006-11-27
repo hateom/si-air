@@ -25,6 +25,7 @@
 #include "optform.h"
 #include "prevform.h"
 #include "mp_path.h"
+#include "../../modules/module_base/src/status_codes.h"
 
 /*
  *  Constructs a MainForm as a child of 'parent', with the
@@ -218,7 +219,7 @@ void MainForm::process_frame()
 	frame_data * frame;
 
 	frame = p_data.va_base->process_frame( &result );
-	if( result < 0 )
+	if( result != ST_OK )
 	{
 		release_proc_data( &p_data );
 		return;
@@ -244,6 +245,7 @@ void MainForm::process_frame()
 void MainForm::run()
 {
 	int va_item, pi_item, pd_item;
+	int result;
 
 	va_item = comboVI->currentItem();
 	pi_item = comboPI->currentItem();
@@ -265,11 +267,21 @@ void MainForm::run()
 			"open file dialog"
 			"Choose a file" );
 
-		p_data.va_base->init( 0, (char *)s.ascii() );
+		result = p_data.va_base->init( 0, (char *)s.ascii() );
+		if( result != ST_OK )
+		{
+			printf( "Could not render media file.\n" );
+			return;
+		}
 	}
 	else
 	{
-		p_data.va_base->init( 0, 0 );
+		result = p_data.va_base->init( 0, 0 );
+		if( result != ST_OK )
+		{
+			printf( "Video Device not found.\n" );
+			return;
+		}
 	}
 
 	if( checkVI->isChecked() )

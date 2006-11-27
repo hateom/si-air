@@ -10,10 +10,12 @@
 #define FRAME_PIXEL_G( X, Y, FRAMEDATA ) FRAMEDATA->bits[ FRAME_OFFSET( X, Y, FRAMEDATA->width )+1]
 #define FRAME_PIXEL_R( X, Y, FRAMEDATA ) FRAMEDATA->bits[ FRAME_OFFSET( X, Y, FRAMEDATA->width )+2]
 
-#define GESTURE_NULL 0
-#define GESTURE_LMBCLICK 1
-#define GESTURE_RMBCLICK 2
-#define GESTURE_LMBDBCLICK 3
+//////////////////////////////////////////////////////////////////////////
+
+#define GESTURE_NULL		0x00
+#define GESTURE_LMBCLICK	0x01
+#define GESTURE_RMBCLICK	0x02
+#define GESTURE_LMBDBCLICK	0x03
 
 //////////////////////////////////////////////////////////////////////////
 

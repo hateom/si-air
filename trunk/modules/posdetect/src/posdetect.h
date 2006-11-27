@@ -22,7 +22,7 @@ public:
 
 	virtual void free();
 
-	virtual Tpos * calc_position( float * piTable , int * status );
+	virtual Tpos * calc_position( float * piTable , float maxVal, int width, int height, int * status );
 
 protected:
 	int temp_param;

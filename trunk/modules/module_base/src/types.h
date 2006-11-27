@@ -10,6 +10,11 @@
 #define FRAME_PIXEL_G( X, Y, FRAMEDATA ) FRAMEDATA->bits[ FRAME_OFFSET( X, Y, FRAMEDATA->width )+1]
 #define FRAME_PIXEL_R( X, Y, FRAMEDATA ) FRAMEDATA->bits[ FRAME_OFFSET( X, Y, FRAMEDATA->width )+2]
 
+#define GESTURE_NULL 0
+#define GESTURE_LMBCLICK 1
+#define GESTURE_RMBCLICK 2
+#define GESTURE_LMBDBCLICK 3
+
 //////////////////////////////////////////////////////////////////////////
 
 /// Struktura z zawartoscia ramki

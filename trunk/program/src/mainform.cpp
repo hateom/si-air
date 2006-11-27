@@ -40,10 +40,10 @@ MainForm::MainForm( QWidget* parent, const char* name, bool modal, WFlags fl )
 	setName( "MainForm" );
 
     buttonOk = new QPushButton( this, "buttonOk" );
-    buttonOk->setGeometry( QRect( 10, 160, 195, 26 ) );
+    buttonOk->setGeometry( QRect( 420, 160, 195, 26 ) );
 
 	buttonRun = new QPushButton( this, "buttonRun" );
-	buttonRun->setGeometry( QRect( 10, 190, 195, 26 ) );
+	buttonRun->setGeometry( QRect( 10, 160, 195, 26 ) );
 
 	groupBoxVI = new QGroupBox( this, "groupBoxVI" );
 	groupBoxVI->setGeometry( QRect( 10, 10, 195, 130 ) );
@@ -94,7 +94,7 @@ MainForm::MainForm( QWidget* parent, const char* name, bool modal, WFlags fl )
 	connect( buttonRun, SIGNAL(clicked()), this, SLOT(run()) );
 
     languageChange();
-    resize( QSize(630, 225).expandedTo(minimumSizeHint()) );
+    resize( QSize(630, 200).expandedTo(minimumSizeHint()) );
     clearWState( WState_Polished );
 }
 

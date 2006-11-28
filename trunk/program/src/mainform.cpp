@@ -214,29 +214,48 @@ void MainForm::process_frame()
 {
 	int result;
 	frame_data * frame;
-
-	frame = p_data.va_base->process_frame( &result );
-	if( result != ST_OK )
-	{
-		release_proc_data( &p_data );
-		return;
-	}
-
-	// p_data.prevForm->render_frame( frame );
-
 	pi_struct * ps;
+	Tpos * pos;
 
 	try 
 	{
+		frame = p_data.va_base->process_frame( &result );
+		if( result != ST_OK )
+		{
+			release_proc_data( &p_data );
+			return;
+		}
+
 		ps = p_data.pi_base->process_frame( frame, &result );
+		pos = p_data.pd_base->calc_position( ps->prob_table, 1.0f, frame->width, frame->height, &result );
+
+		/// rysuj kwadrat markera
+
+		if( pos->x < 10 ) pos->x = 10;
+		if( pos->y < 10 ) pos->y = 10;
+		if( pos->x > frame->width-10 ) pos->x = frame->width-10;
+		if( pos->y > frame->height-10 ) pos->y = frame->height-10;
+
+		for( int i=pos->x-10; i<pos->x+10; ++i )
+		{
+			for( int j=pos->y-10; j<pos->y+10; ++j )
+			{
+				frame->bits[(i + j * frame->width)*4+0] = 255;
+				frame->bits[(i + j * frame->width)*4+1] = 0;
+				frame->bits[(i + j * frame->width)*4+2] = 0;
+			}
+		}
+
+		/// end of drawing
+
+		if( p_data.prevForm1 ) p_data.prevForm1->render_frame( frame );
+		if( p_data.prevForm2 ) p_data.prevForm2->render_frame( ps->frame );
 	}
 	catch( ... )
 	{
-		printf( "not good :(\n" );
+		printf( "ERROR: frame processing exception.\n" );
+		release_proc_data( &p_data );
 	}
-
-	if( p_data.prevForm1 ) p_data.prevForm1->render_frame( frame );
-	if( p_data.prevForm2 ) p_data.prevForm2->render_frame( ps->frame );
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -251,8 +270,8 @@ void MainForm::run()
 	pd_item = comboPD->currentItem();
 
 	p_data.va_base = va_list[va_item];
-	p_data.pi_base = pi_list[va_item];
-	p_data.pd_base = NULL;
+	p_data.pi_base = pi_list[pi_item];
+	p_data.pd_base = pd_list[pd_item];
 
 	QFileDialog* fd = new QFileDialog( this, "file dialog", TRUE );
 	fd->setMode( QFileDialog::AnyFile );
@@ -265,11 +284,21 @@ void MainForm::run()
 			this,
 			"open file dialog"
 			"Choose a file" );
-
-		result = p_data.va_base->init( 0, (char *)s.ascii() );
-		if( result != ST_OK )
+		
+		if( !s.isEmpty() )
 		{
-			printf( "Could not render media file.\n" );
+
+			result = p_data.va_base->init( 0, (char *)s.ascii() );
+			if( result != ST_OK )
+			{
+				printf( "Could not render media file.\n" );
+				return;
+			}
+
+		}
+		else
+		{
+			printf( "Capturing canceled.\n" );
 			return;
 		}
 	}

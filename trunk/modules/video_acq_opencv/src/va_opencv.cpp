@@ -5,7 +5,7 @@
 #include <highgui.h>
 #include <cvcam.h>
 
-#include "../../module_base/src/types.h"
+#include "../../module_base/src/status_codes.h"
 
 #pragma comment(lib,"cv.lib")
 #pragma comment(lib,"cvcam.lib")

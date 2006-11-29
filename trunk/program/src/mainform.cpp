@@ -231,18 +231,21 @@ void MainForm::process_frame()
 
 		/// rysuj kwadrat markera
 
-		if( pos->x < 10 ) pos->x = 10;
-		if( pos->y < 10 ) pos->y = 10;
-		if( pos->x > frame->width-10 ) pos->x = frame->width-10;
-		if( pos->y > frame->height-10 ) pos->y = frame->height-10;
-
-		for( int i=pos->x-10; i<pos->x+10; ++i )
+		if( checkPD->isChecked() )
 		{
-			for( int j=pos->y-10; j<pos->y+10; ++j )
+			if( pos->x < 10 ) pos->x = 10;
+			if( pos->y < 10 ) pos->y = 10;
+			if( pos->x > (int)frame->width-10 ) pos->x = frame->width-10;
+			if( pos->y > (int)frame->height-10 ) pos->y = frame->height-10;
+
+			for( int i=pos->x-10; i<pos->x+10; ++i )
 			{
-				frame->bits[(i + j * frame->width)*4+0] = 255;
-				frame->bits[(i + j * frame->width)*4+1] = 0;
-				frame->bits[(i + j * frame->width)*4+2] = 0;
+				for( int j=pos->y-10; j<pos->y+10; ++j )
+				{
+					frame->bits[(i + j * frame->width)*4+0] = 255;
+					frame->bits[(i + j * frame->width)*4+1] = 0;
+					frame->bits[(i + j * frame->width)*4+2] = 0;
+				}
 			}
 		}
 

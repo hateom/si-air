@@ -59,7 +59,7 @@ int piGeneral::input_type()
 
 int piGeneral::output_type()
 {
-	return( MT_PROBABILITY );
+	return( MT_PROBDATA );
 }
 
 //////////////////////////////////////////////////////////////////////////

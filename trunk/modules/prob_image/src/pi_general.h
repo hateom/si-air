@@ -20,9 +20,14 @@ public:
 	virtual const char * get_module_description();
 	virtual int get_module_type();
 
+	virtual int input_type();
+	virtual int output_type();
+
+	virtual proc_data * process_frame( proc_data * prev_frame, int * status );
+
 	virtual void free();
 
-	virtual pi_struct * process_frame( frame_data * inFrame, int * status );
+	//virtual pi_struct * process_frame( frame_data * inFrame, int * status );
 
 protected:
 	int temp_param;

@@ -5,7 +5,8 @@
 
 #include <windows.h>
 #include <vector>
-#include "mb_param.h"
+#include "../../module_base/src/mb_param.h"
+#include "../../module_base/src/types.h"
 
 //////////////////////////////////////////////////////////////////////////
 
@@ -28,6 +29,11 @@
 #define MT_PROBABILITY		0x02
 #define MT_GESTURES			0x03
 #define MT_INPUT			0x04
+
+#define MT_NONE				0x00
+#define MT_FRAME			0x01
+#define MT_PROBDATA			0x02
+#define MT_POSGEST			0x03
 
 //////////////////////////////////////////////////////////////////////////
 
@@ -58,6 +64,11 @@ public:
 	/// zwraca informacja o typie modulu
 	/// \return typ modulu zadeklarowany jako MT_*
 	virtual int get_module_type() = 0;
+
+	virtual int input_type() = 0;
+	virtual int output_type() = 0;
+
+	virtual proc_data * process_frame( proc_data * prev_frame, int * result ) = 0;
 
 	virtual void assign_library_handle( HMODULE hlib ) { lib_handle = hlib; }
 

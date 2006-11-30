@@ -15,7 +15,7 @@ public:
 	pdBase() {}
 	virtual ~pdBase() {}
 
-	virtual Tpos * calc_position( float * piTable , float maxVal, int width, int height, int * status ) = 0;
+	//virtual Tpos * calc_position( float * piTable , float maxVal, int width, int height, int * status ) = 0;
 
 	/// metoda zwalniajaca zasoby
 	virtual void free() = 0;

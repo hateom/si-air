@@ -39,21 +39,24 @@ struct frame_data
 
 //////////////////////////////////////////////////////////////////////////
 
-/// struktura przechowujaca informacje o prawdopodb. i obraz prawdopodob.
-struct pi_struct{
-	/// przechowywana ramka
-	frame_data * frame;
-	/// tablica prawdopodobienstw dla kazdego piksela
-	float * prob_table;
-};
-
-// Struktura do opisu po³ozenia obiektu int x,y; float angle;
-struct Tpos
+/// Struktura do opisu po³ozenia obiektu int x,y; float angle;
+struct pd_data
 {
 	int x,y;
 	int gesture;
 	float angle;
 };
+
+//////////////////////////////////////////////////////////////////////////
+
+/// Struktura opisuje dane ktore sa zwracane przez moduly
+struct proc_data
+{
+	frame_data	*	frame;
+	pd_data		*	position;
+	float		*	prob;
+};
+
 //////////////////////////////////////////////////////////////////////////
 
 #endif // __INCLUDE_H__

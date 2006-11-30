@@ -16,7 +16,7 @@ public:
 	piBase() {}
 	virtual ~piBase() {}
 
-	virtual pi_struct * process_frame( frame_data * inFrame, int * status ) = 0;
+	//virtual pi_struct * process_frame( frame_data * inFrame, int * status ) = 0;
 
 	/// metoda zwalniajaca zasoby
 	virtual void free() = 0;

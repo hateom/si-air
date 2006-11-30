@@ -22,10 +22,14 @@ public:
 	virtual const char * get_module_description();
 	virtual int get_module_type();
 
+	virtual int input_type();
+	virtual int output_type();
+
 	virtual int init( int device, char * filename = 0 );
 	virtual void free();
 
-	virtual frame_data * process_frame( int * result );
+//	virtual frame_data * process_frame( int * result );
+	virtual proc_data * process_frame( proc_data * prev_frame, int * result );
 
 protected:
 //	int cam_count;

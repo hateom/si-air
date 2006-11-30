@@ -48,6 +48,7 @@ void PrevForm::render_frame( frame_data * frame )
 
 void PrevForm::anim()
 {
+/*
 	int result;
 	frame_data * frame;
 	
@@ -67,6 +68,7 @@ void PrevForm::anim()
 	QImage img( (uchar*)frame->bits, frame->width, frame->height, 32, NULL, 256, QImage::LittleEndian );
 	QPainter painter( this );
 	painter.drawImage( QPoint(0, 0), img );
+*/
 }
 
 //////////////////////////////////////////////////////////////////////////

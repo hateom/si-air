@@ -32,7 +32,7 @@ public:
 	/// przesyla jedna klatke z pliku video, badz z urzadzenia video
 	/// \param result 0 gdy wszystko ok, wartoœæ ujemna w przypadku b³êdu
 	/// \return zunifikowana ramka obrazu
-	virtual frame_data * process_frame( int * result ) = 0;
+	//virtual frame_data * process_frame( int * result ) = 0;
 
 	/// metoda zwalniajaca zasoby
 	virtual void free() = 0;

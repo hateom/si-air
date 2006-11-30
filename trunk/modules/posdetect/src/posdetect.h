@@ -20,9 +20,14 @@ public:
 	virtual const char * get_module_description();
 	virtual int get_module_type();
 
+	virtual int input_type();
+	virtual int output_type();
+
+	virtual proc_data * process_frame( proc_data * prev_frame, int * result );
+
 	virtual void free();
 
-	virtual Tpos * calc_position( float * piTable , float maxVal, int width, int height, int * status );
+//	virtual Tpos * calc_position( float * piTable , float maxVal, int width, int height, int * status );
 
 protected:
 	int Orientation_Mask_Size;

@@ -213,21 +213,22 @@ void MainForm::loadModules( const char * directory )
 void MainForm::process_frame()
 {
 	int result;
-	frame_data * frame;
-	pi_struct * ps;
-	Tpos * pos;
+	proc_data * data1, * data2, * data3;
+	pd_data * pos;
 
 	try 
 	{
-		frame = p_data.va_base->process_frame( &result );
+		data1 = p_data.va_base->process_frame( NULL, &result );
 		if( result != ST_OK )
 		{
 			release_proc_data( &p_data );
 			return;
 		}
 
-		ps = p_data.pi_base->process_frame( frame, &result );
-		pos = p_data.pd_base->calc_position( ps->prob_table, 1.0f, frame->width, frame->height, &result );
+		data2 = p_data.pi_base->process_frame( data1, &result );
+		data3 = p_data.pd_base->process_frame( data2, &result );
+
+		pos = data3->position;
 
 		/// rysuj kwadrat markera
 
@@ -235,24 +236,24 @@ void MainForm::process_frame()
 		{
 			if( pos->x < 10 ) pos->x = 10;
 			if( pos->y < 10 ) pos->y = 10;
-			if( pos->x > (int)frame->width-10 ) pos->x = frame->width-10;
-			if( pos->y > (int)frame->height-10 ) pos->y = frame->height-10;
+			if( pos->x > (int)data1->frame->width-10 ) pos->x = data1->frame->width-10;
+			if( pos->y > (int)data1->frame->height-10 ) pos->y = data1->frame->height-10;
 
 			for( int i=pos->x-10; i<pos->x+10; ++i )
 			{
 				for( int j=pos->y-10; j<pos->y+10; ++j )
 				{
-					frame->bits[(i + j * frame->width)*4+0] = 255;
-					frame->bits[(i + j * frame->width)*4+1] = 0;
-					frame->bits[(i + j * frame->width)*4+2] = 0;
+					data1->frame->bits[(i + j * data1->frame->width)*4+0] = 255;
+					data1->frame->bits[(i + j * data1->frame->width)*4+1] = 0;
+					data1->frame->bits[(i + j * data1->frame->width)*4+2] = 0;
 				}
 			}
 		}
 
 		/// end of drawing
 
-		if( p_data.prevForm1 ) p_data.prevForm1->render_frame( frame );
-		if( p_data.prevForm2 ) p_data.prevForm2->render_frame( ps->frame );
+		if( p_data.prevForm1 ) p_data.prevForm1->render_frame( data1->frame );
+		if( p_data.prevForm2 ) p_data.prevForm2->render_frame( data2->frame );
 	}
 	catch( ... )
 	{

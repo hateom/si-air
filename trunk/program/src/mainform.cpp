@@ -41,9 +41,14 @@ MainForm::MainForm( QWidget* parent, const char* name, bool modal, WFlags fl )
 	buttonAdd= new QPushButton( this, "buttonAdd" );
 	buttonAdd->setGeometry( QRect( 10, 320, 220, 26 ) );
 
+	buttonReset = new QPushButton( this, "buttonReset" );
+	buttonReset->setGeometry( QRect( 10, 350, 220, 26 ) );
+
 	connect( buttonOk, SIGNAL(clicked()), this, SLOT(close_app()) );
 	connect( buttonRun, SIGNAL(clicked()), this, SLOT(run()) );
 	connect( buttonAdd, SIGNAL(clicked()), this, SLOT(add_module()) );
+	connect( buttonReset, SIGNAL(clicked()), this, SLOT(remove_path()) );
+	connect( listBox, SIGNAL(selected(QListBoxItem*)), this, SLOT(lb_selected(QListBoxItem*)) );
 
     languageChange();
     resize( QSize(700, 500).expandedTo(minimumSizeHint()) );
@@ -52,8 +57,21 @@ MainForm::MainForm( QWidget* parent, const char* name, bool modal, WFlags fl )
 
 //////////////////////////////////////////////////////////////////////////
 
+void MainForm::remove_path()
+{
+	for( int i=0; i<(int)mod_widget.size(); ++i )
+	{
+		mod_widget[i]->close();
+		delete mod_widget[i];
+	}
+	mod_widget.clear();
+}
+
+//////////////////////////////////////////////////////////////////////////
+
 void MainForm::close_app()
 {
+	remove_path();
 	close();
 }
 
@@ -72,6 +90,7 @@ void MainForm::languageChange()
     buttonOk->setText( tr( "OK" ) );
 	buttonRun->setText( tr( "Run!" ) );
 	buttonAdd->setText( tr( "Add Module" ) );
+	buttonReset->setText( tr( "Clear Path" ) );
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -130,6 +149,13 @@ void MainForm::loadModules( const char * directory )
 			listBox->insertItem( tr( mod->description.c_str() ) );
 		}
 	}
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+void MainForm::lb_selected( QListBoxItem * )
+{
+	add_module();
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -201,6 +227,7 @@ void MainForm::run()
 			PrevForm * pf;
 			pf = new PrevForm();
 			wdg->set_preview( pf );
+			pf->move( QPoint( 100+400*i, 100) );
 			pf->show();
 		}
 	}

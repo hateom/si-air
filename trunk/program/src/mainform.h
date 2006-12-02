@@ -39,6 +39,7 @@ public:
 	QPushButton * buttonRun;
 	QListBox    * listBox;
 	QPushButton * buttonAdd;
+	QPushButton	* buttonReset;
 
     virtual void loadModules( const char * directory );
 
@@ -48,9 +49,11 @@ public slots:
 	virtual void process_frame();
 	virtual void close_app();
 	virtual void add_module();
+	virtual void lb_selected( QListBoxItem * );
 
 protected slots:
     virtual void languageChange();
+	virtual void remove_path();
 
 private:
 	mpdllMgr mgr;

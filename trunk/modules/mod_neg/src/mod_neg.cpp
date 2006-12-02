@@ -84,7 +84,7 @@ proc_data * modNeg::process_frame( proc_data * prev_frame, int * result )
 		}
 	}
 
-	for( int i=0; i<frame.width*frame.height*frame.depth; ++i )
+	for( int i=0; i<(int)(frame.width*frame.height*frame.depth); ++i )
 	{
 		frame.bits[i] = 255 - prev_frame->frame->bits[i];
 	}

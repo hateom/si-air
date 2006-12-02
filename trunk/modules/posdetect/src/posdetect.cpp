@@ -20,7 +20,7 @@
 
 cPosdetect::cPosdetect()
 {
-	REG_PARAM( PT_INT, Orientation_Mask_Size, "Wielkoœæ maski orientacji", 4 );
+	REG_PARAM( PT_INT, or_mask_size, "Size of the orientation mask", 4 );
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -165,17 +165,17 @@ proc_data * cPosdetect::process_frame( proc_data * prev_frame, int * result )
 	for(register int y=_Yp;y<_Yk;y++)
 	{
 		min_coord = false;
-		for(register int x=_Xp;x<_Xk;x+=(Orientation_Mask_Size-(int)sum))
+		for(register int x=_Xp;x<_Xk;x+=(or_mask_size-(int)sum))
 		{
 			sum = 0.0;
-			if((x < 0) || (y < 0) || (x+Orientation_Mask_Size > width) || (y+Orientation_Mask_Size > height))
+			if((x < 0) || (y < 0) || (x+or_mask_size > width) || (y+or_mask_size > height))
 				continue;
 
-			for(int i=0;i<Orientation_Mask_Size;i++)
+			for(int i=0;i<or_mask_size;i++)
 				sum += piTable[x+i+(y+i)*width];
 
 			// Gdy elemet obiektu
-			if((sum >= (float)Orientation_Mask_Size) || ((!InitialValue) && (sum >= (float)Orientation_Mask_Size-1)))
+			if((sum >= (float)or_mask_size) || ((!InitialValue) && (sum >= (float)or_mask_size-1)))
 			{
 				if(!min_coord)
 				{
@@ -193,7 +193,7 @@ proc_data * cPosdetect::process_frame( proc_data * prev_frame, int * result )
 			}
 
 			// Jezeli wyjdzie ze bedziemy musieli sie przesunac o zero lub mniej
-			if((Orientation_Mask_Size-(int)sum) <= 0)
+			if((or_mask_size-(int)sum) <= 0)
 				sum = 0.0;
 		}
 
@@ -211,16 +211,16 @@ proc_data * cPosdetect::process_frame( proc_data * prev_frame, int * result )
 	for(register int y=_Yk-1;y>=_Yp;y--)
 	{
 		max_coord = false;
-		for(register int x=_Xk-1;x>=_Xp;x-=(Orientation_Mask_Size-(int)sum))
+		for(register int x=_Xk-1;x>=_Xp;x-=(or_mask_size-(int)sum))
 		{
 			sum = 0.0;
-			if((x < 0) || (y < 0) || (x+Orientation_Mask_Size > width) || (y+Orientation_Mask_Size > height))
+			if((x < 0) || (y < 0) || (x+or_mask_size > width) || (y+or_mask_size > height))
 				continue;
-			for(int i=0;i<Orientation_Mask_Size;i++)
+			for(int i=0;i<or_mask_size;i++)
 				sum +=piTable[x+i+(y+i)*width];
 
 			// Gdy elemet obiektu
-			if((sum >= (float)Orientation_Mask_Size) || ((!InitialValue) && (sum >= (float)Orientation_Mask_Size-1)))
+			if((sum >= (float)or_mask_size) || ((!InitialValue) && (sum >= (float)or_mask_size-1)))
 			{
 				if(!max_coord)
 				{
@@ -237,7 +237,7 @@ proc_data * cPosdetect::process_frame( proc_data * prev_frame, int * result )
 				Y2 = y;
 			}
 
-			if((Orientation_Mask_Size-(int)sum) <= 0)
+			if((or_mask_size-(int)sum) <= 0)
 				sum = 0.0;
 		}
 		if(X2 != X1)
@@ -361,17 +361,17 @@ Tpos * cPosdetect::calc_position( float * piTable , float maxVal, int width, int
 	for(register int y=_Yp;y<_Yk;y++)
 	{
 		min_coord = false;
-		for(register int x=_Xp;x<_Xk;x+=(Orientation_Mask_Size-(int)sum))
+		for(register int x=_Xp;x<_Xk;x+=(or_mask_size-(int)sum))
 		{
 			sum = 0.0;
-			if((x < 0) || (y < 0) || (x+Orientation_Mask_Size > width) || (y+Orientation_Mask_Size > height))
+			if((x < 0) || (y < 0) || (x+or_mask_size > width) || (y+or_mask_size > height))
 				continue;
 
-			for(int i=0;i<Orientation_Mask_Size;i++)
+			for(int i=0;i<or_mask_size;i++)
 				sum += piTable[x+i+(y+i)*width];
 
 			// Gdy elemet obiektu
-			if((sum >= (float)Orientation_Mask_Size) || ((!InitialValue) && (sum >= (float)Orientation_Mask_Size-1)))
+			if((sum >= (float)or_mask_size) || ((!InitialValue) && (sum >= (float)or_mask_size-1)))
 			{
 				if(!min_coord)
 				{
@@ -389,7 +389,7 @@ Tpos * cPosdetect::calc_position( float * piTable , float maxVal, int width, int
 			}
 
 			// Jezeli wyjdzie ze bedziemy musieli sie przesunac o zero lub mniej
-			if((Orientation_Mask_Size-(int)sum) <= 0)
+			if((or_mask_size-(int)sum) <= 0)
 				sum = 0.0;
 		}
 
@@ -407,16 +407,16 @@ Tpos * cPosdetect::calc_position( float * piTable , float maxVal, int width, int
 	for(register int y=_Yk-1;y>=_Yp;y--)
 	{
 		max_coord = false;
-		for(register int x=_Xk-1;x>=_Xp;x-=(Orientation_Mask_Size-(int)sum))
+		for(register int x=_Xk-1;x>=_Xp;x-=(or_mask_size-(int)sum))
 		{
 			sum = 0.0;
-			if((x < 0) || (y < 0) || (x+Orientation_Mask_Size > width) || (y+Orientation_Mask_Size > height))
+			if((x < 0) || (y < 0) || (x+or_mask_size > width) || (y+or_mask_size > height))
 				continue;
-			for(int i=0;i<Orientation_Mask_Size;i++)
+			for(int i=0;i<or_mask_size;i++)
 				sum +=piTable[x+i+(y+i)*width];
 
 			// Gdy elemet obiektu
-			if((sum >= (float)Orientation_Mask_Size) || ((!InitialValue) && (sum >= (float)Orientation_Mask_Size-1)))
+			if((sum >= (float)or_mask_size) || ((!InitialValue) && (sum >= (float)or_mask_size-1)))
 			{
 				if(!max_coord)
 				{
@@ -433,7 +433,7 @@ Tpos * cPosdetect::calc_position( float * piTable , float maxVal, int width, int
 				Y2 = y;
 			}
 
-			if((Orientation_Mask_Size-(int)sum) <= 0)
+			if((or_mask_size-(int)sum) <= 0)
 				sum = 0.0;
 		}
 		if(X2 != X1)

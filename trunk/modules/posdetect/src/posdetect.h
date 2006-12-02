@@ -31,7 +31,7 @@ public:
 //	virtual Tpos * calc_position( float * piTable , float maxVal, int width, int height, int * status );
 
 protected:
-	int Orientation_Mask_Size;
+	int or_mask_size;
 	int temp_param;
 	int alloc_mem;
 };

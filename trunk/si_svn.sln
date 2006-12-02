@@ -23,6 +23,10 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "mod_neg", "modules\mod_neg\
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "mod_light", "modules\mod_light\mod_light.vcproj", "{64D63C9F-BE02-4FB0-A2AA-CB1807E3F261}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfiguration) = preSolution
 		Debug = Debug
@@ -49,6 +53,10 @@ Global
 		{72F37CC9-5263-4BC0-B3B0-F73F7600F2C0}.Debug.Build.0 = Debug|Win32
 		{72F37CC9-5263-4BC0-B3B0-F73F7600F2C0}.Release.ActiveCfg = Release|Win32
 		{72F37CC9-5263-4BC0-B3B0-F73F7600F2C0}.Release.Build.0 = Release|Win32
+		{64D63C9F-BE02-4FB0-A2AA-CB1807E3F261}.Debug.ActiveCfg = Debug|Win32
+		{64D63C9F-BE02-4FB0-A2AA-CB1807E3F261}.Debug.Build.0 = Debug|Win32
+		{64D63C9F-BE02-4FB0-A2AA-CB1807E3F261}.Release.ActiveCfg = Release|Win32
+		{64D63C9F-BE02-4FB0-A2AA-CB1807E3F261}.Release.Build.0 = Release|Win32
 		{64D63C9F-BE02-4FB0-A2AA-CB1807E3F261}.Debug.ActiveCfg = Debug|Win32
 		{64D63C9F-BE02-4FB0-A2AA-CB1807E3F261}.Debug.Build.0 = Debug|Win32
 		{64D63C9F-BE02-4FB0-A2AA-CB1807E3F261}.Release.ActiveCfg = Release|Win32

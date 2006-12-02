@@ -3,10 +3,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "module_base", "modules\modu
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "video_acq_base", "modules\video_acq_base\video_acq_base.vcproj", "{EF86F415-9129-4639-B91D-0CE7AEDF4AD6}"
-	ProjectSection(ProjectDependencies) = postProject
-	EndProjectSection
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "video_acq_opencv", "modules\video_acq_opencv\video_acq_opencv.vcproj", "{3DD44580-7C1F-4041-ACF4-41EBA0CE7EBC}"
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
@@ -15,15 +11,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "program", "program\program.
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "prob_image_base", "modules\prob_image_base\prob_image_base.vcproj", "{A843CB61-9C78-4D06-B1C0-BE56DCD5DD73}"
-	ProjectSection(ProjectDependencies) = postProject
-	EndProjectSection
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "prob_image", "modules\prob_image\prob_image.vcproj", "{72F37CC9-5263-4BC0-B3B0-F73F7600F2C0}"
-	ProjectSection(ProjectDependencies) = postProject
-	EndProjectSection
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "posdetect_base", "modules\posdetect_base\posdetect_base.vcproj", "{A843CB61-9C78-4D06-B1C0-BE56DCD5DD73}"
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject
@@ -41,10 +29,6 @@ Global
 		{EAD829AE-8100-4A6E-A260-09073577BB10}.Debug.Build.0 = Debug|Win32
 		{EAD829AE-8100-4A6E-A260-09073577BB10}.Release.ActiveCfg = Release|Win32
 		{EAD829AE-8100-4A6E-A260-09073577BB10}.Release.Build.0 = Release|Win32
-		{EF86F415-9129-4639-B91D-0CE7AEDF4AD6}.Debug.ActiveCfg = Debug|Win32
-		{EF86F415-9129-4639-B91D-0CE7AEDF4AD6}.Debug.Build.0 = Debug|Win32
-		{EF86F415-9129-4639-B91D-0CE7AEDF4AD6}.Release.ActiveCfg = Release|Win32
-		{EF86F415-9129-4639-B91D-0CE7AEDF4AD6}.Release.Build.0 = Release|Win32
 		{3DD44580-7C1F-4041-ACF4-41EBA0CE7EBC}.Debug.ActiveCfg = Debug|Win32
 		{3DD44580-7C1F-4041-ACF4-41EBA0CE7EBC}.Debug.Build.0 = Debug|Win32
 		{3DD44580-7C1F-4041-ACF4-41EBA0CE7EBC}.Release.ActiveCfg = Release|Win32
@@ -53,18 +37,10 @@ Global
 		{20CB0D7E-A9E4-40EB-A04E-73549FC3D39A}.Debug.Build.0 = Debug|Win32
 		{20CB0D7E-A9E4-40EB-A04E-73549FC3D39A}.Release.ActiveCfg = Release|Win32
 		{20CB0D7E-A9E4-40EB-A04E-73549FC3D39A}.Release.Build.0 = Release|Win32
-		{A843CB61-9C78-4D06-B1C0-BE56DCD5DD73}.Debug.ActiveCfg = Debug|Win32
-		{A843CB61-9C78-4D06-B1C0-BE56DCD5DD73}.Debug.Build.0 = Debug|Win32
-		{A843CB61-9C78-4D06-B1C0-BE56DCD5DD73}.Release.ActiveCfg = Release|Win32
-		{A843CB61-9C78-4D06-B1C0-BE56DCD5DD73}.Release.Build.0 = Release|Win32
 		{72F37CC9-5263-4BC0-B3B0-F73F7600F2C0}.Debug.ActiveCfg = Debug|Win32
 		{72F37CC9-5263-4BC0-B3B0-F73F7600F2C0}.Debug.Build.0 = Debug|Win32
 		{72F37CC9-5263-4BC0-B3B0-F73F7600F2C0}.Release.ActiveCfg = Release|Win32
 		{72F37CC9-5263-4BC0-B3B0-F73F7600F2C0}.Release.Build.0 = Release|Win32
-		{A843CB61-9C78-4D06-B1C0-BE56DCD5DD73}.Debug.ActiveCfg = Debug|Win32
-		{A843CB61-9C78-4D06-B1C0-BE56DCD5DD73}.Debug.Build.0 = Debug|Win32
-		{A843CB61-9C78-4D06-B1C0-BE56DCD5DD73}.Release.ActiveCfg = Release|Win32
-		{A843CB61-9C78-4D06-B1C0-BE56DCD5DD73}.Release.Build.0 = Release|Win32
 		{72F37CC9-5263-4BC0-B3B0-F73F7600F2C0}.Debug.ActiveCfg = Debug|Win32
 		{72F37CC9-5263-4BC0-B3B0-F73F7600F2C0}.Debug.Build.0 = Debug|Win32
 		{72F37CC9-5263-4BC0-B3B0-F73F7600F2C0}.Release.ActiveCfg = Release|Win32

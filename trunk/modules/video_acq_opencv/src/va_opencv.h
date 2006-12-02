@@ -13,7 +13,7 @@ struct CvCapture;
 
 //////////////////////////////////////////////////////////////////////////
 
-class __declspec(dllexport) vaOpenCV: public vaBase
+class __declspec(dllexport) vaOpenCV: public moduleBase
 {
 public:
 	vaOpenCV();

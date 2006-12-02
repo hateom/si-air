@@ -18,6 +18,7 @@
 #include "optform.h"
 #include "prevform.h"
 #include "mp_path.h"
+#include "mp_logger.h"
 #include "../../modules/module_base/src/status_codes.h"
 
 //////////////////////////////////////////////////////////////////////////
@@ -257,7 +258,7 @@ void MainForm::process_frame()
 	}
 	catch( ... )
 	{
-		printf( "ERROR: frame processing exception.\n" );
+		LOG( "ERROR: frame processing exception.\n" );
 		release_proc_data( &p_data );
 	}
 }
@@ -295,14 +296,14 @@ void MainForm::run()
 			result = p_data.va_base->init( 0, (char *)s.ascii() );
 			if( result != ST_OK )
 			{
-				printf( "Could not render media file.\n" );
+				LOG( "Could not render media file.\n" );
 				return;
 			}
 
 		}
 		else
 		{
-			printf( "Capturing canceled.\n" );
+			LOG( "Capturing canceled.\n" );
 			return;
 		}
 	}
@@ -311,7 +312,7 @@ void MainForm::run()
 		result = p_data.va_base->init( 0, 0 );
 		if( result != ST_OK )
 		{
-			printf( "Video Device not found.\n" );
+			LOG( "Video Device not found.\n" );
 			return;
 		}
 	}

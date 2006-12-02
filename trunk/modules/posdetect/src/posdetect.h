@@ -11,7 +11,7 @@
 
 //////////////////////////////////////////////////////////////////////////
 
-class __declspec(dllexport) cPosdetect: public pdBase
+class __declspec(dllexport) cPosdetect: public moduleBase
 {
 public:
 	cPosdetect();

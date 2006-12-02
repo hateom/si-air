@@ -1,6 +1,7 @@
 #include "mp_dllmgr.h"
 #include "../../modules/module_base/src/module_base.h"
 #include <windows.h>
+#include "mp_logger.h"
 
 //////////////////////////////////////////////////////////////////////////
 
@@ -36,29 +37,27 @@ int mpdllMgr::read_module_directory( std::string directory )
 
 	hfind = FindFirstFile( dir_ext.c_str(), &find_data );
 
-	printf( "loading modules:\n" );
-
 	do 
 	{
 		if( hfind == INVALID_HANDLE_VALUE )
 		{
-			printf( "Invalid File Handle. GetLastError reports %d\n", GetLastError() );
+			LOG( "Invalid File Handle. GetLastError reports %d\n", GetLastError() );
 			break;
 		} 
 		else 
 		{
-			printf( "* found: %s ", find_data.cFileName );
+			LOG( "* found: %s ", find_data.cFileName );
 			mp_dll_module * item = new mp_dll_module;
 			item->filename = directory + std::string("\\") + std::string(find_data.cFileName);
 			if( ( err_no = get_module_information( item ) ) == 0 )
 			{
 				list.push_back( item );
-				printf( "OK\n", item->description.c_str(), mt_description[item->type] );
+				LOG( "OK\n", item->description.c_str(), mt_description[item->type] );
 			}
 			else
 			{
 				delete item;
-				printf( "Failed! (errno: %d)\n", err_no );
+				LOG( "Failed! (errno: %d)\n", err_no );
 			}
 		}
 	} while( FindNextFile( hfind, &find_data ));

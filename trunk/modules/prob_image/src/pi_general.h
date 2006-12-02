@@ -11,7 +11,7 @@
 
 //////////////////////////////////////////////////////////////////////////
 
-class __declspec(dllexport) piGeneral: public piBase
+class __declspec(dllexport) piGeneral: public moduleBase
 {
 public:
 	piGeneral();

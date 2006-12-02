@@ -100,12 +100,12 @@ int vaOpenCV::init( int device, char * filename )
 	if( filename != NULL )
 	{
 		capture = cvCaptureFromFile( filename );
-		printf( "Capturing from file <%s> [%s]\n", filename, capture!=NULL?"OK":"!!!" );
+//		printf( "Capturing from file <%s> [%s]\n", filename, capture!=NULL?"OK":"!!!" );
 	}
 	else
 	{
 		capture = cvCaptureFromCAM( device );
-		printf( "Capturing from device <%d> [%s]\n", device, capture!=NULL?"OK":"!!!" );
+//		printf( "Capturing from device <%d> [%s]\n", device, capture!=NULL?"OK":"!!!" );
 	}
 	
 	if( !capture )

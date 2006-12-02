@@ -1,6 +1,7 @@
 //////////////////////////////////////////////////////////////////////////
 
 #include "prevform.h"
+#include "mp_logger.h"
 
 #include <qtimer.h>
 #include <qimage.h>
@@ -80,7 +81,7 @@ void PrevForm::set_video_module( vaBase * base )
 	timer = new QTimer( this );
 	connect( timer, SIGNAL(timeout()), this, SLOT(anim()));
 
-	printf( "Callback saved. Setting frame capturing...\n" );
+	LOG( "Callback saved. Setting frame capturing...\n" );
 	timer->start( 10 );
 }
 

@@ -125,9 +125,6 @@
 				RelativePath="..\module_base\src\module_base.h">
 			</File>
 			<File
-				RelativePath="..\prob_image_base\src\pi_base.h">
-			</File>
-			<File
 				RelativePath=".\src\pi_general.h">
 			</File>
 			<File

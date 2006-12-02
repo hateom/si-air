@@ -20,8 +20,8 @@ const char * modNeg::get_module_description()
 {
 	static char descritpion[] = "description";
 	return( descritpion );
-}	
-	
+}
+
 
 //////////////////////////////////////////////////////////////////////////
 
@@ -66,7 +66,7 @@ proc_data * modNeg::process_frame( proc_data * prev_frame, int * result )
 
 	*result = ST_OK;
 
-	return( &pdata );
+	return( &p_data );
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -78,9 +78,9 @@ extern "C" {
 
 //////////////////////////////////////////////////////////////////////////
 
-__declspec(dllexport) cPosdetect * export_module()
+__declspec(dllexport) moduleBase * export_module()
 {
-	return( new cPosdetect );
+	return( new modNeg );
 }
 
 //////////////////////////////////////////////////////////////////////////

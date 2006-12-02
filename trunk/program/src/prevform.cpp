@@ -74,7 +74,7 @@ void PrevForm::anim()
 
 //////////////////////////////////////////////////////////////////////////
 
-void PrevForm::set_video_module( vaBase * base )
+void PrevForm::set_video_module( moduleBase * base )
 {
 	this->base = base;
 

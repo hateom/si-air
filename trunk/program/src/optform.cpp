@@ -44,6 +44,12 @@ OptForm::OptForm( QWidget* parent, const char* name, bool modal, WFlags fl, modu
 			case PT_FLOAT:
 				sprintf( temp, "%f", (float)(*((float*)base->get_param(i)->data)) );
 				break;
+			case PT_STRING:
+				sprintf( temp, "%s", (char*)(*((char**)base->get_param(i)->data)) );
+				break;
+			default:
+				sprintf( temp, "" );
+				break;
 		}
 
 		edit[i]->setText( tr( temp ) );
@@ -93,6 +99,11 @@ void OptForm::save_conf()
 			float * ptrf;
 			ptrf = ((float*)(module->get_param(i)->data));
 			*ptrf = edit[i]->text().toFloat();
+			break;
+		case PT_STRING:
+			char ** ptrc;
+			ptrc = ((char**)(module->get_param(i)->data));
+			*ptrc = strdup( ((char*)(edit[i]->text().ascii())) );
 			break;
 		}
 	}

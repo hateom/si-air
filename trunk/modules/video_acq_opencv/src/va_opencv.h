@@ -3,7 +3,7 @@
 
 //////////////////////////////////////////////////////////////////////////
 
-#include "../../video_acq_base/src/va_base.h"
+#include "../../module_base/src/module_base.h"
 #include "../../module_base/src/types.h"
 
 //////////////////////////////////////////////////////////////////////////
@@ -25,7 +25,7 @@ public:
 	virtual int input_type();
 	virtual int output_type();
 
-	virtual int init( int device, char * filename = 0 );
+	virtual int init();
 	virtual void free();
 
 //	virtual frame_data * process_frame( int * result );
@@ -36,9 +36,8 @@ protected:
 	CvCapture * capture;
 	int alloc_mem;
 
-	int		param1;
-	float	param2;
-	long	hwnd;
+	int		device;		// device num parameter
+	char *	filename;	// when capturing from file
 };
 
 //////////////////////////////////////////////////////////////////////////

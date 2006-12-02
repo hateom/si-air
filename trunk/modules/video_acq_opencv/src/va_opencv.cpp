@@ -18,9 +18,8 @@
 
 vaOpenCV::vaOpenCV() : capture(NULL), alloc_mem(0)/*, cam_count(0)*/
 {
-	REG_PARAM( PT_INT,   param1, "1. parametr testowy", 13 );
-	REG_PARAM( PT_FLOAT, param2, "2. parametr testowy", 3.1415f );
-	REG_PARAM( PT_LONG,  hwnd,   "uchwyt okna prev", 0 );
+	REG_PARAM( PT_INT,    device,   "device no", 0 );
+	REG_PARAM( PT_STRING, filename, "filename", 0 );
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -70,7 +69,7 @@ static void cvcam_callback( IplImage * image )
 */
 //////////////////////////////////////////////////////////////////////////
 
-int vaOpenCV::init( int device, char * filename )
+int vaOpenCV::init()
 {
 	/*
 	/// load AVI from file

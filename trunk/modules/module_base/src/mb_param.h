@@ -10,6 +10,7 @@
 #define PT_LONG		 0x02
 #define PT_FLOAT	 0x03
 #define PT_DOUBLE	 0x04
+#define PT_STRING	 0x05
 
 //////////////////////////////////////////////////////////////////////////
 

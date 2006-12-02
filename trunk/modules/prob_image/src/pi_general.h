@@ -2,7 +2,7 @@
 #define __PI_GENERAL_H__
 //////////////////////////////////////////////////////////////////////////
 
-#include "../../prob_image_base/src/pi_base.h"
+#include "../../module_base/src/module_base.h"
 #include "../../module_base/src/types.h"
 
 //////////////////////////////////////////////////////////////////////////
@@ -25,6 +25,7 @@ public:
 
 	virtual proc_data * process_frame( proc_data * prev_frame, int * status );
 
+	virtual int  init();
 	virtual void free();
 
 	//virtual pi_struct * process_frame( frame_data * inFrame, int * status );

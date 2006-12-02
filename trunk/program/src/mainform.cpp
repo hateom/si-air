@@ -44,11 +44,11 @@ MainForm::MainForm( QWidget* parent, const char* name, bool modal, WFlags fl )
 	checkVI = new QCheckBox( groupBoxVI, "checkVI" );
 	checkVI->setGeometry( QRect( 10, 50, 85, 25 ) );
 	checkVI->setChecked( true );
-
+/*
 	checkAvi = new QCheckBox( groupBoxVI, "checkAvi" );
 	checkAvi->setGeometry( QRect( 100, 50, 85, 25 ) );
 	checkAvi->setChecked( true );
-
+*/
 	groupBoxPI = new QGroupBox( this, "groupBoxPI" );
 	groupBoxPI->setGeometry( QRect( 215, 10, 195, 130 ) );
 
@@ -122,7 +122,7 @@ void MainForm::languageChange()
 	checkPI->setText( tr("Preview") );
 	checkPD->setText( tr("Preview") );
 
-	checkAvi->setText( tr("From File") );
+//	checkAvi->setText( tr("From File") );
 
 	buttonVIcfg->setText( tr("Configure") );
 	buttonPIcfg->setText( tr("Configure") );
@@ -176,17 +176,17 @@ void MainForm::loadModules( const char * directory )
 			{
 			case MT_VIDEO_ACQ:
 				comboVI->insertItem( tr( mod->description.c_str() ) );
-				va_list.push_back( mgr.load_va_module( mod ) );
+				va_list.push_back( mgr.load_module( mod ) );
 				found[0] = true;
 				break;
 			case MT_PROBABILITY:
 				comboPI->insertItem( tr( mod->description.c_str() ) );
-				pi_list.push_back( mgr.load_pi_module( mod ) );
+				pi_list.push_back( mgr.load_module( mod ) );
 				found[1] = true;
 				break;
 			case MT_GESTURES:
 				comboPD->insertItem( tr( mod->description.c_str() ) );
-				pd_list.push_back( mgr.load_pd_module( mod ) );
+				pd_list.push_back( mgr.load_module( mod ) );
 				found[2] = true;
 				break;
 			}
@@ -281,40 +281,48 @@ void MainForm::run()
 	QFileDialog* fd = new QFileDialog( this, "file dialog", TRUE );
 	fd->setMode( QFileDialog::AnyFile );
 
-	if( checkAvi->isChecked() )
-	{
-		QString s = QFileDialog::getOpenFileName(
-			NULL,
-			"Videos (*.avi *.mpg *.mpeg)",
-			this,
-			"open file dialog"
-			"Choose a file" );
+//	if( checkAvi->isChecked() )
+//	{
+//		QString s = QFileDialog::getOpenFileName(
+//			NULL,
+//			"Videos (*.avi *.mpg *.mpeg)",
+//			this,
+//			"open file dialog"
+//			"Choose a file" );
 		
-		if( !s.isEmpty() )
-		{
+//		if( !s.isEmpty() )
+//		{
 
-			result = p_data.va_base->init( 0, (char *)s.ascii() );
-			if( result != ST_OK )
-			{
-				LOG( "Could not render media file.\n" );
-				return;
-			}
+//			result = p_data.va_base->init( 0, (char *)s.ascii() );
+//			result = p_data.va_base->init();
+//			if( result != ST_OK )
+//			{
+//				LOG( "Could not render media file.\n" );
+//				return;
+//			}
 
-		}
-		else
-		{
-			LOG( "Capturing canceled.\n" );
-			return;
-		}
-	}
-	else
+//		}
+//		else
+//		{
+//			LOG( "Capturing canceled.\n" );
+//			return;
+//		}
+//	}
+//	else
+//	{
+//		result = p_data.va_base->init( 0, 0 );
+//		if( result != ST_OK )
+//		{
+//			LOG( "Video Device not found.\n" );
+//			return;
+//		}
+//	}
+
+	result = p_data.va_base->init();
+	if( result != ST_OK )
 	{
-		result = p_data.va_base->init( 0, 0 );
-		if( result != ST_OK )
-		{
-			LOG( "Video Device not found.\n" );
-			return;
-		}
+		LOG( "ERROR: Could not initialize VA module!\n" );
+		return;
 	}
 
 	if( checkVI->isChecked() )

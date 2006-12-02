@@ -2,7 +2,7 @@
 #define __POSDETECT_H__
 //////////////////////////////////////////////////////////////////////////
 
-#include "../../posdetect_base/src/pd_base.h"
+#include "../../module_base/src/module_base.h"
 #include "../../module_base/src/types.h"
 
 //////////////////////////////////////////////////////////////////////////
@@ -25,6 +25,7 @@ public:
 
 	virtual proc_data * process_frame( proc_data * prev_frame, int * result );
 
+	virtual int  init();
 	virtual void free();
 
 //	virtual Tpos * calc_position( float * piTable , float maxVal, int width, int height, int * status );

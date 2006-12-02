@@ -7,7 +7,7 @@
 #include <qdialog.h>
 #include <windows.h>
 
-#include "../../modules/video_acq_base/src/va_base.h"
+#include "../../modules/module_base/src/module_base.h"
 
 //////////////////////////////////////////////////////////////////////////
 
@@ -21,7 +21,7 @@ public:
 	~PrevForm();
 
 	HWND get_handle() { return( this->QWidget::winId() ); }
-	void set_video_module( vaBase * base );
+	void set_video_module( moduleBase * base );
 
 	void render_frame( frame_data * frame );
 
@@ -30,7 +30,7 @@ protected slots:
 	virtual void anim();
 
 private:
-	vaBase * base;
+	moduleBase * base;
 	QTimer * timer;
 };
 

@@ -61,6 +61,9 @@ public:
 	/// \return opis danego modulu jako tablice znakow
 	virtual const char * get_module_description() = 0;
 
+	virtual int  init() = 0;
+	virtual void free() = 0;
+
 	/// zwraca informacja o typie modulu
 	/// \return typ modulu zadeklarowany jako MT_*
 	virtual int get_module_type() = 0;

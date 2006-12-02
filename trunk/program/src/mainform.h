@@ -9,10 +9,6 @@
 #include "mp_dllmgr.h"
 #include "prevform.h"
 
-#include "../../modules/video_acq_base/src/va_base.h"
-#include "../../modules/prob_image_base/src/pi_base.h"
-#include "../../modules/posdetect_base/src/pd_base.h"
-
 //////////////////////////////////////////////////////////////////////////
 
 class QVBoxLayout;
@@ -32,9 +28,9 @@ class QCheckBox;
 
 struct processing_data
 {
-	vaBase		* va_base;
-	piBase		* pi_base;
-	pdBase		* pd_base;
+	moduleBase		* va_base;
+	moduleBase		* pi_base;
+	moduleBase		* pd_base;
 	PrevForm	* prevForm1;
 	PrevForm	* prevForm2;
 };
@@ -61,7 +57,7 @@ public:
 	QCheckBox * checkPI;
 	QCheckBox * checkPD;
 
-	QCheckBox * checkAvi;
+//	QCheckBox * checkAvi;
 
 	QPushButton * buttonVIcfg;
 	QPushButton * buttonPIcfg;
@@ -88,9 +84,9 @@ private:
 	mpdllMgr mgr;
 	processing_data p_data;
 
-	std::vector<vaBase*>	va_list;
-	std::vector<piBase*>	pi_list;
-	std::vector<pdBase*>	pd_list;
+	std::vector<moduleBase*>	va_list;
+	std::vector<moduleBase*>	pi_list;
+	std::vector<moduleBase*>	pd_list;
 
 	void release_proc_data( processing_data * data );
 

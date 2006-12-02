@@ -144,10 +144,19 @@
 					RelativePath=".\src\moc_mainform.cpp">
 				</File>
 				<File
+					RelativePath=".\src\moc_modwidget.cpp">
+				</File>
+				<File
 					RelativePath=".\src\moc_optform.cpp">
 				</File>
 				<File
 					RelativePath=".\src\moc_prevform.cpp">
+				</File>
+				<File
+					RelativePath=".\src\modwidget.cpp">
+				</File>
+				<File
+					RelativePath=".\src\modwidget.h">
 				</File>
 				<File
 					RelativePath=".\src\optform.cpp">

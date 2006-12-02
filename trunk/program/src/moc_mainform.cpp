@@ -1,7 +1,7 @@
 /****************************************************************************
 ** MainForm meta object code from reading C++ file 'mainform.h'
 **
-** Created: Pn 27. lis 00:37:28 2006
+** Created: So 2. gru 16:41:12 2006
 **      by: The Qt MOC ($Id: moc_yacc.cpp,v 1.1.1.13 2006/05/05 17:43:42 chehrlic Exp $)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -56,23 +56,19 @@ QMetaObject* MainForm::staticMetaObject()
     static const QUMethod slot_1 = {"stop", 0, 0 };
     static const QUMethod slot_2 = {"process_frame", 0, 0 };
     static const QUMethod slot_3 = {"close_app", 0, 0 };
-    static const QUMethod slot_4 = {"configure_va_mod", 0, 0 };
-    static const QUMethod slot_5 = {"configure_pi_mod", 0, 0 };
-    static const QUMethod slot_6 = {"configure_pd_mod", 0, 0 };
-    static const QUMethod slot_7 = {"languageChange", 0, 0 };
+    static const QUMethod slot_4 = {"add_module", 0, 0 };
+    static const QUMethod slot_5 = {"languageChange", 0, 0 };
     static const QMetaData slot_tbl[] = {
 	{ "run()", &slot_0, QMetaData::Public },
 	{ "stop()", &slot_1, QMetaData::Public },
 	{ "process_frame()", &slot_2, QMetaData::Public },
 	{ "close_app()", &slot_3, QMetaData::Public },
-	{ "configure_va_mod()", &slot_4, QMetaData::Public },
-	{ "configure_pi_mod()", &slot_5, QMetaData::Public },
-	{ "configure_pd_mod()", &slot_6, QMetaData::Public },
-	{ "languageChange()", &slot_7, QMetaData::Protected }
+	{ "add_module()", &slot_4, QMetaData::Public },
+	{ "languageChange()", &slot_5, QMetaData::Protected }
     };
     metaObj = QMetaObject::new_metaobject(
 	"MainForm", parentObject,
-	slot_tbl, 8,
+	slot_tbl, 6,
 	0, 0,
 #ifndef QT_NO_PROPERTIES
 	0, 0,
@@ -97,10 +93,8 @@ bool MainForm::qt_invoke( int _id, QUObject* _o )
     case 1: stop(); break;
     case 2: process_frame(); break;
     case 3: close_app(); break;
-    case 4: configure_va_mod(); break;
-    case 5: configure_pi_mod(); break;
-    case 6: configure_pd_mod(); break;
-    case 7: languageChange(); break;
+    case 4: add_module(); break;
+    case 5: languageChange(); break;
     default:
 	return QDialog::qt_invoke( _id, _o );
     }

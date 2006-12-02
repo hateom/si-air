@@ -30,65 +30,23 @@ MainForm::MainForm( QWidget* parent, const char* name, bool modal, WFlags fl )
 	setName( "MainForm" );
 
     buttonOk = new QPushButton( this, "buttonOk" );
-    buttonOk->setGeometry( QRect( 420, 160, 195, 26 ) );
+    buttonOk->setGeometry( QRect( 420, 460, 195, 26 ) );
 
 	buttonRun = new QPushButton( this, "buttonRun" );
-	buttonRun->setGeometry( QRect( 10, 160, 195, 26 ) );
+	buttonRun->setGeometry( QRect( 10, 460, 195, 26 ) );
 
-	groupBoxVI = new QGroupBox( this, "groupBoxVI" );
-	groupBoxVI->setGeometry( QRect( 10, 10, 195, 130 ) );
+	listBox = new QListBox( this, "listBox" );
+	listBox->setGeometry( QRect( 10, 10, 220, 300 ) );
 
-	comboVI = new QComboBox( groupBoxVI, "comboVI" );
-	comboVI->setGeometry( QRect( 10, 20, 175, 25 ) );
-
-	checkVI = new QCheckBox( groupBoxVI, "checkVI" );
-	checkVI->setGeometry( QRect( 10, 50, 85, 25 ) );
-	checkVI->setChecked( true );
-/*
-	checkAvi = new QCheckBox( groupBoxVI, "checkAvi" );
-	checkAvi->setGeometry( QRect( 100, 50, 85, 25 ) );
-	checkAvi->setChecked( true );
-*/
-	groupBoxPI = new QGroupBox( this, "groupBoxPI" );
-	groupBoxPI->setGeometry( QRect( 215, 10, 195, 130 ) );
-
-	comboPI = new QComboBox( groupBoxPI, "comboPI" );
-	comboPI->setGeometry( QRect( 10, 20, 175, 25 ) );
-
-	checkPI = new QCheckBox( groupBoxPI, "checkPI" );
-	checkPI->setGeometry( QRect( 10, 50, 175, 25 ) );
-	checkPI->setChecked( true );
-
-	groupBoxPD = new QGroupBox( this, "groupBoxPD" );
-	groupBoxPD->setGeometry( QRect( 420, 10, 195, 130 ) );
-
-	comboPD = new QComboBox( groupBoxPD, "comboPD" );
-	comboPD->setGeometry( QRect( 10, 20, 175, 25 ) );
-
-	checkPD = new QCheckBox( groupBoxPD, "checkPD" );
-	checkPD->setGeometry( QRect( 10, 50, 175, 25 ) );
-	checkPD->setChecked( false );
-
-	buttonVIcfg = new QPushButton( groupBoxVI, "buttonVIcfg" );
-	buttonVIcfg->setGeometry( QRect( 10, 80, 175, 26 ) );
-
-	buttonPIcfg = new QPushButton( groupBoxPI, "buttonPIcfg" );
-	buttonPIcfg->setGeometry( QRect( 10, 80, 175, 26 ) );
-
-	buttonPDcfg = new QPushButton( groupBoxPD, "buttonPDcfg" );
-	buttonPDcfg->setGeometry( QRect( 10, 80, 175, 26 ) );
-
-	connect( buttonVIcfg, SIGNAL(clicked()), this, SLOT(configure_va_mod()) );
-	connect( buttonPIcfg, SIGNAL(clicked()), this, SLOT(configure_pi_mod()) );
-	connect( buttonPDcfg, SIGNAL(clicked()), this, SLOT(configure_pd_mod()) );
-
-	memset( &p_data, 0, sizeof(processing_data) );
+	buttonAdd= new QPushButton( this, "buttonAdd" );
+	buttonAdd->setGeometry( QRect( 10, 320, 220, 26 ) );
 
 	connect( buttonOk, SIGNAL(clicked()), this, SLOT(close_app()) );
 	connect( buttonRun, SIGNAL(clicked()), this, SLOT(run()) );
+	connect( buttonAdd, SIGNAL(clicked()), this, SLOT(add_module()) );
 
     languageChange();
-    resize( QSize(630, 200).expandedTo(minimumSizeHint()) );
+    resize( QSize(700, 500).expandedTo(minimumSizeHint()) );
     clearWState( WState_Polished );
 }
 
@@ -96,7 +54,6 @@ MainForm::MainForm( QWidget* parent, const char* name, bool modal, WFlags fl )
 
 void MainForm::close_app()
 {
-	release_proc_data( &p_data );
 	close();
 }
 
@@ -112,51 +69,49 @@ MainForm::~MainForm()
 void MainForm::languageChange()
 {
     setCaption( tr( "SI Module List" ) );
-	groupBoxVI->setTitle( tr( "Video ACQ" ) );
-	groupBoxPI->setTitle( tr( "Probability M" ) );
-	groupBoxPD->setTitle( tr( "Gestures and Position" ) );
     buttonOk->setText( tr( "OK" ) );
 	buttonRun->setText( tr( "Run!" ) );
-
-	checkVI->setText( tr("Preview") );
-	checkPI->setText( tr("Preview") );
-	checkPD->setText( tr("Preview") );
-
-//	checkAvi->setText( tr("From File") );
-
-	buttonVIcfg->setText( tr("Configure") );
-	buttonPIcfg->setText( tr("Configure") );
-	buttonPDcfg->setText( tr("Configure") );
+	buttonAdd->setText( tr( "Add Module" ) );
 }
 
 //////////////////////////////////////////////////////////////////////////
 
-void MainForm::configure_va_mod()
+void MainForm::add_module()
 {
-	OptForm * opt_form;
+	LOG( "adding module %d <%s>\n", listBox->currentItem(), mod_list[listBox->currentItem()]->get_module_description() );
 
-	opt_form = new OptForm( 0, 0, TRUE, 0, va_list[comboVI->currentItem()] );
-	opt_form->show();
-}
+	long id = listBox->currentItem();
+	moduleBase * module = mod_list[id];
+	modWidget * wdg, * prev;
 
-//////////////////////////////////////////////////////////////////////////
+	if( mod_widget.empty() )
+	{
+		if( module->input_type() != MT_NONE )
+		{
+			LOG( "ERROR: This module cannot be used as first processing module!\n" );
+			return;
+		}
+	}
+	else
+	{
+		if( mod_widget[mod_widget.size()-1]->getModule()->output_type() != module->input_type() )
+		{
+			LOG( "ERROR: Module mismatch error!\n" );
+			return;
+		}
+	}
 
-void MainForm::configure_pi_mod()
-{
-	OptForm * opt_form;
+	prev = mod_widget.size()>0?mod_widget[mod_widget.size()-1]:NULL;
 
-	opt_form = new OptForm( 0, 0, TRUE, 0, pi_list[comboPI->currentItem()] );
-	opt_form->show();
-}
+	int start_x = 240;
+	int wd_no = (int)mod_widget.size();
 
-//////////////////////////////////////////////////////////////////////////
+	wdg = new modWidget( id, module, prev, this, "modWidget" );
+	wdg->setGeometry( QRect( start_x+wd_no*(140+10), 10, 140, 110 ) );
 
-void MainForm::configure_pd_mod()
-{
-	OptForm * opt_form;
+	wdg->show();
 
-	opt_form = new OptForm( 0, 0, TRUE, 0, pd_list[comboPD->currentItem()] );
-	opt_form->show();
+	mod_widget.push_back( wdg );
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -171,41 +126,9 @@ void MainForm::loadModules( const char * directory )
 		mp_dll_module * mod = mgr.get_module_info( i );
 		if( mod )
 		{
-//			listModule->insertItem( tr( mod->filename.c_str() ) );
-			switch( mod->type )
-			{
-			case MT_VIDEO_ACQ:
-				comboVI->insertItem( tr( mod->description.c_str() ) );
-				va_list.push_back( mgr.load_module( mod ) );
-				found[0] = true;
-				break;
-			case MT_PROBABILITY:
-				comboPI->insertItem( tr( mod->description.c_str() ) );
-				pi_list.push_back( mgr.load_module( mod ) );
-				found[1] = true;
-				break;
-			case MT_GESTURES:
-				comboPD->insertItem( tr( mod->description.c_str() ) );
-				pd_list.push_back( mgr.load_module( mod ) );
-				found[2] = true;
-				break;
-			}
+			mod_list.push_back( mgr.load_module( mod ) );
+			listBox->insertItem( tr( mod->description.c_str() ) );
 		}
-	}
-
-	if( !found[0] )
-	{
-		comboVI->insertItem( tr( "!!! Not Found !!!" ) );
-	}
-
-	if( !found[1] )
-	{
-		comboPI->insertItem( tr( "!!! Not Found !!!") );
-	}
-
-	if( !found[2] )
-	{
-		comboPD->insertItem( tr( "!!! Not Found !!!") );
 	}
 }
 
@@ -214,52 +137,39 @@ void MainForm::loadModules( const char * directory )
 void MainForm::process_frame()
 {
 	int result;
-	proc_data * data1, * data2, * data3;
-	pd_data * pos;
+	moduleBase * mod;
+	proc_data * arg = NULL, * res = NULL;
 
 	try 
 	{
-		data1 = p_data.va_base->process_frame( NULL, &result );
-		if( result != ST_OK )
+		for( int i=0; i<(int)mod_widget.size(); ++i )
 		{
-			release_proc_data( &p_data );
-			return;
-		}
+			mod = mod_widget[i]->getModule();
+			if( !mod ) throw -1;
+			res = mod->process_frame( arg, &result );
 
-		data2 = p_data.pi_base->process_frame( data1, &result );
-		data3 = p_data.pd_base->process_frame( data2, &result );
-
-		pos = data3->position;
-
-		/// rysuj kwadrat markera
-
-		if( checkPD->isChecked() )
-		{
-			if( pos->x < 10 ) pos->x = 10;
-			if( pos->y < 10 ) pos->y = 10;
-			if( pos->x > (int)data1->frame->width-10 ) pos->x = data1->frame->width-10;
-			if( pos->y > (int)data1->frame->height-10 ) pos->y = data1->frame->height-10;
-
-			for( int i=pos->x-10; i<pos->x+10; ++i )
+			if( result != ST_OK ) 
 			{
-				for( int j=pos->y-10; j<pos->y+10; ++j )
-				{
-					data1->frame->bits[(i + j * data1->frame->width)*4+0] = 255;
-					data1->frame->bits[(i + j * data1->frame->width)*4+1] = 0;
-					data1->frame->bits[(i + j * data1->frame->width)*4+2] = 0;
-				}
+				stop();
+				return;
 			}
+
+			if( mod_widget[i]->has_preview() )
+			{
+				mod_widget[i]->get_preview()->render_frame( res->frame );
+			}
+
+			arg = res;
 		}
-
-		/// end of drawing
-
-		if( p_data.prevForm1 ) p_data.prevForm1->render_frame( data1->frame );
-		if( p_data.prevForm2 ) p_data.prevForm2->render_frame( data2->frame );
+	}
+	catch( int err )
+	{
+		LOG( "ERROR: Internal error <%d>\n", err );
 	}
 	catch( ... )
 	{
 		LOG( "ERROR: frame processing exception.\n" );
-		release_proc_data( &p_data );
+		release_proc_data();
 	}
 }
 
@@ -267,76 +177,32 @@ void MainForm::process_frame()
 
 void MainForm::run()
 {
-	int va_item, pi_item, pd_item;
 	int result;
 
-	va_item = comboVI->currentItem();
-	pi_item = comboPI->currentItem();
-	pd_item = comboPD->currentItem();
+	moduleBase * mod;
+	modWidget * wdg;
 
-	p_data.va_base = va_list[va_item];
-	p_data.pi_base = pi_list[pi_item];
-	p_data.pd_base = pd_list[pd_item];
-
-	QFileDialog* fd = new QFileDialog( this, "file dialog", TRUE );
-	fd->setMode( QFileDialog::AnyFile );
-
-//	if( checkAvi->isChecked() )
-//	{
-//		QString s = QFileDialog::getOpenFileName(
-//			NULL,
-//			"Videos (*.avi *.mpg *.mpeg)",
-//			this,
-//			"open file dialog"
-//			"Choose a file" );
-		
-//		if( !s.isEmpty() )
-//		{
-
-//			result = p_data.va_base->init( 0, (char *)s.ascii() );
-//			result = p_data.va_base->init();
-//			if( result != ST_OK )
-//			{
-//				LOG( "Could not render media file.\n" );
-//				return;
-//			}
-
-//		}
-//		else
-//		{
-//			LOG( "Capturing canceled.\n" );
-//			return;
-//		}
-//	}
-//	else
-//	{
-//		result = p_data.va_base->init( 0, 0 );
-//		if( result != ST_OK )
-//		{
-//			LOG( "Video Device not found.\n" );
-//			return;
-//		}
-//	}
-
-	result = p_data.va_base->init();
-	if( result != ST_OK )
+	for( int i=0; i<(int)mod_widget.size(); ++i )
 	{
-		LOG( "ERROR: Could not initialize VA module!\n" );
-		return;
-	}
+		wdg = mod_widget[i];
+		mod = wdg->getModule();
+		if( !mod ) return;
 
-	if( checkVI->isChecked() )
-	{
-		p_data.prevForm1 = new PrevForm();
-		p_data.prevForm1->show();
-		p_data.prevForm1->move( QPoint( 100, 100 ) );
-	}
+		result = mod->init();
 
-	if( checkPI->isChecked() )
-	{
-		p_data.prevForm2 = new PrevForm();
-		p_data.prevForm2->show();
-		p_data.prevForm2->move( QPoint( 500, 100 ) );
+		if( result != ST_OK )
+		{
+			LOG( "ERROR: Initialization module error <%d>!\n", i );
+			return;
+		}
+
+		if( wdg->has_preview() )
+		{
+			PrevForm * pf;
+			pf = new PrevForm();
+			wdg->set_preview( pf );
+			pf->show();
+		}
 	}
 
 	timer = new QTimer( this );
@@ -353,15 +219,13 @@ void MainForm::run()
 
 void MainForm::stop()
 {
-	release_proc_data( &p_data );
+	release_proc_data();
 }
 
 //////////////////////////////////////////////////////////////////////////
 
-void MainForm::release_proc_data( processing_data * data )
+void MainForm::release_proc_data()
 {
-	if( !data ) return;
-
 	if( timer )
 	{
 		timer->stop();
@@ -369,39 +233,18 @@ void MainForm::release_proc_data( processing_data * data )
 		timer = NULL;
 	}
 
-	if( data->va_base )
-	{
-		data->va_base->free();
-//		delete data->va_base;
-		data->va_base = NULL;
-	}
+	modWidget * wdg;
 
-	if( data->pi_base )
+	for( int i=0; i<(int)mod_widget.size(); ++i )
 	{
-		data->pi_base->free();
-//		delete data->pi_base;
-		data->pi_base = NULL;
-	}
-
-	if( data->pd_base )
-	{
-		data->pd_base->free();
-//		delete data->pd_base;
-		data->pd_base = NULL;
-	}
-
-	if( data->prevForm1 )
-	{
-		data->prevForm1->close();
-		delete data->prevForm1;
-		data->prevForm1 = NULL;
-	}
-
-	if( data->prevForm2 )
-	{
-		data->prevForm2->close();
-		delete data->prevForm2;
-		data->prevForm2 = NULL;
+		wdg = mod_widget[i];
+		if( wdg->has_preview() )
+		{
+			wdg->get_preview()->close();
+			delete wdg->get_preview();
+			wdg->set_preview( NULL );
+		}
+		wdg->getModule()->free();
 	}
 
 	connect( buttonRun, SIGNAL(clicked()), this, SLOT(run()) );

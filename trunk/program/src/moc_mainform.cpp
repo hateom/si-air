@@ -1,7 +1,7 @@
 /****************************************************************************
 ** MainForm meta object code from reading C++ file 'mainform.h'
 **
-** Created: So 2. gru 16:41:12 2006
+** Created: So 2. gru 17:35:19 2006
 **      by: The Qt MOC ($Id: moc_yacc.cpp,v 1.1.1.13 2006/05/05 17:43:42 chehrlic Exp $)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -57,18 +57,25 @@ QMetaObject* MainForm::staticMetaObject()
     static const QUMethod slot_2 = {"process_frame", 0, 0 };
     static const QUMethod slot_3 = {"close_app", 0, 0 };
     static const QUMethod slot_4 = {"add_module", 0, 0 };
-    static const QUMethod slot_5 = {"languageChange", 0, 0 };
+    static const QUParameter param_slot_5[] = {
+	{ 0, &static_QUType_ptr, "QListBoxItem", QUParameter::In }
+    };
+    static const QUMethod slot_5 = {"lb_selected", 1, param_slot_5 };
+    static const QUMethod slot_6 = {"languageChange", 0, 0 };
+    static const QUMethod slot_7 = {"remove_path", 0, 0 };
     static const QMetaData slot_tbl[] = {
 	{ "run()", &slot_0, QMetaData::Public },
 	{ "stop()", &slot_1, QMetaData::Public },
 	{ "process_frame()", &slot_2, QMetaData::Public },
 	{ "close_app()", &slot_3, QMetaData::Public },
 	{ "add_module()", &slot_4, QMetaData::Public },
-	{ "languageChange()", &slot_5, QMetaData::Protected }
+	{ "lb_selected(QListBoxItem*)", &slot_5, QMetaData::Public },
+	{ "languageChange()", &slot_6, QMetaData::Protected },
+	{ "remove_path()", &slot_7, QMetaData::Protected }
     };
     metaObj = QMetaObject::new_metaobject(
 	"MainForm", parentObject,
-	slot_tbl, 6,
+	slot_tbl, 8,
 	0, 0,
 #ifndef QT_NO_PROPERTIES
 	0, 0,
@@ -94,7 +101,9 @@ bool MainForm::qt_invoke( int _id, QUObject* _o )
     case 2: process_frame(); break;
     case 3: close_app(); break;
     case 4: add_module(); break;
-    case 5: languageChange(); break;
+    case 5: lb_selected((QListBoxItem*)static_QUType_ptr.get(_o+1)); break;
+    case 6: languageChange(); break;
+    case 7: remove_path(); break;
     default:
 	return QDialog::qt_invoke( _id, _o );
     }

@@ -85,7 +85,7 @@ proc_data * cPosdetect::process_frame( proc_data * prev_frame, int * result )
 	piTable = prev_frame->prob;
 
 	int xs=0, xk=width, ys=0, yk=height, ObjHeight, ObjWidth,s=0;
-	float xc, yc;
+	float xc=0.0f, yc=0.0f;
 	for (int k=0;k<2;k++)
 	{
 		if(k)
@@ -254,7 +254,7 @@ proc_data * cPosdetect::process_frame( proc_data * prev_frame, int * result )
 		tan_fi =((float)Dy)/((float)Dx);
 
 	pos.gesture=GESTURE_NULL;
-	pos.angle=tan_fi;
+	pos.angle=0.0f;
 	pos.x=xc;
 	pos.y=yc;
 	*result = ST_OK;

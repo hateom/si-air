@@ -5,6 +5,7 @@
 
 #include <qvariant.h>
 #include <qdialog.h>
+#include <vector>
 #include "../../modules/module_base/src/module_base.h"
 
 //////////////////////////////////////////////////////////////////////////
@@ -23,7 +24,6 @@ public:
 	~OptForm();
 
 	QGroupBox * groupBox;
-	QTextEdit ** edit;
 
 protected slots:
 	virtual void save_conf();
@@ -31,6 +31,7 @@ protected slots:
 
 private:
 	moduleBase * module;
+	std::vector<QWidget*> wdg_list;
 };
 
 //////////////////////////////////////////////////////////////////////////

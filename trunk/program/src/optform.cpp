@@ -6,6 +6,7 @@
 #include <qtextedit.h>
 #include <qlabel.h>
 #include <qpushbutton.h>
+#include "fnwidget.h"
 
 //////////////////////////////////////////////////////////////////////////
 
@@ -23,8 +24,9 @@ OptForm::OptForm( QWidget* parent, const char* name, bool modal, WFlags fl, modu
 	groupBox->setGeometry( QRect( 10, 10, 340, space_height ) );
 
 	QLabel ** label;
+	QTextEdit * edt;
+	fnWidget * fnw;
 
-	edit = new QTextEdit*[pcount];
 	label = new QLabel*[pcount];
 
 	char temp[128] = "";
@@ -32,27 +34,45 @@ OptForm::OptForm( QWidget* parent, const char* name, bool modal, WFlags fl, modu
 	{
 		temp[0] = (char)('a'+i);
 		temp[1] = '\0';
-		edit[i] = new QTextEdit( groupBox, tr("param_edit_") + tr(temp) );
-		edit[i]->setGeometry( QRect( 100, 15+i*30, 220, 25 ) );
-
+		
 		switch( base->get_param(i)->type )
 		{
 			case PT_INT:
 			case PT_LONG:
+				edt = new QTextEdit( groupBox, tr("param_edit_") + tr(temp) );
+				edt->setGeometry( QRect( 100, 15+i*30, 220, 25 ) );
+				wdg_list.push_back( edt );
 				sprintf( temp, "%d", (int)(*((int*)base->get_param(i)->data)) );
+				edt->setText( tr( temp ) );
 				break;
 			case PT_FLOAT:
+				edt = new QTextEdit( groupBox, tr("param_edit_") + tr(temp) );
+				edt->setGeometry( QRect( 100, 15+i*30, 220, 25 ) );
+				wdg_list.push_back( edt );
 				sprintf( temp, "%f", (float)(*((float*)base->get_param(i)->data)) );
+				edt->setText( tr( temp ) );
 				break;
 			case PT_STRING:
+				edt = new QTextEdit( groupBox, tr("param_edit_") + tr(temp) );
+				edt->setGeometry( QRect( 100, 15+i*30, 220, 25 ) );
+				wdg_list.push_back( edt );
 				sprintf( temp, "%s", (char*)(*((char**)base->get_param(i)->data)) );
+				edt->setText( tr( temp ) );
+				break;
+			case PT_FILENAME:
+				fnw = new fnWidget( groupBox, tr("param_fnw_") + tr(temp) );
+				fnw->setGeometry( QRect( 100, 15+i*30, 220, 25 ) );
+				fnw->show();
+				wdg_list.push_back( fnw );
+				sprintf( temp, "%s", (char*)(*((char**)base->get_param(i)->data)) );
+				fnw->setText( temp );
 				break;
 			default:
 				sprintf( temp, "" );
 				break;
 		}
 
-		edit[i]->setText( tr( temp ) );
+		
 
 		label[i] = new QLabel( groupBox, tr(base->get_param(i)->name) );
 		label[i]->setGeometry( QRect( 10, 15+i*30, 90, 25 ) );
@@ -93,17 +113,22 @@ void OptForm::save_conf()
 		case PT_LONG:
 			long * ptrl;
 			ptrl = ((long*)(module->get_param(i)->data));
-			*ptrl = edit[i]->text().toLong();
+			*ptrl = ((QTextEdit*)(wdg_list[i]))->text().toLong();
 			break;
 		case PT_FLOAT:
 			float * ptrf;
 			ptrf = ((float*)(module->get_param(i)->data));
-			*ptrf = edit[i]->text().toFloat();
+			*ptrf = ((QTextEdit*)(wdg_list[i]))->text().toFloat();
 			break;
 		case PT_STRING:
 			char ** ptrc;
 			ptrc = ((char**)(module->get_param(i)->data));
-			*ptrc = strdup( ((char*)(edit[i]->text().ascii())) );
+			*ptrc = strdup( ((char*)(((QTextEdit*)(wdg_list[i]))->text().ascii())) );
+			break;
+		case PT_FILENAME:
+			char ** ptrfn;
+			ptrfn = ((char**)(module->get_param(i)->data));
+			*ptrfn = strdup( ((char*)(((fnWidget*)(wdg_list[i]))->get_filename().ascii())) );
 			break;
 		}
 	}

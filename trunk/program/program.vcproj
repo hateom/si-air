@@ -135,10 +135,19 @@
 				Name="qt"
 				Filter="">
 				<File
+					RelativePath=".\src\fnwidget.cpp">
+				</File>
+				<File
+					RelativePath=".\src\fnwidget.h">
+				</File>
+				<File
 					RelativePath=".\src\mainform.cpp">
 				</File>
 				<File
 					RelativePath=".\src\mainform.h">
+				</File>
+				<File
+					RelativePath=".\src\moc_fnwidget.cpp">
 				</File>
 				<File
 					RelativePath=".\src\moc_mainform.cpp">

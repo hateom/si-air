@@ -62,7 +62,7 @@ int modNeg::output_type()
 
 proc_data * modNeg::process_frame( proc_data * prev_frame, int * result )
 {
-	static proc_data p_data = { 0, 0, 0 };
+	static proc_data p_data = { 0, 0, 0, 0 };
 	static frame_data frame;
 
 	frame.depth = 4;
@@ -91,6 +91,7 @@ proc_data * modNeg::process_frame( proc_data * prev_frame, int * result )
 
 	*result = ST_OK;
 
+	p_data.input_frame = prev_frame->input_frame;
 	p_data.frame = &frame;
 
 	return( &p_data );

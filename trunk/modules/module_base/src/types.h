@@ -52,6 +52,7 @@ struct pd_data
 /// Struktura opisuje dane ktore sa zwracane przez moduly
 struct proc_data
 {
+	frame_data  *	input_frame;
 	frame_data	*	frame;
 	pd_data		*	position;
 	float		*	prob;

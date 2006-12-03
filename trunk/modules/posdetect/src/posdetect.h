@@ -30,7 +30,11 @@ public:
 
 //	virtual Tpos * calc_position( float * piTable , float maxVal, int width, int height, int * status );
 
+private:
+	void draw_frame_marker( frame_data * frame, int posx, int posy );
+
 protected:
+	int draw_marker;
 	int or_mask_size;
 	int temp_param;
 	int alloc_mem;

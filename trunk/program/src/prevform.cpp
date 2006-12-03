@@ -37,6 +37,8 @@ void PrevForm::languageChange()
 
 void PrevForm::render_frame( frame_data * frame )
 {
+	if( !frame || !frame->bits ) return;
+
 	resize( QSize( frame->width, frame->height ).expandedTo(minimumSizeHint()) );
 	QImage img( (uchar*)frame->bits, frame->width, frame->height, 32, NULL, 256, QImage::LittleEndian );
 	QPainter painter( this );

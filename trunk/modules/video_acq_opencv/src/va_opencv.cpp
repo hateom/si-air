@@ -117,82 +117,6 @@ int vaOpenCV::init()
 
 //////////////////////////////////////////////////////////////////////////
 
-#if 0
-
-frame_data * vaOpenCV::process_frame( int * result )
-{
-	if( !capture ) 
-	{
-		*result = ST_DEVICE_NOT_FOUND;
-		return( NULL );
-	}
-
-
-	IplImage * frame = cvQueryFrame( capture );
-	if( !frame )
-	{
-		*result = ST_FRAME_ERROR;
-		return( NULL );
-	}
-
-/*
-	if( !current_frame )
-	{
-		*result = -1;
-		return( NULL );
-	}
-
-	IplImage * frame = current_frame;
-*/
-	static frame_data static_frame;
-
-	static_frame.depth = 4; //(3*frame->depth)/8;
-	static_frame.width = frame->width;
-	static_frame.height = frame->height;
-
-	if( alloc_mem == 0 )
-	{
-		alloc_mem = static_frame.depth*static_frame.height*static_frame.width;
-		static_frame.bits = new unsigned char[alloc_mem];
-	}
-	else
-	{
-		if( alloc_mem != frame->depth*frame->height*frame->width )
-		{
-			delete [] static_frame.bits;
-			alloc_mem = static_frame.depth*static_frame.height*static_frame.width;
-			static_frame.bits = new unsigned char[alloc_mem];
-		}
-	}
-
-//	memcpy( static_frame.bits, frame->imageData, alloc_mem );
-
-/*	for( int i=0; i<alloc_mem; ++i ) 
-	{
-		static_frame.bits[i] = frame->imageData[i];
-	}	
-*/
-
-	for( int x=0; x<(int)static_frame.width; ++x )
-	{
-		for( int y=0; y<(int)static_frame.height; ++y )
-		{
-			static_frame.bits[(x+(static_frame.height-y-1)*static_frame.width)*4+0] = frame->imageData[(x+y*static_frame.width)*3+0];
-			static_frame.bits[(x+(static_frame.height-y-1)*static_frame.width)*4+1] = frame->imageData[(x+y*static_frame.width)*3+1];
-			static_frame.bits[(x+(static_frame.height-y-1)*static_frame.width)*4+2] = frame->imageData[(x+y*static_frame.width)*3+2];
-			static_frame.bits[(x+(static_frame.height-y-1)*static_frame.width)*4+3] = 0;
-		}
-	}
-
-	*result = ST_OK;
-
-	return( &static_frame );
-}
-
-#endif
-
-//////////////////////////////////////////////////////////////////////////
-
 proc_data * vaOpenCV::process_frame( proc_data * prev_frame, int * result )
 {
 	if( !capture ) 
@@ -209,17 +133,8 @@ proc_data * vaOpenCV::process_frame( proc_data * prev_frame, int * result )
 		return( NULL );
 	}
 
-	/*
-	if( !current_frame )
-	{
-	*result = -1;
-	return( NULL );
-	}
-
-	IplImage * frame = current_frame;
-	*/
 	static frame_data static_frame;
-	static proc_data p_data = { 0, 0, 0 };
+	static proc_data p_data = { 0, 0, 0, 0 };
 
 	static_frame.depth = 4; //(3*frame->depth)/8;
 	static_frame.width = frame->width;
@@ -261,6 +176,7 @@ proc_data * vaOpenCV::process_frame( proc_data * prev_frame, int * result )
 
 	*result = ST_OK;
 
+	p_data.input_frame = &static_frame;
 	p_data.frame = &static_frame;
 
 	return( &p_data );

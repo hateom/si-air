@@ -18,9 +18,27 @@
 
 //////////////////////////////////////////////////////////////////////////
 
-cPosdetect::cPosdetect()
+#define MARKER_W 9
+#define MARKER_H 9
+
+static unsigned char marker[] = {
+	  0,   0,   0,    0,   0,   0,    0,   0,   0,  255,   0,   0,  255, 255, 255,  255,   0,   0,    0,   0,   0,    0,   0,   0,    0,   0,   0,
+	  0,   0,   0,    0,   0,   0,    0,   0,   0,  255,   0,   0,  255, 255, 255,  255,   0,   0,    0,   0,   0,    0,   0,   0,    0,   0,   0,
+	  0,   0,   0,    0,   0,   0,    0,   0,   0,  255,   0,   0,  255, 255, 255,  255,   0,   0,    0,   0,   0,    0,   0,   0,    0,   0,   0,
+	255,   0,   0,  255,   0,   0,  255,   0,   0,  255,   0,   0,  255, 255, 255,  255,   0,   0,  255,   0,   0,  255,   0,   0,  255,   0,   0,
+	255, 255, 255,  255, 255, 255,  255, 255, 255,  255, 255, 255,  255, 255, 255,  255, 255, 255,  255, 255, 255,  255, 255, 255,  255, 255, 255,
+	255,   0,   0,  255,   0,   0,  255,   0,   0,  255,   0,   0,  255, 255, 255,  255,   0,   0,  255,   0,   0,  255,   0,   0,  255,   0,   0,
+	  0,   0,   0,    0,   0,   0,    0,   0,   0,  255,   0,   0,  255, 255, 255,  255,   0,   0,    0,   0,   0,    0,   0,   0,    0,   0,   0,
+	  0,   0,   0,    0,   0,   0,    0,   0,   0,  255,   0,   0,  255, 255, 255,  255,   0,   0,    0,   0,   0,    0,   0,   0,    0,   0,   0,
+	  0,   0,   0,    0,   0,   0,    0,   0,   0,  255,   0,   0,  255, 255, 255,  255,   0,   0,    0,   0,   0,    0,   0,   0,    0,   0,   0
+};
+
+//////////////////////////////////////////////////////////////////////////
+
+cPosdetect::cPosdetect() : alloc_mem(0)
 {
 	REG_PARAM( PT_INT, or_mask_size, "Size of the orientation mask", 4 );
+	REG_PARAM( PT_INT, draw_marker,  "Draw marker to the output", 0 );
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -64,7 +82,7 @@ int cPosdetect::output_type()
 proc_data * cPosdetect::process_frame( proc_data * prev_frame, int * result )
 {
 	static pd_data pos;
-	static proc_data p_data = { 0, 0, 0 };
+	static proc_data p_data = { 0, 0, 0, 0 };
 
 	float M00;
 	float M10;
@@ -259,9 +277,69 @@ proc_data * cPosdetect::process_frame( proc_data * prev_frame, int * result )
 	pos.y=yc;
 	*result = ST_OK;
 
+	/// dilz add
+
+	static frame_data frame = { 0, 0, 0, 0 };
+
+	if( draw_marker )
+	{
+
+		frame.depth = 4; //(3*frame->depth)/8;
+		frame.width = prev_frame->input_frame->width;
+		frame.height = prev_frame->input_frame->height;
+
+		if( alloc_mem == 0 )
+		{
+			alloc_mem = frame.depth*frame.height*frame.width;
+			frame.bits = new unsigned char[alloc_mem];
+		}
+		else
+		{
+			if( alloc_mem != frame.depth*frame.height*frame.width )
+			{
+				delete [] frame.bits;
+				alloc_mem = frame.depth*frame.height*frame.width;
+				frame.bits = new unsigned char[alloc_mem];
+			}
+		}
+
+		memcpy( frame.bits, prev_frame->input_frame->bits, frame.width*frame.height*frame.depth );
+
+		draw_frame_marker( &frame, pos.x, pos.y );
+	}
+
+	/// ---
+
+	p_data.input_frame = prev_frame->input_frame;
+	p_data.frame = &frame;
 	p_data.position = &pos;
 
 	return ( &p_data );
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+void cPosdetect::draw_frame_marker( frame_data * frame, int posx, int posy )
+{
+	if( posx < 0 ) posx = 0;
+	if( posy < 0 ) posy = 0;
+
+	if( posx > (int)frame->width-MARKER_W-1 ) posx = frame->width-MARKER_W-1;
+	if( posy > (int)frame->height-MARKER_H-1 ) posy = frame->height-MARKER_H-1;
+
+
+	for( int x=0; x<MARKER_W; ++x )
+	{
+		for( int y=0; y<MARKER_H; ++y )
+		{
+			if( marker[(x+y*MARKER_W)*3+0] != 0 )
+			{
+				frame->bits[(posx+x+(posy+y)*frame->width)*4+0] = marker[(x+y*MARKER_W)*3+0];
+				frame->bits[(posx+x+(posy+y)*frame->width)*4+1] = marker[(x+y*MARKER_W)*3+1];
+				frame->bits[(posx+x+(posy+y)*frame->width)*4+2] = marker[(x+y*MARKER_W)*3+2];
+			}
+		}
+	}
 }
 
 //////////////////////////////////////////////////////////////////////////

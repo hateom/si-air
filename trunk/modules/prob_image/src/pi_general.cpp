@@ -81,7 +81,7 @@ proc_data * piGeneral::process_frame( proc_data * prev_frame, int * status )
 	unsigned int height=inFrame->height, width=inFrame->width, depth = inFrame->depth;
 
 	static frame_data static_frame = { 0, 0, 0, 0 };
-	static proc_data p_data = { 0, 0, 0 };
+	static proc_data p_data = { 0, 0, 0, 0 };
 	static float * piTable = NULL;
 
 	static_frame.depth = 4;
@@ -139,6 +139,7 @@ proc_data * piGeneral::process_frame( proc_data * prev_frame, int * status )
 
 	// kopiowanie do struktury i zwrocenie
 
+	p_data.input_frame = prev_frame->input_frame;
 	p_data.frame = &static_frame;
 	p_data.prob = piTable;
 

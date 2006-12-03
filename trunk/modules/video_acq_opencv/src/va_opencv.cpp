@@ -96,7 +96,7 @@ int vaOpenCV::init()
 */
 
 	if( capture != NULL ) free();
-	if( filename != NULL )
+	if( ( filename != NULL ) && ( strcmp( filename, "" ) != 0 ) )
 	{
 		capture = cvCaptureFromFile( filename );
 //		printf( "Capturing from file <%s> [%s]\n", filename, capture!=NULL?"OK":"!!!" );

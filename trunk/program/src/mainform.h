@@ -57,6 +57,7 @@ protected slots:
 
 private:
 	mpdllMgr mgr;
+	int prv_wnd;
 
 	std::vector<moduleBase*>	mod_list;
 	std::vector<modWidget*>		mod_widget;

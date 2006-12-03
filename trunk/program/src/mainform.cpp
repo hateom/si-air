@@ -24,7 +24,7 @@
 //////////////////////////////////////////////////////////////////////////
 
 MainForm::MainForm( QWidget* parent, const char* name, bool modal, WFlags fl )
-    : QDialog( parent, name, modal, fl ), timer(NULL)
+    : QDialog( parent, name, modal, fl ), timer(NULL), prv_wnd(0)
 {
     if ( !name )
 	setName( "MainForm" );
@@ -125,8 +125,16 @@ void MainForm::add_module()
 	int start_x = 240;
 	int wd_no = (int)mod_widget.size();
 
+	int poss[] = { 
+		240, 10,   240+150,  10,   240+300,   10,  
+		240, 130,  240+150,  130,  240+300,  130,  
+		240, 250,  240+150,  250,  240+300,  250,
+		240, 370,  240+150,  370,  240+300,  370
+	};
+
 	wdg = new modWidget( id, module, prev, this, "modWidget" );
-	wdg->setGeometry( QRect( start_x+wd_no*(140+10), 10, 140, 110 ) );
+	//wdg->setGeometry( QRect( start_x+wd_no*(140+10), 10, 140, 110 ) );
+	wdg->setGeometry( QRect( poss[wd_no*2], poss[wd_no*2+1], 140, 110 ) );
 
 	wdg->show();
 
@@ -208,6 +216,21 @@ void MainForm::run()
 	moduleBase * mod;
 	modWidget * wdg;
 
+	int poss[] = {
+		50,     100,
+		50+330, 100,
+		50+660, 100,
+		50+990, 100,
+		50,     380,
+		50+330, 380,
+		50+660, 380,
+		50+990, 380,
+		50,     660,
+		50+330, 660,
+		50+660, 660,
+		50+990, 660
+	};
+
 	for( int i=0; i<(int)mod_widget.size(); ++i )
 	{
 		wdg = mod_widget[i];
@@ -227,8 +250,9 @@ void MainForm::run()
 			PrevForm * pf;
 			pf = new PrevForm();
 			wdg->set_preview( pf );
-			pf->move( QPoint( 100+400*i, 100) );
+			pf->move( QPoint( poss[prv_wnd*2], poss[prv_wnd*2+1] ) );
 			pf->show();
+			prv_wnd++;
 		}
 	}
 
@@ -259,6 +283,8 @@ void MainForm::release_proc_data()
 		delete timer;
 		timer = NULL;
 	}
+
+	prv_wnd = 0;
 
 	modWidget * wdg;
 

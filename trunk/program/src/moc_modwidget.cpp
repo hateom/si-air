@@ -1,7 +1,7 @@
 /****************************************************************************
 ** modWidget meta object code from reading C++ file 'modwidget.h'
 **
-** Created: So 2. gru 17:29:52 2006
+** Created: N 3. gru 15:22:45 2006
 **      by: The Qt MOC ($Id: moc_yacc.cpp,v 1.1.1.13 2006/05/05 17:43:42 chehrlic Exp $)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -54,13 +54,15 @@ QMetaObject* modWidget::staticMetaObject()
     QMetaObject* parentObject = QGroupBox::staticMetaObject();
     static const QUMethod slot_0 = {"configure_mod", 0, 0 };
     static const QUMethod slot_1 = {"rm_mod", 0, 0 };
+    static const QUMethod slot_2 = {"preview_changed", 0, 0 };
     static const QMetaData slot_tbl[] = {
 	{ "configure_mod()", &slot_0, QMetaData::Public },
-	{ "rm_mod()", &slot_1, QMetaData::Public }
+	{ "rm_mod()", &slot_1, QMetaData::Public },
+	{ "preview_changed()", &slot_2, QMetaData::Public }
     };
     metaObj = QMetaObject::new_metaobject(
 	"modWidget", parentObject,
-	slot_tbl, 2,
+	slot_tbl, 3,
 	0, 0,
 #ifndef QT_NO_PROPERTIES
 	0, 0,
@@ -83,6 +85,7 @@ bool modWidget::qt_invoke( int _id, QUObject* _o )
     switch ( _id - staticMetaObject()->slotOffset() ) {
     case 0: configure_mod(); break;
     case 1: rm_mod(); break;
+    case 2: preview_changed(); break;
     default:
 	return QGroupBox::qt_invoke( _id, _o );
     }

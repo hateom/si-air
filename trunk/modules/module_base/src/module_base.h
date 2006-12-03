@@ -54,7 +54,7 @@ static char * mt_description[] = {
 class __declspec(dllexport) moduleBase
 {
 public:
-	moduleBase() : lib_handle(NULL) {}
+	moduleBase() : lib_handle(NULL) { REG_PARAM( PT_INT, preview_param, "Preview", 0 ); }
 	virtual ~moduleBase() { FreeLibrary( lib_handle ); free_params(); }
 
 	/// metoda zwracajaca opis danego modulu
@@ -79,6 +79,19 @@ public:
 	/// parameter functions
 	virtual int param_count() { return( (int)param_list.size() ); }
 	virtual mb_param * get_param( int no ) { if( no >= 0 && no < param_count() ) return( param_list[no] ); else return( NULL ); }
+	virtual mb_param * find_param( const char * param )
+	{
+		mb_param * par = NULL;
+		for( int i=0; i<param_count(); ++i )
+		{
+			par = get_param( i );
+			if( strcmp( par->name, param ) == 0 )
+			{
+				return( par );
+			}
+		}
+		return( NULL );
+	}
 	virtual int register_param( int type, void * value, char * name, char * description )
 	{
 		mb_param * n_param = new mb_param;
@@ -99,8 +112,26 @@ public:
 		}
 		param_list.clear();
 	}
+	template<typename T> int set_param( const char * name, T value )
+	{
+		mb_param * par;
+		par = find_param( name );
+		if( !par ) return( -1 );
+		*((T*)(par->data)) = value;
+		return( 0 );
+	}
+	template<typename T> int get_param( const char * name, T * result )
+	{
+		mb_param * par;
+		par = find_param( name );
+		if( !par ) return( -1 );
+		*result =  *((T*)(par->data));
+		return( 0 );
+	}
 
 protected:
+	int preview_param;
+
 	HMODULE lib_handle;
 	std::vector<mb_param*> param_list;
 };

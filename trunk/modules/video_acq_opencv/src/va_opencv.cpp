@@ -20,6 +20,8 @@ vaOpenCV::vaOpenCV() : capture(NULL), alloc_mem(0)/*, cam_count(0)*/
 {
 	REG_PARAM( PT_INT,    device,   "device no", 0 );
 	REG_PARAM( PT_STRING, filename, "filename", 0 );
+
+	set_param( "preview_param", 1 );
 }
 
 //////////////////////////////////////////////////////////////////////////

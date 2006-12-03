@@ -37,6 +37,7 @@ public:
 public slots:
 	void configure_mod();
 	void rm_mod();
+	void preview_changed();
 
 private:
 	QPushButton * button_conf;

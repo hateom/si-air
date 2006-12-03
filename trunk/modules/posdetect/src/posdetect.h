@@ -34,9 +34,7 @@ private:
 	void draw_frame_marker( frame_data * frame, int posx, int posy );
 
 protected:
-	int draw_marker;
 	int or_mask_size;
-	int temp_param;
 	int alloc_mem;
 };
 

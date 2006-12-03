@@ -19,11 +19,12 @@
 
 piGeneral::piGeneral() : alloc_mem(0)
 {
-	REG_PARAM( PT_INT, Hmax, "1. Wart. maxymalna H", 35 );
-	REG_PARAM( PT_INT, Hmin, "2. Wart. minimalna H", 10 );
-	REG_PARAM( PT_INT, Vmax, "3. Wart. maxymalna V", 255 );
-	REG_PARAM( PT_INT, Vmin, "4. Wart. minimalna V", 20 );
-	REG_PARAM( PT_INT, Smin, "5. Wart. minimalna S", 30 );
+	REG_PARAM( PT_INT, Hmax,			"1. Wart. maxymalna H", 35 );
+	REG_PARAM( PT_INT, Hmin,			"2. Wart. minimalna H", 10 );
+	REG_PARAM( PT_INT, Vmax,			"3. Wart. maxymalna V", 255 );
+	REG_PARAM( PT_INT, Vmin,			"4. Wart. minimalna V", 20 );
+	REG_PARAM( PT_INT, Smin,			"5. Wart. minimalna S", 30 );
+//	REG_PARAM( PT_INT, preview_param,	"Preview", 0 );
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -124,7 +125,7 @@ proc_data * piGeneral::process_frame( proc_data * prev_frame, int * status )
 				piTable[x+y*width] = 1.0;
 			}
 
-			if( 1 )
+			if( preview_param )
 			{
 				float chVal = piTable[x+y*width]*255.0f;
 				chVal = (chVal > 255.0f) ? 255.0f : chVal;

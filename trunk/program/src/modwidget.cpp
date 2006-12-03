@@ -31,6 +31,17 @@ modWidget::modWidget( long new_id, moduleBase * mod, modWidget * prv, QWidget * 
 
 	connect( button_conf, SIGNAL(clicked()), this, SLOT(configure_mod()) );
 	connect( button_del, SIGNAL(clicked()), this, SLOT(rm_mod()) );
+	connect( check_prev, SIGNAL(clicked()), this, SLOT(preview_changed()) );
+
+	int check;
+	if( module->get_param( "preview_param", &check ) == 0 && check == 1 )
+	{
+		check_prev->setChecked( true );
+	}
+	else
+	{
+		check_prev->setChecked( false );
+	}
 
 	language_changed();
 	resize( QSize( 140, 110 ) );
@@ -50,6 +61,27 @@ void modWidget::language_changed()
 	button_del->setText( tr("Delete") );
 	check_prev->setText( tr("Preview") );
 	edit_name->setText( tr( module->get_module_description() ) );
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+void modWidget::preview_changed()
+{
+	mb_param * par;
+
+	par = module->find_param( "preview_param" );
+	if( !par ) return;
+
+	if( check_prev->isChecked() )
+	{
+		//*((int*)(par->data)) = 1;
+		module->set_param( "preview_param", 1 );
+	}
+	else
+	{
+		//*((int*)(par->data)) = 0;
+		module->set_param( "preview_param", 0 );
+	}
 }
 
 //////////////////////////////////////////////////////////////////////////

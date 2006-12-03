@@ -37,8 +37,8 @@ static unsigned char marker[] = {
 
 cPosdetect::cPosdetect() : alloc_mem(0)
 {
-	REG_PARAM( PT_INT, or_mask_size, "Size of the orientation mask", 4 );
-	REG_PARAM( PT_INT, draw_marker,  "Draw marker to the output", 0 );
+	REG_PARAM( PT_INT, or_mask_size,  "Size of the orientation mask", 4 );
+//	REG_PARAM( PT_INT, preview_param, "Preview", 0 );
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -281,7 +281,7 @@ proc_data * cPosdetect::process_frame( proc_data * prev_frame, int * result )
 
 	static frame_data frame = { 0, 0, 0, 0 };
 
-	if( draw_marker )
+	if( preview_param )
 	{
 
 		frame.depth = 4; //(3*frame->depth)/8;

@@ -16,12 +16,12 @@ int main( int argc, char * argv[] )
 	mpLogger::set_output( OT_CONSOLE );
 	LOG( "initializing application...\n" );
 
-	mpPath::Single()->Init( GetModuleHandle(NULL) );
-
-	LOGF( "creating main window...\n" );
-
 	QApplication a( argc, argv );
 	MainForm form;
+
+	mpPath::Single()->Init( GetModuleHandle(NULL) );
+
+	LOG( "creating main window...\n" );
 
 	a.setMainWidget( &form );
 	form.show();

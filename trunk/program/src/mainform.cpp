@@ -14,6 +14,7 @@
 #include <qtimer.h>
 #include <qfiledialog.h>
 #include <qcheckbox.h>
+#include <qpainter.h>
 
 #include "optform.h"
 #include "prevform.h"
@@ -30,10 +31,10 @@ MainForm::MainForm( QWidget* parent, const char* name, bool modal, WFlags fl )
 	setName( "MainForm" );
 
     buttonOk = new QPushButton( this, "buttonOk" );
-    buttonOk->setGeometry( QRect( 420, 460, 195, 26 ) );
+    buttonOk->setGeometry( QRect( 505, 390, 195, 26 ) );
 
 	buttonRun = new QPushButton( this, "buttonRun" );
-	buttonRun->setGeometry( QRect( 10, 460, 195, 26 ) );
+	buttonRun->setGeometry( QRect( 305, 390, 195, 26 ) );
 
 	listBox = new QListBox( this, "listBox" );
 	listBox->setGeometry( QRect( 10, 10, 220, 300 ) );
@@ -44,6 +45,10 @@ MainForm::MainForm( QWidget* parent, const char* name, bool modal, WFlags fl )
 	buttonReset = new QPushButton( this, "buttonReset" );
 	buttonReset->setGeometry( QRect( 10, 350, 220, 26 ) );
 
+	groupMod = new QGroupBox( this, "groupMod" );
+	groupMod->setGeometry( QRect( 240, 10, 460, 370 ) );
+	groupMod->setFrameStyle( QFrame::Panel | QFrame::Sunken );
+
 	connect( buttonOk, SIGNAL(clicked()), this, SLOT(close_app()) );
 	connect( buttonRun, SIGNAL(clicked()), this, SLOT(run()) );
 	connect( buttonAdd, SIGNAL(clicked()), this, SLOT(add_module()) );
@@ -51,7 +56,7 @@ MainForm::MainForm( QWidget* parent, const char* name, bool modal, WFlags fl )
 	connect( listBox, SIGNAL(selected(QListBoxItem*)), this, SLOT(lb_selected(QListBoxItem*)) );
 
     languageChange();
-    resize( QSize(700, 500).expandedTo(minimumSizeHint()) );
+    resize( QSize(710, 425).expandedTo(minimumSizeHint()) );
     clearWState( WState_Polished );
 }
 
@@ -87,7 +92,7 @@ MainForm::~MainForm()
 void MainForm::languageChange()
 {
     setCaption( tr( "SI Module List" ) );
-    buttonOk->setText( tr( "OK" ) );
+    buttonOk->setText( tr( "Close" ) );
 	buttonRun->setText( tr( "Run!" ) );
 	buttonAdd->setText( tr( "Add Module" ) );
 	buttonReset->setText( tr( "Clear Path" ) );
@@ -97,6 +102,12 @@ void MainForm::languageChange()
 
 void MainForm::add_module()
 {
+	if( mod_widget.size() == 9 )
+	{
+		LOG( "ERROR: Maximum modules count is 9!\n" );
+		return;
+	}
+
 	LOG( "adding module %d <%s>\n", listBox->currentItem(), mod_list[listBox->currentItem()]->get_module_description() );
 
 	long id = listBox->currentItem();
@@ -132,9 +143,9 @@ void MainForm::add_module()
 		240, 370,  240+150,  370,  240+300,  370
 	};
 
-	wdg = new modWidget( id, module, prev, this, "modWidget" );
+	wdg = new modWidget( id, module, prev, groupMod, /*this,*/ "modWidget" );
 	//wdg->setGeometry( QRect( start_x+wd_no*(140+10), 10, 140, 110 ) );
-	wdg->setGeometry( QRect( poss[wd_no*2], poss[wd_no*2+1], 140, 110 ) );
+	wdg->setGeometry( QRect( poss[wd_no*2]-230, poss[wd_no*2+1], 140, 110 ) );
 
 	wdg->show();
 
@@ -145,9 +156,8 @@ void MainForm::add_module()
 
 void MainForm::loadModules( const char * directory )
 {
-	bool found[3] = { false, false, false };
-
 	mgr.read_module_directory( directory );
+
 	for( int i=0; i<mgr.count(); ++i )
 	{
 		mp_dll_module * mod = mgr.get_module_info( i );

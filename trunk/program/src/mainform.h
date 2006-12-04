@@ -41,6 +41,8 @@ public:
 	QPushButton * buttonAdd;
 	QPushButton	* buttonReset;
 
+	QGroupBox   * groupMod;
+
     virtual void loadModules( const char * directory );
 
 public slots:

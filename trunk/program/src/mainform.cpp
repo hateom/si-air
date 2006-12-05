@@ -24,8 +24,12 @@
 
 //////////////////////////////////////////////////////////////////////////
 
+#define FPS( FRM ) (1000/(FRM))
+
+//////////////////////////////////////////////////////////////////////////
+
 MainForm::MainForm( QWidget* parent, const char* name, bool modal, WFlags fl )
-    : QDialog( parent, name, modal, fl ), timer(NULL), prv_wnd(0)
+    : QDialog( parent, name, modal, fl ), timer(NULL), prv_wnd(0), is_running(false)
 {
     if ( !name )
 	setName( "MainForm" );
@@ -64,6 +68,12 @@ MainForm::MainForm( QWidget* parent, const char* name, bool modal, WFlags fl )
 
 void MainForm::remove_path()
 {
+	if( is_running )
+	{
+		LOG( "ERROR: Processing is still running!\n" );
+		return;
+	}
+
 	for( int i=0; i<(int)mod_widget.size(); ++i )
 	{
 		mod_widget[i]->close();
@@ -105,6 +115,12 @@ void MainForm::add_module()
 	if( mod_widget.size() == 9 )
 	{
 		LOG( "ERROR: Maximum modules count is 9!\n" );
+		return;
+	}
+
+	if( is_running )
+	{
+		LOG( "ERROR: Processing is still running!\n" );
 		return;
 	}
 
@@ -154,6 +170,25 @@ void MainForm::add_module()
 
 //////////////////////////////////////////////////////////////////////////
 
+inline char * mt( int type )
+{
+	switch( type )
+	{
+	case MT_VIDEO_ACQ:
+		return( "[V] " );
+	case MT_PROBABILITY:
+		return( "[P] " );
+	case MT_POSGEST:
+		return( "[D] " );
+	default:
+		return( "[C] " );
+	}
+
+	return( "[C] " );
+}
+
+//////////////////////////////////////////////////////////////////////////
+
 void MainForm::loadModules( const char * directory )
 {
 	mgr.read_module_directory( directory );
@@ -164,7 +199,7 @@ void MainForm::loadModules( const char * directory )
 		if( mod )
 		{
 			mod_list.push_back( mgr.load_module( mod ) );
-			listBox->insertItem( tr( mod->description.c_str() ) );
+			listBox->insertItem( tr( mt(mod->type) ) + tr( mod->description.c_str() ) );
 		}
 	}
 }
@@ -269,7 +304,8 @@ void MainForm::run()
 	timer = new QTimer( this );
 	connect( timer, SIGNAL(timeout()), this, SLOT(process_frame()));
 
-	timer->start( 4 );
+	is_running = true;
+	timer->start( FPS( 25 ) );
 
 	connect( buttonRun, SIGNAL(clicked()), this, SLOT(stop()) );
 	disconnect( buttonRun, SIGNAL(clicked()), this, SLOT(run()) );
@@ -293,6 +329,8 @@ void MainForm::release_proc_data()
 		delete timer;
 		timer = NULL;
 	}
+
+	is_running = false;
 
 	prv_wnd = 0;
 

@@ -180,7 +180,6 @@ proc_data * vaOpenCV::process_frame( proc_data * prev_frame, int * result )
 
 	p_data.input_frame = &static_frame;
 	p_data.frame = &static_frame;
-	p_data.user_data0 = (void*) frame;
 	return( &p_data );
 }
 

@@ -9,7 +9,7 @@
 
 mod_camshift_opencv::mod_camshift_opencv() : alloc_mem(0L)
 {
-	REG_PARAM( PT_FLOAT, factor, "Lighting factor (1.0f = neutral)", 1.0f );
+	REG_PARAM( PT_FLOAT, factor, "zmienna", 1.0f );
 }
 
 //////////////////////////////////////////////////////////////////////////

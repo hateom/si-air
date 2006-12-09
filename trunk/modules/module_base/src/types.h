@@ -56,6 +56,8 @@ struct proc_data
 	frame_data	*	frame;
 	pd_data		*	position;
 	float		*	prob;
+	void		*	user_data0;
+	void		*	user_data1;
 };
 
 //////////////////////////////////////////////////////////////////////////

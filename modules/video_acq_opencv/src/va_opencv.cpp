@@ -7,6 +7,8 @@
 
 #include "../../module_base/src/status_codes.h"
 
+#include "../../module_base/src/property_mgr.h"
+
 #pragma comment(lib,"cv.lib")
 #pragma comment(lib,"cvcam.lib")
 #pragma comment(lib,"cxcore.lib")
@@ -112,6 +114,17 @@ int vaOpenCV::init()
 	if( !capture )
 	{
 		return( ST_DEVICE_NOT_FOUND );
+	}
+
+	propertyMgr->register_property( "input_module_cv", this );
+
+	if( propertyMgr->get_property( "input_module_cv" ) == this )
+	{
+		printf( ">>> property are working!\n" );
+	}
+	else
+	{
+		printf( ">>> property sux!\n" );
 	}
 
 	return( ST_OK );

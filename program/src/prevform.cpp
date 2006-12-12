@@ -63,12 +63,29 @@ void PrevForm::mousePressEvent( QMouseEvent * e )
 
 //////////////////////////////////////////////////////////////////////////
 
+inline void swap( int & a, int & b )
+{
+	int temp;
+	temp = a;
+	a = b;
+	b = temp;
+}
+
+//////////////////////////////////////////////////////////////////////////
+
 void PrevForm::mouseReleaseEvent( QMouseEvent * e )
 {
 //	LOG( ">>> mouseRelease (%003d,%003d)\n", e->x(), e->y() );
 
-	sw = abs(sx - e->x());
-	sh = abs(sy - e->y());
+	int nx = e->x(), ny = e->y();
+
+	if( nx < sx ) swap( nx, sx );
+	if( ny < sy ) swap( ny, sy );
+
+	sw = abs(sx - nx);
+	sh = abs(sy - ny);
+
+	
 
 	//LOG( ">>> mouseRegion (%d,%d,%d,%d)\n", sx, sy, sw, sh );
 	base->mouse_select( sx, sy, sw, sh );

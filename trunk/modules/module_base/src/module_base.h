@@ -71,6 +71,8 @@ public:
 	virtual int input_type() = 0;
 	virtual int output_type() = 0;
 
+	virtual void mouse_select( int sx, int sz, int sw, int sh ) {}
+
 	virtual proc_data * process_frame( proc_data * prev_frame, int * result ) = 0;
 
 	virtual void assign_library_handle( HMODULE hlib ) { lib_handle = hlib; }

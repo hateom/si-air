@@ -203,7 +203,7 @@ void vaOpenCV::free()
 
 void vaOpenCV::mouse_select(int sx, int sy, int sw, int sh )
 {
-	printf( "::: cv selected region\n" );
+	printf( "::: cv selected region [%d %d %d %d]\n", sx, sy, sw, sh );
 }
 
 //////////////////////////////////////////////////////////////////////////

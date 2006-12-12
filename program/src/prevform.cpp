@@ -3,6 +3,8 @@
 #include "prevform.h"
 #include "mp_logger.h"
 
+#include <windows.h>
+
 #include <qtimer.h>
 #include <qimage.h>
 #include <qpainter.h>
@@ -11,7 +13,7 @@
 //////////////////////////////////////////////////////////////////////////
 
 PrevForm::PrevForm( moduleBase * inbase, QWidget* parent, const char* name, bool modal, WFlags fl )
-: QDialog( parent, name, modal, fl ), base(inbase), timer(NULL)
+: QDialog( parent, name, modal, fl ), base(inbase), timer(NULL), sx(0), sy(0), sw(0), sh(0), select_time(0)
 {
 	if ( !name ) setName( "PrevForm" );
 
@@ -46,9 +48,13 @@ void PrevForm::render_frame( frame_data * frame )
 	resize( QSize( frame->width, frame->height ).expandedTo(minimumSizeHint()) );
 	QImage img( (uchar*)frame->bits, frame->width, frame->height, 32, NULL, 256, QImage::LittleEndian );
 	QPainter painter( this );
-	painter.setWindow( 0, 0, frame->width, frame->height );
-	painter.setBackgroundColor( QColor( 0, 0, 0) );
 	painter.drawImage( QPoint(0, 0), img );
+
+	if( GetTickCount()-select_time < 2000 )
+	{
+		painter.setPen( QColor( 255, 0, 0 ) );
+		painter.drawRect( QRect( sx, sy, sw, sh ) );
+	}
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -59,6 +65,7 @@ void PrevForm::mousePressEvent( QMouseEvent * e )
 
 	sx = e->x();
 	sy = e->y();
+	sw = sh = 0;
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -89,6 +96,8 @@ void PrevForm::mouseReleaseEvent( QMouseEvent * e )
 
 	//LOG( ">>> mouseRegion (%d,%d,%d,%d)\n", sx, sy, sw, sh );
 	base->mouse_select( sx, sy, sw, sh );
+
+	select_time = GetTickCount();
 }
 
 //////////////////////////////////////////////////////////////////////////

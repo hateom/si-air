@@ -7,16 +7,20 @@
 #include <qimage.h>
 #include <qpainter.h>
 
+
 //////////////////////////////////////////////////////////////////////////
 
-PrevForm::PrevForm( QWidget* parent, const char* name, bool modal, WFlags fl )
-: QDialog( parent, name, modal, fl ), base(NULL), timer(NULL)
+PrevForm::PrevForm( moduleBase * inbase, QWidget* parent, const char* name, bool modal, WFlags fl )
+: QDialog( parent, name, modal, fl ), base(inbase), timer(NULL)
 {
 	if ( !name ) setName( "PrevForm" );
 
 	languageChange();
 	resize( QSize( 350, 260 ).expandedTo(minimumSizeHint()) );
 	clearWState( WState_Polished );
+
+//	connect( this, SIGNAL(mousePressEvent(QMouseEvent*)), this, SLOT(mousePress(QMouseEvent*)) );
+//	connect( this, SIGNAL(mouseReleaseEvent(QMouseEvent*)), this, SLOT(mouseRelease(QMouseEvent*)) );
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -49,6 +53,29 @@ void PrevForm::render_frame( frame_data * frame )
 
 //////////////////////////////////////////////////////////////////////////
 
+void PrevForm::mousePressEvent( QMouseEvent * e )
+{
+//	LOG( ">>> mousePress   (%003d,%003d)\n", e->x(), e->y() );
+
+	sx = e->x();
+	sy = e->y();
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+void PrevForm::mouseReleaseEvent( QMouseEvent * e )
+{
+//	LOG( ">>> mouseRelease (%003d,%003d)\n", e->x(), e->y() );
+
+	sw = abs(sx - e->x());
+	sh = abs(sy - e->y());
+
+	//LOG( ">>> mouseRegion (%d,%d,%d,%d)\n", sx, sy, sw, sh );
+	base->mouse_select( sx, sy, sw, sh );
+}
+
+//////////////////////////////////////////////////////////////////////////
+
 void PrevForm::anim()
 {
 /*
@@ -75,7 +102,7 @@ void PrevForm::anim()
 }
 
 //////////////////////////////////////////////////////////////////////////
-
+/*
 void PrevForm::set_video_module( moduleBase * base )
 {
 	this->base = base;
@@ -86,5 +113,5 @@ void PrevForm::set_video_module( moduleBase * base )
 	LOG( "Callback saved. Setting frame capturing...\n" );
 	timer->start( 10 );
 }
-
+*/
 //////////////////////////////////////////////////////////////////////////

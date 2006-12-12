@@ -293,7 +293,7 @@ void MainForm::run()
 		if( wdg->has_preview() )
 		{
 			PrevForm * pf;
-			pf = new PrevForm();
+			pf = new PrevForm(mod);
 			wdg->set_preview( pf );
 			pf->move( QPoint( poss[prv_wnd*2], poss[prv_wnd*2+1] ) );
 			pf->show();

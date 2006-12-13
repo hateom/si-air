@@ -24,6 +24,7 @@ public:
 	virtual int output_type();
 
 	virtual proc_data * process_frame( proc_data * prev_frame, int * status );
+	virtual void mouse_select(int sx, int sy, int sw, int sh );
 
 	virtual int  init();
 	virtual void free();
@@ -34,8 +35,12 @@ protected:
 	int temp_param;
 	int alloc_mem;
 	int Hmax,Hmin,Vmax,Vmin,Smin;
+	frame_data * inFrame;
+	frame_data * selected_region;
+	hist_data  * histogram;
 
 	void piGeneral::RGBtoHSV(int& r, int& g, int& b, float& h, float& s, float& v);
+	void hist();
 };
 
 //////////////////////////////////////////////////////////////////////////

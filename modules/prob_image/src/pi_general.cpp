@@ -14,7 +14,7 @@
 #pragma comment(lib,"highgui")
 
 //#pragma warning ( disable: 4244 )	// convertion float->int (RGBtoHSV)
-
+//#define DEPTH 4
 //////////////////////////////////////////////////////////////////////////
 
 piGeneral::piGeneral() : alloc_mem(0)
@@ -25,6 +25,17 @@ piGeneral::piGeneral() : alloc_mem(0)
 	REG_PARAM( PT_INT, Vmin,			"4. Wart. minimalna V", 20 );
 	REG_PARAM( PT_INT, Smin,			"5. Wart. minimalna S", 30 );
 //	REG_PARAM( PT_INT, preview_param,	"Preview", 0 );
+	//if (selected_region) delete selected_region;
+	//if (histogram)
+	//{
+		//if (histogram->hist_vals) delete [] histogram->hist_vals;
+	//	delete histogram;
+	//}
+	histogram = new hist_data();
+	histogram->hist_vals = new int(256);
+	selected_region = NULL;
+	//histogram = NULL;
+	//inFrame = NULL;
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -71,7 +82,7 @@ proc_data * piGeneral::process_frame( proc_data * prev_frame, int * status )
 	int i=0;
 	float H, S, V;
 
-	frame_data * inFrame;
+	//frame_data * inFrame;
 	inFrame = prev_frame->frame;
 
 	if( !inFrame )
@@ -139,9 +150,10 @@ proc_data * piGeneral::process_frame( proc_data * prev_frame, int * status )
 	}
 
 	// kopiowanie do struktury i zwrocenie
-
+	//if (!selected_region) p_data.input_frame = prev_frame->input_frame;
+	//else p_data.input_frame = selected_region;
 	p_data.input_frame = prev_frame->input_frame;
-	p_data.frame = &static_frame;
+	p_data.frame =  &static_frame;
 	p_data.prob = piTable;
 
 	*status = ST_OK;
@@ -149,6 +161,94 @@ proc_data * piGeneral::process_frame( proc_data * prev_frame, int * status )
 }
 
 //////////////////////////////////////////////////////////////////////////
+
+void piGeneral::mouse_select(int sx, int sy, int sw, int sh )
+{
+	int depth = inFrame->depth;
+	int size = sw*sh*depth;
+
+	if (sx<0) sx=0;
+	if (sy<0) sy=0;
+	if (sx > inFrame->width) sx=inFrame->width;
+	if (sy > inFrame->height) sy=inFrame->height;
+	if (sx+sw>inFrame->width) sw=inFrame->width-sx;
+	if (sy+sh>inFrame->height) sh=inFrame->height-sy;
+	if (!selected_region)
+	{
+		selected_region = new frame_data();
+		selected_region->depth=inFrame->depth;
+		selected_region->height=sh;
+		selected_region->width=sw;
+		selected_region->bits=new unsigned char[size];
+	}
+	if (selected_region->height!=sh || selected_region->width!=sw)
+	{
+		selected_region->width=sw;
+		selected_region->height=sh;
+		if (selected_region->bits) delete [] selected_region->bits;
+		selected_region->bits = new unsigned char[size];
+	}
+	for (int i=0;i<sh;i++) 
+	{
+		memcpy((selected_region->bits+i*sw*depth),(inFrame->bits+((i+sy)*inFrame->width+sx)*depth),sw*depth);
+	}
+	hist();
+}
+
+void piGeneral::hist()
+{
+	int width,height,size,x,y,depth;
+	int R,G,B;
+	int HHistMaxValue = 0;
+	int HHistStartRange = -1;
+	int HHistEndRange = -1;
+	float H,S,V;
+	float MinV = -1,
+		MaxV = -1,
+		MinS = -1;
+
+	width = selected_region->width;
+	height = selected_region->height;
+	depth = selected_region->depth;
+	size =  width*height*depth;
+	//for(int i=0;i<size-3;i++)
+	for( int x=0; x<(int)width; ++x )
+	{
+		for( int y=0; y<(int)height; ++y )
+		{
+			//x=i % width;
+			//y=i*width*depth;
+			B = selected_region->bits[(x+y*width)*4+0];
+			G = selected_region->bits[(x+y*width)*4+1];
+			R = selected_region->bits[(x+y*width)*4+2];
+			RGBtoHSV( R, G, B, H, S, V );
+			if(H >= 0)
+			{
+				histogram->hist_vals[(int)H]++;
+				if(histogram->hist_vals[(int)H] > HHistMaxValue)
+					HHistMaxValue = histogram->hist_vals[(int)H];
+				if((HHistStartRange == -1) || (HHistStartRange > (int)H))
+					HHistStartRange = (int)H;
+				if((HHistEndRange == -1) || (HHistEndRange < (int)H))
+					HHistEndRange = (int)H;
+			}
+			// Wyszukiwanie najmniejszej jasnosci piksela
+			if((MinV == -1) || (MinV > V))
+				MinV = V;
+			// Wyszukiwanie najwiekszej jasnosci piksela
+			if((MaxV == -1) || (MaxV < V))
+				MaxV = V;
+			// Wyszukiwanie najmniejszego nasycenia piksela
+			if((MinS == -1) || (MinS > S))
+				MinS = S;
+		}
+	}
+	histogram->maxV = MaxV;
+	histogram->minS = MinS;
+	histogram->minV = MinV;
+	histogram->histMaxVal = HHistMaxValue;
+
+}
 
 int piGeneral::init()
 {

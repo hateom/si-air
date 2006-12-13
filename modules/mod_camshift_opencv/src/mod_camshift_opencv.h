@@ -2,6 +2,13 @@
 #define __MOD_CAMSHIFT_OPENCV_H__
 
 #include "../../module_base/src/module_base.h"
+#ifndef _EiC
+#include "cv.h"
+#include "highgui.h"
+#include <stdio.h>
+#include <ctype.h>
+#endif
+
 
 class __declspec(dllexport) mod_camshift_opencv: public moduleBase
 {
@@ -24,6 +31,11 @@ public:
 private:
 	long alloc_mem;
 	float factor;
+
+
+	int track_object;
+	int bin_w;
+
 };
 
 #endif // __MOD_CAMSHIFT_OPENCV_H__

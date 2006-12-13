@@ -60,6 +60,14 @@ struct proc_data
 	void		*	user_data1;
 };
 
+
+struct hist_data
+{
+	int * hist_vals;
+	int h_size;
+	int histMaxVal;
+	float maxV,minV,minS;
+};
 //////////////////////////////////////////////////////////////////////////
 
 #endif // __INCLUDE_H__

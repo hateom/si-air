@@ -86,15 +86,19 @@ void PrevForm::mouseReleaseEvent( QMouseEvent * e )
 
 	int nx = e->x(), ny = e->y();
 
+	if( nx < 0 ) nx = 0;
+	if( ny < 0 ) ny = 0;
+
+	if( nx > width()) nx = width()-1;
+	if( ny > height()) ny = height()-1;
+
 	if( nx < sx ) swap( nx, sx );
 	if( ny < sy ) swap( ny, sy );
 
 	sw = abs(sx - nx);
 	sh = abs(sy - ny);
 
-	
-
-	//LOG( ">>> mouseRegion (%d,%d,%d,%d)\n", sx, sy, sw, sh );
+//	LOG( ">>> mouseRegion (%d,%d,%d,%d)\n", sx, sy, sw, sh );
 	base->mouse_select( sx, sy, sw, sh );
 
 	select_time = GetTickCount();

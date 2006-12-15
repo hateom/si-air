@@ -127,6 +127,9 @@
 				RelativePath=".\src\module_base.h">
 			</File>
 			<File
+				RelativePath=".\src\property_mgr.h">
+			</File>
+			<File
 				RelativePath=".\src\status_codes.h">
 			</File>
 			<File

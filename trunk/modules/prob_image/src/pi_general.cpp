@@ -13,11 +13,15 @@
 #pragma comment(lib,"ml")
 #pragma comment(lib,"highgui")
 
+#include <cassert>
+
+#define ASSERT( STR, EXP ) if( !(EXP) ) { throw STR; }
+
 //#pragma warning ( disable: 4244 )	// convertion float->int (RGBtoHSV)
 //#define DEPTH 4
 //////////////////////////////////////////////////////////////////////////
 
-piGeneral::piGeneral() : alloc_mem(0), selected_region(NULL)
+piGeneral::piGeneral() : alloc_mem(0), selected_region(NULL), histogram(NULL)
 {
 	REG_PARAM( PT_INT, Hmax,			"1. Wart. maxymalna H", 35 );
 	REG_PARAM( PT_INT, Hmin,			"2. Wart. minimalna H", 10 );
@@ -31,8 +35,6 @@ piGeneral::piGeneral() : alloc_mem(0), selected_region(NULL)
 		//if (histogram->hist_vals) delete [] histogram->hist_vals;
 	//	delete histogram;
 	//}
-	histogram = new hist_data();
-	histogram->hist_vals = new int(256);
 	//histogram = NULL;
 	//inFrame = NULL;
 }
@@ -172,6 +174,22 @@ void piGeneral::mouse_select(int sx, int sy, int sw, int sh )
 //	if (sy > (int)inFrame->height) sy=inFrame->height;
 //	if (sx+sw>inFrame->width) sw=inFrame->width-sx;
 //	if (sy+sh>inFrame->height) sh=inFrame->height-sy;
+/*
+	try {
+
+	ASSERT( sx >= 0 );
+	ASSERT( sy >= 0 );
+	ASSERT( sx < (int)inFrame->width );
+	ASSERT( sy < (int)inFrame->height );
+	ASSERT( sx+sw <= (int)inFrame->width );
+	ASSERT( sy+sh <= (int)inFrame->height );
+
+	}
+	catch( ... )
+	{
+		printf( "!!! ASSERTION FAILED! ( sx=%d, sy=%d, sw=%d, sh=%d; f->w=%d, f->h=%d)\n", sx, sy, sw, sh, inFrame->width, inFrame->height );
+	}
+*/
 	if (!selected_region)
 	{
 		selected_region = new frame_data();
@@ -187,10 +205,26 @@ void piGeneral::mouse_select(int sx, int sy, int sw, int sh )
 		if (selected_region->bits) delete [] selected_region->bits;
 		selected_region->bits = new unsigned char[size];
 	}
+
+	try
+	{
+
 	for (int i=0;i<sh;i++) 
 	{
+		ASSERT( "1.", i*sw*depth + sw*depth < (int)(selected_region->height*selected_region->width*selected_region->depth) );
+		ASSERT( "2.", ((i+sy)*inFrame->width+sx)*depth + sw*depth < inFrame->width*inFrame->height*inFrame->depth );
+
+
 		memcpy((selected_region->bits+i*sw*depth),(inFrame->bits+((i+sy)*inFrame->width+sx)*depth),sw*depth);
 	}
+
+	}
+	catch( const char * str )
+	{
+		printf( "!!! ASSERTION FAILURE <%s>!\n", str );
+	}
+
+
 	hist();
 }
 
@@ -211,6 +245,9 @@ void piGeneral::hist()
 	depth = selected_region->depth;
 	size =  width*height*depth;
 	//for(int i=0;i<size-3;i++)
+
+	try {
+
 	for( int x=0; x<(int)width; ++x )
 	{
 		for( int y=0; y<(int)height; ++y )
@@ -223,6 +260,7 @@ void piGeneral::hist()
 			RGBtoHSV( R, G, B, H, S, V );
 			if(H >= 0)
 			{
+				ASSERT( "H >= 256!", H < 256.0f );
 				histogram->hist_vals[(int)H]++;
 				if(histogram->hist_vals[(int)H] > HHistMaxValue)
 					HHistMaxValue = histogram->hist_vals[(int)H];
@@ -242,6 +280,12 @@ void piGeneral::hist()
 				MinS = S;
 		}
 	}
+
+	} catch( const char * str )
+	{
+		printf( "ASSERTION FAILURE! <%s> : %3.3f \n", str, H );
+	}
+
 	histogram->maxV = MaxV;
 	histogram->minS = MinS;
 	histogram->minV = MinV;
@@ -251,6 +295,9 @@ void piGeneral::hist()
 
 int piGeneral::init()
 {
+	histogram = new hist_data();
+	histogram->hist_vals = new int[256];
+
 	return( ST_OK );
 }
 
@@ -262,6 +309,17 @@ void piGeneral::free()
 	{
 		delete selected_region;
 		selected_region = NULL;
+	}
+
+	if( histogram != NULL )
+	{
+		if( histogram->hist_vals != NULL )
+		{
+			delete [] histogram->hist_vals;
+		}
+
+		delete histogram;
+		histogram = NULL;
 	}
 }
 

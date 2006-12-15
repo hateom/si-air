@@ -178,6 +178,7 @@ proc_data * vaOpenCV::process_frame( proc_data * prev_frame, int * result )
 	}	
 	*/
 
+/*
 	for( int x=0; x<(int)static_frame.width; ++x )
 	{
 		for( int y=0; y<(int)static_frame.height; ++y )
@@ -188,6 +189,25 @@ proc_data * vaOpenCV::process_frame( proc_data * prev_frame, int * result )
 			static_frame.bits[(x+(static_frame.height-y-1)*static_frame.width)*4+3] = 0;
 		}
 	}
+*/
+
+	long offs1, offs2, aof1, aof2;
+
+	for( int y=0; y<(int)static_frame.height; ++y )
+	{
+		aof1 = (static_frame.height-y-1)*static_frame.width;
+		aof2 = y*static_frame.width;
+		for( int x=0; x<(int)static_frame.width; ++x )
+		{
+			offs1 = (x+aof1)*4;
+			offs2 = (x+aof2)*3;
+
+			static_frame.bits[offs1+0] = frame->imageData[offs2+0];
+			static_frame.bits[offs1+1] = frame->imageData[offs2+1];
+			static_frame.bits[offs1+2] = frame->imageData[offs2+2];
+			//static_frame.bits[offs1+3] = 0;
+		}
+	}	
 
 	*result = ST_OK;
 

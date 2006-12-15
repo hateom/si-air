@@ -27,7 +27,7 @@ piGeneral::piGeneral() : alloc_mem(0), selected_region(NULL), histogram(NULL)
 	REG_PARAM( PT_INT, Hmin,			"2. Wart. minimalna H", 10 );
 	REG_PARAM( PT_INT, Vmax,			"3. Wart. maxymalna V", 255 );
 	REG_PARAM( PT_INT, Vmin,			"4. Wart. minimalna V", 20 );
-	REG_PARAM( PT_INT, Smin,			"5. Wart. minimalna S", 30 );
+	REG_PARAM( PT_INT, Smin,			"5. Wart. minimalna S", 0 );
 //	REG_PARAM( PT_INT, preview_param,	"Preview", 0 );
 	//if (selected_region) delete selected_region;
 	//if (histogram)
@@ -132,10 +132,11 @@ proc_data * piGeneral::process_frame( proc_data * prev_frame, int * status )
 
 			piTable[x+y*width] = 0.0;
 
-			if( ( H >= Hmin ) && ( H < Hmax ) && ( V >= Vmin ) && ( V < Vmax ) /*&& ( Smin < S )*/ )
+			if( ( H >= Hmin ) && ( H < Hmax ) && ( V >= Vmin ) && ( V < Vmax ) && ( Smin < S ) )
 			{
 				piTable[x+y*width] = 1.0;
 			}
+			if (histogram->histMaxVal) piTable[x+y*width] += (float)histogram->hist_vals[int(H)]*(1/histogram->histMaxVal);
 
 			if( preview_param )
 			{
@@ -295,11 +296,11 @@ void piGeneral::hist()
 //		printf( "ASSERTION FAILURE! <%s> : %3.3f \n", str, H );
 //	}
 
-	Hmax = MaxH;
-	Hmin = MinH;
-	Vmax = MaxV;
-	Vmin = MinV;
-	MinS = Smin;
+	Hmax = (int)MaxH;
+	Hmin = (int)MinH;
+	Vmax = (int)MaxV;
+	Vmin = (int)MinV;
+	Smin = (int)MinS;
 	histogram->maxV = MaxV;
 	histogram->minS = MinS;
 	histogram->minV = MinV;

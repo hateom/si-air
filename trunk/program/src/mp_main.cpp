@@ -6,6 +6,8 @@
 
 #include "mp_logger.h"
 
+#include "../../modules/module_base/src/exceptions.h"
+
 #pragma comment(lib,"qtmain.lib")
 #pragma comment(lib,"qt-mt3.lib")
 
@@ -13,6 +15,16 @@
 
 int main( int argc, char * argv[] )
 {
+	try
+	{
+		MB_ASSERT( "TEST", 1 == 0 );
+	}
+	catch( mbException & e )
+	{
+		printf( "!!! %s\n", e.show() );
+	}
+
+
 	mpLogger::set_output( OT_CONSOLE );
 	LOG( "initializing application...\n" );
 

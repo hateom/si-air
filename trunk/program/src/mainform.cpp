@@ -257,6 +257,7 @@ void MainForm::process_frame()
 void MainForm::run()
 {
 	int result;
+	PrevForm * previous = NULL;
 
 	moduleBase * mod;
 	modWidget * wdg;
@@ -293,11 +294,12 @@ void MainForm::run()
 		if( wdg->has_preview() )
 		{
 			PrevForm * pf;
-			pf = new PrevForm(mod);
+			pf = new PrevForm( mod, previous );
 			wdg->set_preview( pf );
 			pf->move( QPoint( poss[prv_wnd*2], poss[prv_wnd*2+1] ) );
 			pf->show();
 			prv_wnd++;
+			previous = pf;
 		}
 	}
 

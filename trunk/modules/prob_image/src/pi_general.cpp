@@ -206,23 +206,23 @@ void piGeneral::mouse_select(int sx, int sy, int sw, int sh )
 		selected_region->bits = new unsigned char[size];
 	}
 
-	try
-	{
+//	try
+//	{
 
 	for (int i=0;i<sh;i++) 
 	{
-		ASSERT( "1.", i*sw*depth + sw*depth < (int)(selected_region->height*selected_region->width*selected_region->depth) );
-		ASSERT( "2.", ((i+sy)*inFrame->width+sx)*depth + sw*depth < inFrame->width*inFrame->height*inFrame->depth );
+		//ASSERT( "1.", i*sw*depth + sw*depth < (int)(selected_region->height*selected_region->width*selected_region->depth) );
+		//ASSERT( "2.", ((i+sy)*inFrame->width+sx)*depth + sw*depth < inFrame->width*inFrame->height*inFrame->depth );
 
 
 		memcpy((selected_region->bits+i*sw*depth),(inFrame->bits+((i+sy)*inFrame->width+sx)*depth),sw*depth);
 	}
 
-	}
-	catch( const char * str )
-	{
-		printf( "!!! ASSERTION FAILURE <%s>!\n", str );
-	}
+//	}
+	//catch( const char * str )
+	//{
+//		printf( "!!! ASSERTION FAILURE <%s>!\n", str );
+//	}
 
 
 	hist();
@@ -238,18 +238,17 @@ void piGeneral::hist()
 	float H,S,V;
 	float MinV = -1,
 		MaxV = -1,
-		MinS = -1;
+		MinS = -1,
+		MaxH = -1,
+		MinH = -1;
 
 	width = selected_region->width;
 	height = selected_region->height;
 	depth = selected_region->depth;
 	size =  width*height*depth;
 	//for(int i=0;i<size-3;i++)
-	if (H>255) H = 255; 
-	if (S>255) S = 255; 
-	if (V>255) V = 255; 
-	try {
-
+//	try {
+	for (int i=0;i<360;i++) histogram->hist_vals[i]=0;
 	for( int x=0; x<(int)width; ++x )
 	{
 		for( int y=0; y<(int)height; ++y )
@@ -260,9 +259,11 @@ void piGeneral::hist()
 			G = selected_region->bits[(x+y*width)*4+1];
 			R = selected_region->bits[(x+y*width)*4+2];
 			RGBtoHSV( R, G, B, H, S, V );
+			
 			if(H >= 0)
 			{
-				ASSERT( "H >= 256!", H < 256.0f );
+				if (H>360) H = 360.0; 
+				//ASSERT( "H >= 256!", H < 256.0f );
 				histogram->hist_vals[(int)H]++;
 				if(histogram->hist_vals[(int)H] > HHistMaxValue)
 					HHistMaxValue = histogram->hist_vals[(int)H];
@@ -272,6 +273,11 @@ void piGeneral::hist()
 					HHistEndRange = (int)H;
 			}
 			// Wyszukiwanie najmniejszej jasnosci piksela
+			
+			if((MinH == -1) || (MinH > H))
+				MinH = H;
+			if((MaxH == -1) || (MaxH < H))
+				MaxH = H;
 			if((MinV == -1) || (MinV > V))
 				MinV = V;
 			// Wyszukiwanie najwiekszej jasnosci piksela
@@ -280,14 +286,20 @@ void piGeneral::hist()
 			// Wyszukiwanie najmniejszego nasycenia piksela
 			if((MinS == -1) || (MinS > S))
 				MinS = S;
+
 		}
 	}
 
-	} catch( const char * str )
-	{
-		printf( "ASSERTION FAILURE! <%s> : %3.3f \n", str, H );
-	}
+//	} catch( const char * str )
+//	{
+//		printf( "ASSERTION FAILURE! <%s> : %3.3f \n", str, H );
+//	}
 
+	Hmax = MaxH;
+	Hmin = MinH;
+	Vmax = MaxV;
+	Vmin = MinV;
+	MinS = Smin;
 	histogram->maxV = MaxV;
 	histogram->minS = MinS;
 	histogram->minV = MinV;
@@ -298,7 +310,7 @@ void piGeneral::hist()
 int piGeneral::init()
 {
 	histogram = new hist_data();
-	histogram->hist_vals = new int[256];
+	histogram->hist_vals = new int[360];
 
 	return( ST_OK );
 }

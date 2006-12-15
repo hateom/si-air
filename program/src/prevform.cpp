@@ -12,14 +12,17 @@
 
 //////////////////////////////////////////////////////////////////////////
 
-PrevForm::PrevForm( moduleBase * inbase, QWidget* parent, const char* name, bool modal, WFlags fl )
-: QDialog( parent, name, modal, fl ), base(inbase), timer(NULL), sx(0), sy(0), sw(0), sh(0), select_time(0)
+PrevForm::PrevForm( moduleBase * inbase, PrevForm * pr, QWidget* parent, const char* name, bool modal, WFlags fl )
+: QDialog( parent, name, modal, fl ), base(inbase), timer(NULL), sx(0), sy(0), sw(0), sh(0), select_time(0), 
+  prev(pr), next(NULL)
 {
 	if ( !name ) setName( "PrevForm" );
 
 	languageChange();
 	resize( QSize( 350, 260 ).expandedTo(minimumSizeHint()) );
 	clearWState( WState_Polished );
+
+	if( pr ) pr->set_next( this );
 
 //	connect( this, SIGNAL(mousePressEvent(QMouseEvent*)), this, SLOT(mousePress(QMouseEvent*)) );
 //	connect( this, SIGNAL(mouseReleaseEvent(QMouseEvent*)), this, SLOT(mouseRelease(QMouseEvent*)) );
@@ -101,7 +104,26 @@ void PrevForm::mouseReleaseEvent( QMouseEvent * e )
 //	LOG( ">>> mouseRegion (%d,%d,%d,%d)\n", sx, sy, sw, sh );
 	base->mouse_select( sx, sy, sw, sh );
 
+	if( next ) next->select_right( sx, sy, sw, sh );
+	if( prev ) prev->select_left( sx, sy, sw, sh );
+
 	select_time = GetTickCount();
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+void PrevForm::select_left( int sx, int sy, int sw, int sh )
+{
+	if( prev ) prev->select_left( sx, sy, sw, sh );
+	base->mouse_select( sx, sy, sw, sh );
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+void PrevForm::select_right( int sx, int sy, int sw, int sh )
+{
+	if( next ) next->select_left( sx, sy, sw, sh );
+	base->mouse_select( sx, sy, sw, sh );
 }
 
 //////////////////////////////////////////////////////////////////////////

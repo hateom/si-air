@@ -17,7 +17,7 @@
 //#define DEPTH 4
 //////////////////////////////////////////////////////////////////////////
 
-piGeneral::piGeneral() : alloc_mem(0)
+piGeneral::piGeneral() : alloc_mem(0), selected_region(NULL)
 {
 	REG_PARAM( PT_INT, Hmax,			"1. Wart. maxymalna H", 35 );
 	REG_PARAM( PT_INT, Hmin,			"2. Wart. minimalna H", 10 );
@@ -33,7 +33,6 @@ piGeneral::piGeneral() : alloc_mem(0)
 	//}
 	histogram = new hist_data();
 	histogram->hist_vals = new int(256);
-	selected_region = NULL;
 	//histogram = NULL;
 	//inFrame = NULL;
 }
@@ -167,12 +166,12 @@ void piGeneral::mouse_select(int sx, int sy, int sw, int sh )
 	int depth = inFrame->depth;
 	int size = sw*sh*depth;
 
-	if (sx<0) sx=0;
-	if (sy<0) sy=0;
-	if (sx > inFrame->width) sx=inFrame->width;
-	if (sy > inFrame->height) sy=inFrame->height;
-	if (sx+sw>inFrame->width) sw=inFrame->width-sx;
-	if (sy+sh>inFrame->height) sh=inFrame->height-sy;
+//	if (sx<0) sx=0;
+//	if (sy<0) sy=0;
+//	if (sx > (int)inFrame->width) sx=inFrame->width;
+//	if (sy > (int)inFrame->height) sy=inFrame->height;
+//	if (sx+sw>inFrame->width) sw=inFrame->width-sx;
+//	if (sy+sh>inFrame->height) sh=inFrame->height-sy;
 	if (!selected_region)
 	{
 		selected_region = new frame_data();
@@ -197,7 +196,7 @@ void piGeneral::mouse_select(int sx, int sy, int sw, int sh )
 
 void piGeneral::hist()
 {
-	int width,height,size,x,y,depth;
+	int width,height,size,depth; //x, y
 	int R,G,B;
 	int HHistMaxValue = 0;
 	int HHistStartRange = -1;
@@ -259,7 +258,11 @@ int piGeneral::init()
 
 void piGeneral::free()
 {
-	
+	if( selected_region != NULL )
+	{
+		delete selected_region;
+		selected_region = NULL;
+	}
 }
 
 //////////////////////////////////////////////////////////////////////////

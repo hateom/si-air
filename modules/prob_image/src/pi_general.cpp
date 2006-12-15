@@ -245,7 +245,9 @@ void piGeneral::hist()
 	depth = selected_region->depth;
 	size =  width*height*depth;
 	//for(int i=0;i<size-3;i++)
-
+	if (H>255) H = 255; 
+	if (S>255) S = 255; 
+	if (V>255) V = 255; 
 	try {
 
 	for( int x=0; x<(int)width; ++x )

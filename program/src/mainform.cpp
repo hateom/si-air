@@ -22,10 +22,6 @@
 #include "mp_logger.h"
 #include "../../modules/module_base/src/status_codes.h"
 
-#include "../../modules/module_base/src/property_mgr.h"
-
-#pragma comment(lib,"../modules/module_base/lib/module_base.lib")
-
 //////////////////////////////////////////////////////////////////////////
 
 #define FPS( FRM ) (1000/(FRM))

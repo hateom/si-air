@@ -16,8 +16,6 @@
 #pragma comment(lib,"ml.lib")
 #pragma comment(lib,"highgui.lib")
 
-#pragma comment(lib,"../module_base/lib/module_base.lib")
-
 //////////////////////////////////////////////////////////////////////////
 
 vaOpenCV::vaOpenCV() : capture(NULL), alloc_mem(0)/*, cam_count(0)*/

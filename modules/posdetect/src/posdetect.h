@@ -31,11 +31,12 @@ public:
 //	virtual Tpos * calc_position( float * piTable , float maxVal, int width, int height, int * status );
 
 private:
-	void draw_frame_marker( frame_data * frame, int posx, int posy );
+	void draw_frame_marker( frame_data * frame, int posx, int posy, float angle );
 
 protected:
 	int or_mask_size;
 	int alloc_mem;
+	int angle_max;
 };
 
 //////////////////////////////////////////////////////////////////////////

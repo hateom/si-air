@@ -188,12 +188,12 @@ proc_data * cPosdetect::process_frame( proc_data * prev_frame, int * result )
 
 	width = prev_frame->frame->width;
 	height = prev_frame->frame->height;
-	maxVal = 1.0f;
+	//maxVal = 1.0f;
 	piTable = prev_frame->prob;
-
+	
 	int xs = 0, xk = width, ys = 0, yk = height, ObjHeight, ObjWidth, s = 0;
 	float xc = 0.0f, yc = 0.0f;
-
+	maxVal = prev_frame->max_prob;
 	for( int k=0; k<2; k++ )
 	{
 		if( k )
@@ -360,7 +360,7 @@ proc_data * cPosdetect::process_frame( proc_data * prev_frame, int * result )
 		tan_fi = 100.0;
 	if(Dx)
 		tan_fi =((float)Dy)/((float)Dx);
-*/
+		*/
 	if (M00) tan_fi=(2*(M11/M00)-xc*yc)/(((M20/M00)-xc*xc)-((M02/M00)-yc*yc));
 	pos.gesture=GESTURE_NULL;
 	pos.angle=atan(tan_fi)/2;

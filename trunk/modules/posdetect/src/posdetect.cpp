@@ -360,13 +360,10 @@ proc_data * cPosdetect::process_frame( proc_data * prev_frame, int * result )
 		tan_fi = 100.0;
 	if(Dx)
 		tan_fi =((float)Dy)/((float)Dx);
-
 */
-	
 	if (M00) tan_fi=(2*(M11/M00)-xc*yc)/(((M20/M00)-xc*xc)-((M02/M00)-yc*yc));
 	pos.gesture=GESTURE_NULL;
 	pos.angle=atan(tan_fi)/2;
-	long double fi = atan(tan_fi)/2;
 	pos.x = (int)xc;
 	pos.y = (int)yc;
 	*result = ST_OK;
@@ -399,7 +396,7 @@ proc_data * cPosdetect::process_frame( proc_data * prev_frame, int * result )
 
 		memcpy( frame.bits, prev_frame->input_frame->bits, frame.width*frame.height*frame.depth );
 
-		draw_frame_marker( &frame, pos.x, pos.y, pos.angle);
+		draw_frame_marker( &frame, pos.x, pos.y, pos.angle );
 	}
 
 	/// ---
@@ -432,15 +429,13 @@ void cPosdetect::draw_frame_marker( frame_data * frame, int posx, int posy, floa
 		{
 			if( marker[(x+y*MARKER_W)*3+0] != 0 )
 			{
-				offs1 = (int)(posx+x+yoffs1)*4;
+				offs1 = (posx+x+yoffs1)*4;
 				offs2 = (x+yoffs2)*3;
 
 				frame->bits[offs1+0] = marker[offs2+0];
 				frame->bits[offs1+1] = marker[offs2+1];
 				frame->bits[offs1+2] = marker[offs2+2];
-
 				if (angle*57>angle_max) frame->bits[offs1+2] = 100;
-                //if (angle*57<-30) frame->bits[offs1+1] =150;
 			}
 		}
 	}

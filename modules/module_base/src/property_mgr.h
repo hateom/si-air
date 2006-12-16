@@ -5,6 +5,7 @@
 
 #include <string>
 #include <map>
+#include "status_codes.h"
 
 //////////////////////////////////////////////////////////////////////////
 
@@ -18,12 +19,14 @@ public:
 	PropertyMgr() {}
 	~PropertyMgr() {}
 
-	bool register_property( std::string name, void * value )
+	int register_property( std::string name, void * value )
 	{
+		if( get_property( name ) != NULL ) return( ST_ALREADY_EXISTS );
+
 		typedef std::pair<std::string,void*> myPair;
 		data.insert( myPair( name, value ) );
 
-		return( true );
+		return( ST_OK );
 	}
 
 	void * get_property( std::string name )

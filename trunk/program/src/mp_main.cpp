@@ -15,6 +15,7 @@
 
 int main( int argc, char * argv[] )
 {
+/*
 	try
 	{
 		MB_ASSERT( "TEST", 1 == 0 );
@@ -24,7 +25,7 @@ int main( int argc, char * argv[] )
 		printf( "!!! %s\n", e.show() );
 	}
 
-
+*/
 	mpLogger::set_output( OT_CONSOLE );
 	LOG( "initializing application...\n" );
 

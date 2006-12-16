@@ -28,7 +28,7 @@ public:
 	virtual int init();
 	virtual void free();
 
-	virtual void mouse_select(int sx, int sy, int sw, int sh );
+//	virtual void mouse_select(int sx, int sy, int sw, int sh );
 
 //	virtual frame_data * process_frame( int * result );
 	virtual proc_data * process_frame( proc_data * prev_frame, int * result );

@@ -115,7 +115,7 @@ int vaOpenCV::init()
 	{
 		return( ST_DEVICE_NOT_FOUND );
 	}
-
+/*
 	propertyMgr->register_property( "input_module_cv", this );
 
 	if( propertyMgr->get_property( "input_module_cv" ) == this )
@@ -126,7 +126,7 @@ int vaOpenCV::init()
 	{
 		printf( ">>> property sux!\n" );
 	}
-
+*/
 	return( ST_OK );
 }
 
@@ -233,12 +233,12 @@ void vaOpenCV::free()
 }
 
 //////////////////////////////////////////////////////////////////////////
-
+/*
 void vaOpenCV::mouse_select(int sx, int sy, int sw, int sh )
 {
 	printf( "::: cv selected region [%d %d %d %d]\n", sx, sy, sw, sh );
 }
-
+*/
 //////////////////////////////////////////////////////////////////////////
 /// export funkcji exportujacej
 

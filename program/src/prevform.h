@@ -32,11 +32,11 @@ public:
 
 protected slots:
 	virtual void languageChange();
-	virtual void anim();
 
 protected:
 	virtual void mousePressEvent( QMouseEvent * e );
 	virtual void mouseReleaseEvent( QMouseEvent * e );
+	virtual void mouseMoveEvent( QMouseEvent * e );
 
 	void select_left( int sx, int sy, int sw, int sh );
 	void select_right( int sx, int sy, int sw, int sh );
@@ -44,6 +44,7 @@ protected:
 private:
 	moduleBase * base;
 	QTimer * timer;
+	bool moving;
 
 	int sx, sy;
 	int sw, sh;

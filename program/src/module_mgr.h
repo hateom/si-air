@@ -4,6 +4,7 @@
 //////////////////////////////////////////////////////////////////////////
 
 #include <qobject.h>
+#include <qtimer.h>
 #include <vector>
 #include <string>
 #include "../../modules/module_base/src/module_base.h"
@@ -23,6 +24,7 @@ public:
 
 private:
 	moduleBase * last_on_path();
+	void process_frame();
 
 public slots:
 	void clear_path();
@@ -35,12 +37,16 @@ signals:
 	void module_unload( moduleBase * base, int no );
 	void added_to_path( moduleBase * base, int no );
 	void path_cleared();
+	void processing_started();
 	void processing_finished();
 
 private:
 	int load_single_module( std::string filename );
 	std::vector<moduleBase*> module_list;
 	std::vector<int> path_list;
+
+	bool is_running;
+	QTimer * timer;
 };
 
 //////////////////////////////////////////////////////////////////////////

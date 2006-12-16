@@ -8,7 +8,7 @@ typedef moduleBase * (*t_export_func)();
 
 //////////////////////////////////////////////////////////////////////////
 
-ModuleMgr::ModuleMgr()
+ModuleMgr::ModuleMgr() : is_running(false), timer(NULL)
 {
 }
 
@@ -128,6 +128,12 @@ int ModuleMgr::unload_modules()
 
 void ModuleMgr::clear_path()
 {
+	if( is_running )
+	{
+		LOG( "!!! Processing is still running!\n" );
+		return;
+	}
+
 	emit path_cleared();
 	path_list.clear();
 }
@@ -175,14 +181,101 @@ void ModuleMgr::add_to_path( int module )
 
 void ModuleMgr::start_processing()
 {
+	moduleBase * mod;
+	int size = (int)path_list.size();
+	int result;
 
+	for( int i=0; i<size; ++i )
+	{
+		mod = module_list[path_list[i]];
+		if( !mod ) return;
+
+		result = mod->init( /*&property_mgr*/ );
+
+		if( result != ST_OK )
+		{
+			LOG( "!!! Initialization module error <%d>!\n", i );
+			return;
+		}
+/*
+		if( wdg->has_preview() )
+		{
+			PrevForm * pf;
+			pf = new PrevForm( mod, previous );
+			wdg->set_preview( pf );
+			pf->move( QPoint( poss2[prv_wnd*2], poss2[prv_wnd*2+1] ) );
+			pf->show();
+			prv_wnd++;
+			previous = pf;
+		}
+*/
+	}
+
+	timer = new QTimer( this );
+	connect( timer, SIGNAL(timeout()), this, SLOT(process_frame()));
+	
+	emit processing_started();
+
+	timer->start( 40 );
+
+	is_running = true;
 }
 
 //////////////////////////////////////////////////////////////////////////
 
 void ModuleMgr::stop_processing()
 {
+	if( !is_running ) return;
 
+	if( timer != NULL )
+	{
+		timer->stop();
+		delete timer;
+		timer = NULL;
+	}
+
+	is_running = false;
+
+	emit processing_finished();
 }
 
 //////////////////////////////////////////////////////////////////////////
+
+void ModuleMgr::process_frame()
+{
+	int result;
+	int size = (int)path_list.size();
+	moduleBase * mod;
+	proc_data * arg = NULL, * res = NULL;
+
+	try 
+	{
+		for( int i=0; i<size; ++i )
+		{
+			mod = module_list[path_list[i]];
+			if( !mod ) throw -1;
+			res = mod->process_frame( arg, &result );
+
+			if( result != ST_OK ) 
+			{
+				stop_processing();
+				return;
+			}
+/*
+			if( mod_widget[i]->has_preview() )
+			{
+				mod_widget[i]->get_preview()->render_frame( res->frame );
+			}
+*/
+			arg = res;
+		}
+	}
+	catch( ... )
+	{
+		LOG( "!!! frame processing exception.\n" );
+		stop_processing();
+	}
+}
+
+//////////////////////////////////////////////////////////////////////////
+

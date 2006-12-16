@@ -5,8 +5,9 @@
 
 #include <windows.h>
 #include <vector>
-#include "../../module_base/src/mb_param.h"
-#include "../../module_base/src/types.h"
+#include "mb_param.h"
+#include "types.h"
+#include "property_mgr.h"
 
 //////////////////////////////////////////////////////////////////////////
 
@@ -20,6 +21,8 @@
 #define MK_PARAM( PP ) ((void*)&PP)
 #define REG_PARAM( TYPE, NAME, DESC, DEF_VAL ) \
 	register_param( TYPE, MK_PARAM(NAME), #NAME, DESC ); NAME = DEF_VAL;
+
+#define USE_PROPERTY_MGR( MGR ) property_mgr = MGR
 
 //////////////////////////////////////////////////////////////////////////
 
@@ -61,7 +64,7 @@ public:
 	/// \return opis danego modulu jako tablice znakow
 	virtual const char * get_module_description() = 0;
 
-	virtual int  init() = 0;
+	virtual int  init( PropertyMgr * pm = NULL ) = 0;
 	virtual void free() = 0;
 
 	/// zwraca informacja o typie modulu
@@ -136,6 +139,7 @@ protected:
 
 	HMODULE lib_handle;
 	std::vector<mb_param*> param_list;
+	PropertyMgr * property_mgr;
 };
 
 //////////////////////////////////////////////////////////////////////////

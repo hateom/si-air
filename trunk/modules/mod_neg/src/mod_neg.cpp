@@ -25,8 +25,9 @@ const char * modNeg::get_module_description()
 
 //////////////////////////////////////////////////////////////////////////
 
-int modNeg::init()
+int modNeg::init( PropertyMgr * pm )
 {
+	USE_PROPERTY_MGR( pm );
 	return( ST_OK );
 }
 

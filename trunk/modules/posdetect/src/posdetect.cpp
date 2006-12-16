@@ -439,8 +439,9 @@ void cPosdetect::draw_frame_marker( frame_data * frame, int posx, int posy )
 
 //////////////////////////////////////////////////////////////////////////
 
-int cPosdetect::init()
+int cPosdetect::init( PropertyMgr * pm )
 {
+	USE_PROPERTY_MGR( pm );
 	return( ST_OK );
 }
 

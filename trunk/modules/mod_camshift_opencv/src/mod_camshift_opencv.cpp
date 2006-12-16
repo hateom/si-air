@@ -61,8 +61,10 @@ const char * mod_camshift_opencv::get_module_description()
 
 //////////////////////////////////////////////////////////////////////////
 
-int mod_camshift_opencv::init()
+int mod_camshift_opencv::init( PropertyMgr * pm )
 {
+	USE_PROPERTY_MGR( pm );
+
 	track_object =1;
 	return( ST_OK );
 }

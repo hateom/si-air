@@ -26,7 +26,7 @@ public:
 	virtual proc_data * process_frame( proc_data * prev_frame, int * status );
 	virtual void mouse_select(int sx, int sy, int sw, int sh );
 
-	virtual int  init();
+	virtual int  init( PropertyMgr * pm = NULL );
 	virtual void free();
 
 	//virtual pi_struct * process_frame( frame_data * inFrame, int * status );

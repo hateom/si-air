@@ -25,7 +25,7 @@ public:
 	virtual int input_type();
 	virtual int output_type();
 
-	virtual int init();
+	virtual int init( PropertyMgr * pm = NULL );
 	virtual void free();
 
 //	virtual void mouse_select(int sx, int sy, int sw, int sh );

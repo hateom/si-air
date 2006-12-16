@@ -11,7 +11,7 @@ public:
 
 	virtual const char * get_module_description();
 
-	virtual int  init();
+	virtual int  init( PropertyMgr * pm );
 	virtual void free();
 
 	virtual int get_module_type();

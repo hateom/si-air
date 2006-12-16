@@ -308,8 +308,10 @@ void piGeneral::hist()
 
 }
 
-int piGeneral::init()
+int piGeneral::init( PropertyMgr * pm )
 {
+	USE_PROPERTY_MGR( pm );
+
 	histogram = new hist_data();
 	histogram->hist_vals = new int[360];
 

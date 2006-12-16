@@ -22,6 +22,10 @@
 #include "mp_logger.h"
 #include "../../modules/module_base/src/status_codes.h"
 
+#include "../../modules/module_base/src/property_mgr.h"
+
+#pragma comment(lib,"../modules/module_base/lib/module_base.lib")
+
 //////////////////////////////////////////////////////////////////////////
 
 #define FPS( FRM ) (1000/(FRM))
@@ -277,13 +281,15 @@ void MainForm::run()
 		50+990, 660
 	};
 
+	property_mgr.release();
+
 	for( int i=0; i<(int)mod_widget.size(); ++i )
 	{
 		wdg = mod_widget[i];
 		mod = wdg->getModule();
 		if( !mod ) return;
 
-		result = mod->init();
+		result = mod->init( &property_mgr );
 
 		if( result != ST_OK )
 		{

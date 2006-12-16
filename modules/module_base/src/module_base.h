@@ -69,7 +69,9 @@ public:
 
 	/// zwraca informacja o typie modulu
 	/// \return typ modulu zadeklarowany jako MT_*
-	virtual int get_module_type() = 0;
+//	virtual int get_module_type() = 0; <--  depreciated (nie uzywamy juz typow modulow, ale
+//											typ zwracany, i pobierany, wiec to jest niepotrzebne
+//											prosze usunac we wszystkich modulach ta metode
 
 	virtual int input_type() = 0;
 	virtual int output_type() = 0;

@@ -26,6 +26,30 @@
 
 #define FPS( FRM ) (1000/(FRM))
 
+static int poss1[] = 
+{
+	240, 10,   240+150,  10,   240+300,   10,  
+	240, 130,  240+150,  130,  240+300,  130,  
+	240, 250,  240+150,  250,  240+300,  250,
+	240, 370,  240+150,  370,  240+300,  370
+};
+
+static int poss2[] = 
+{
+	50,     100,
+	50+330, 100,
+	50+660, 100,
+	50+990, 100,
+	50,     380,
+	50+330, 380,
+	50+660, 380,
+	50+990, 380,
+	50,     660,
+	50+330, 660,
+	50+660, 660,
+	50+990, 660
+};
+
 //////////////////////////////////////////////////////////////////////////
 
 MainForm::MainForm( QWidget* parent, const char* name, bool modal, WFlags fl )
@@ -148,43 +172,14 @@ void MainForm::add_module()
 	}
 
 	prev = mod_widget.size()>0?mod_widget[mod_widget.size()-1]:NULL;
-
-	int start_x = 240;
 	int wd_no = (int)mod_widget.size();
 
-	int poss[] = { 
-		240, 10,   240+150,  10,   240+300,   10,  
-		240, 130,  240+150,  130,  240+300,  130,  
-		240, 250,  240+150,  250,  240+300,  250,
-		240, 370,  240+150,  370,  240+300,  370
-	};
-
-	wdg = new modWidget( id, module, prev, groupMod, /*this,*/ "modWidget" );
-	//wdg->setGeometry( QRect( start_x+wd_no*(140+10), 10, 140, 110 ) );
-	wdg->setGeometry( QRect( poss[wd_no*2]-230, poss[wd_no*2+1], 140, 110 ) );
+	wdg = new modWidget( id, module, prev, groupMod, "modWidget" );
+	wdg->setGeometry( QRect( poss1[wd_no*2]-230, poss1[wd_no*2+1], 140, 110 ) );
 
 	wdg->show();
 
 	mod_widget.push_back( wdg );
-}
-
-//////////////////////////////////////////////////////////////////////////
-
-inline char * mt( int type )
-{
-	switch( type )
-	{
-	case MT_VIDEO_ACQ:
-		return( "[V] " );
-	case MT_PROBABILITY:
-		return( "[P] " );
-	case MT_POSGEST:
-		return( "[D] " );
-	default:
-		return( "[C] " );
-	}
-
-	return( "[C] " );
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -199,7 +194,7 @@ void MainForm::loadModules( const char * directory )
 		if( mod )
 		{
 			mod_list.push_back( mgr.load_module( mod ) );
-			listBox->insertItem( tr( mt(mod->type) ) + tr( mod->description.c_str() ) );
+			listBox->insertItem( tr( mod->description.c_str() ) );
 		}
 	}
 }
@@ -262,21 +257,6 @@ void MainForm::run()
 	moduleBase * mod;
 	modWidget * wdg;
 
-	int poss[] = {
-		50,     100,
-		50+330, 100,
-		50+660, 100,
-		50+990, 100,
-		50,     380,
-		50+330, 380,
-		50+660, 380,
-		50+990, 380,
-		50,     660,
-		50+330, 660,
-		50+660, 660,
-		50+990, 660
-	};
-
 	property_mgr.release();
 
 	for( int i=0; i<(int)mod_widget.size(); ++i )
@@ -298,7 +278,7 @@ void MainForm::run()
 			PrevForm * pf;
 			pf = new PrevForm( mod, previous );
 			wdg->set_preview( pf );
-			pf->move( QPoint( poss[prv_wnd*2], poss[prv_wnd*2+1] ) );
+			pf->move( QPoint( poss2[prv_wnd*2], poss2[prv_wnd*2+1] ) );
 			pf->show();
 			prv_wnd++;
 			previous = pf;

@@ -58,7 +58,7 @@ class __declspec(dllexport) moduleBase
 {
 public:
 	moduleBase() : lib_handle(NULL) { REG_PARAM( PT_INT, preview_param, "Preview", 0 ); }
-	virtual ~moduleBase() { FreeLibrary( lib_handle ); free_params(); }
+	virtual ~moduleBase() { free_params(); }
 
 	/// metoda zwracajaca opis danego modulu
 	/// \return opis danego modulu jako tablice znakow
@@ -81,6 +81,7 @@ public:
 	virtual proc_data * process_frame( proc_data * prev_frame, int * result ) = 0;
 
 	virtual void assign_library_handle( HMODULE hlib ) { lib_handle = hlib; }
+	virtual HMODULE get_library_handle() { return( lib_handle ); }
 
 public:
 	/// parameter functions

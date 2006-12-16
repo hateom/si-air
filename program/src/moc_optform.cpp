@@ -1,7 +1,7 @@
 /****************************************************************************
 ** OptForm meta object code from reading C++ file 'optform.h'
 **
-** Created: So 2. gru 16:41:12 2006
+** Created: So 16. gru 19:24:34 2006
 **      by: The Qt MOC ($Id: moc_yacc.cpp,v 1.1.1.13 2006/05/05 17:43:42 chehrlic Exp $)
 **
 ** WARNING! All changes made in this file will be lost!

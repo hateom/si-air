@@ -96,6 +96,7 @@ proc_data * piGeneral::process_frame( proc_data * prev_frame, int * status )
 	static frame_data static_frame = { 0, 0, 0, 0 };
 	static proc_data p_data = { 0, 0, 0, 0 };
 	static float * piTable = NULL;
+	float maxVal = 0.0f; 
 
 	static_frame.depth = 4;
 	static_frame.width = inFrame->width;
@@ -148,6 +149,7 @@ proc_data * piGeneral::process_frame( proc_data * prev_frame, int * status )
 				static_frame.bits[(x+y*width)*4+2] = (unsigned char)chVal;
 				static_frame.bits[(x+y*width)*4+3] = 0;
 			}
+			if (piTable[x+y*width] > maxVal) maxVal = piTable[x+y*width];
 		}
 	}
 
@@ -157,6 +159,7 @@ proc_data * piGeneral::process_frame( proc_data * prev_frame, int * status )
 	p_data.input_frame = prev_frame->input_frame;
 	p_data.frame =  &static_frame;
 	p_data.prob = piTable;
+	p_data.max_prob = maxVal;
 
 	*status = ST_OK;
 	return ( &p_data );

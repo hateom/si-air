@@ -13,9 +13,9 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="Debug"
-			IntermediateDirectory="Debug"
-			ConfigurationType="2"
+			OutputDirectory="lib"
+			IntermediateDirectory="obj"
+			ConfigurationType="4"
 			CharacterSet="2">
 			<Tool
 				Name="VCCLCompilerTool"
@@ -31,14 +31,7 @@
 			<Tool
 				Name="VCCustomBuildTool"/>
 			<Tool
-				Name="VCLinkerTool"
-				OutputFile="$(OutDir)/module_base.dll"
-				LinkIncremental="2"
-				GenerateDebugInformation="TRUE"
-				ProgramDatabaseFile="$(OutDir)/module_base.pdb"
-				SubSystem="2"
-				ImportLibrary="$(OutDir)/module_base.lib"
-				TargetMachine="1"/>
+				Name="VCLibrarianTool"/>
 			<Tool
 				Name="VCMIDLTool"/>
 			<Tool
@@ -54,16 +47,14 @@
 			<Tool
 				Name="VCXMLDataGeneratorTool"/>
 			<Tool
-				Name="VCWebDeploymentTool"/>
-			<Tool
 				Name="VCManagedWrapperGeneratorTool"/>
 			<Tool
 				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="Release"
-			IntermediateDirectory="Release"
+			OutputDirectory="lib"
+			IntermediateDirectory="obj"
 			ConfigurationType="2"
 			CharacterSet="2">
 			<Tool

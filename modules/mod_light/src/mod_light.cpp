@@ -30,8 +30,9 @@ const char * modLight::get_module_description()
 
 //////////////////////////////////////////////////////////////////////////
 
-int modLight::init()
+int modLight::init( PropertyMgr * pm )
 {
+	USE_PROPERTY_MGR( pm );
 	return( ST_OK );
 }
 

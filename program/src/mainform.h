@@ -9,6 +9,7 @@
 #include "mp_dllmgr.h"
 #include "prevform.h"
 #include "modwidget.h"
+#include "../../modules/module_base/src/property_mgr.h"
 
 //////////////////////////////////////////////////////////////////////////
 
@@ -59,6 +60,7 @@ protected slots:
 
 private:
 	mpdllMgr mgr;
+	PropertyMgr property_mgr;
 	int prv_wnd;
 
 	std::vector<moduleBase*>	mod_list;

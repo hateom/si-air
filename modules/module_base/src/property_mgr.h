@@ -1,10 +1,16 @@
 #ifndef __PROPERTY_MGR_H__
 #define __PROPERTY_MGR_H__
 
+//////////////////////////////////////////////////////////////////////////
+
 #include <string>
 #include <map>
 
-#define propertyMgr PropertyMgr::Single()
+//////////////////////////////////////////////////////////////////////////
+
+#pragma warning ( disable: 4251 )	// STL & dll
+
+//////////////////////////////////////////////////////////////////////////
 
 class __declspec(dllexport) PropertyMgr
 {
@@ -25,14 +31,12 @@ public:
 		return( data[name] );
 	}
 
-	static PropertyMgr * Single()
-	{
-		static PropertyMgr mgr;
-		return( &mgr );
-	}
+	void release() { data.clear(); }
 
 private:
 	std::map<std::string,void *> data;
 };
+
+//////////////////////////////////////////////////////////////////////////
 
 #endif // __PROPERTY_MGR_H__

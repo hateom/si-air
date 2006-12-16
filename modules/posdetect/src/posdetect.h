@@ -25,7 +25,7 @@ public:
 
 	virtual proc_data * process_frame( proc_data * prev_frame, int * result );
 
-	virtual int  init();
+	virtual int  init( PropertyMgr * pm = NULL );
 	virtual void free();
 
 //	virtual Tpos * calc_position( float * piTable , float maxVal, int width, int height, int * status );

@@ -16,6 +16,8 @@
 #pragma comment(lib,"ml.lib")
 #pragma comment(lib,"highgui.lib")
 
+#pragma comment(lib,"../module_base/lib/module_base.lib")
+
 //////////////////////////////////////////////////////////////////////////
 
 vaOpenCV::vaOpenCV() : capture(NULL), alloc_mem(0)/*, cam_count(0)*/
@@ -73,8 +75,10 @@ static void cvcam_callback( IplImage * image )
 */
 //////////////////////////////////////////////////////////////////////////
 
-int vaOpenCV::init()
+int vaOpenCV::init( PropertyMgr * pm )
 {
+	USE_PROPERTY_MGR( pm );
+
 	/*
 	/// load AVI from file
 	if( filename != NULL )
@@ -115,18 +119,7 @@ int vaOpenCV::init()
 	{
 		return( ST_DEVICE_NOT_FOUND );
 	}
-/*
-	propertyMgr->register_property( "input_module_cv", this );
 
-	if( propertyMgr->get_property( "input_module_cv" ) == this )
-	{
-		printf( ">>> property are working!\n" );
-	}
-	else
-	{
-		printf( ">>> property sux!\n" );
-	}
-*/
 	return( ST_OK );
 }
 

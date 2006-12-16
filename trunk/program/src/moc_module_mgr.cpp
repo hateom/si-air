@@ -1,7 +1,7 @@
 /****************************************************************************
 ** ModuleMgr meta object code from reading C++ file 'module_mgr.h'
 **
-** Created: So 16. gru 22:28:08 2006
+** Created: So 16. gru 22:34:05 2006
 **      by: The Qt MOC ($Id: moc_yacc.cpp,v 1.1.1.13 2006/05/05 17:43:42 chehrlic Exp $)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -81,16 +81,18 @@ QMetaObject* ModuleMgr::staticMetaObject()
     };
     static const QUMethod signal_2 = {"added_to_path", 2, param_signal_2 };
     static const QUMethod signal_3 = {"path_cleared", 0, 0 };
+    static const QUMethod signal_4 = {"processing_finished", 0, 0 };
     static const QMetaData signal_tbl[] = {
 	{ "module_loaded(moduleBase*,int)", &signal_0, QMetaData::Public },
 	{ "module_unload(moduleBase*,int)", &signal_1, QMetaData::Public },
 	{ "added_to_path(moduleBase*,int)", &signal_2, QMetaData::Public },
-	{ "path_cleared()", &signal_3, QMetaData::Public }
+	{ "path_cleared()", &signal_3, QMetaData::Public },
+	{ "processing_finished()", &signal_4, QMetaData::Public }
     };
     metaObj = QMetaObject::new_metaobject(
 	"ModuleMgr", parentObject,
 	slot_tbl, 4,
-	signal_tbl, 4,
+	signal_tbl, 5,
 #ifndef QT_NO_PROPERTIES
 	0, 0,
 	0, 0,
@@ -158,6 +160,12 @@ void ModuleMgr::path_cleared()
     activate_signal( staticMetaObject()->signalOffset() + 3 );
 }
 
+// SIGNAL processing_finished
+void ModuleMgr::processing_finished()
+{
+    activate_signal( staticMetaObject()->signalOffset() + 4 );
+}
+
 bool ModuleMgr::qt_invoke( int _id, QUObject* _o )
 {
     switch ( _id - staticMetaObject()->slotOffset() ) {
@@ -178,6 +186,7 @@ bool ModuleMgr::qt_emit( int _id, QUObject* _o )
     case 1: module_unload((moduleBase*)static_QUType_ptr.get(_o+1),(int)static_QUType_int.get(_o+2)); break;
     case 2: added_to_path((moduleBase*)static_QUType_ptr.get(_o+1),(int)static_QUType_int.get(_o+2)); break;
     case 3: path_cleared(); break;
+    case 4: processing_finished(); break;
     default:
 	return QObject::qt_emit(_id,_o);
     }

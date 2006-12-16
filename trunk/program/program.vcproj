@@ -117,6 +117,9 @@
 				RelativePath=".\src\moc_module_mgr.cpp">
 			</File>
 			<File
+				RelativePath=".\src\moc_preview_mgr.cpp">
+			</File>
+			<File
 				RelativePath="..\modules\module_base\src\module_base.h">
 			</File>
 			<File

@@ -114,7 +114,19 @@
 			Filter="cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx"
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}">
 			<File
+				RelativePath="..\modules\module_base\src\module_base.h">
+			</File>
+			<File
+				RelativePath=".\src\module_mgr.cpp">
+			</File>
+			<File
+				RelativePath=".\src\module_mgr.h">
+			</File>
+			<File
 				RelativePath=".\src\mp_dllmgr.cpp">
+			</File>
+			<File
+				RelativePath=".\src\mp_dllmgr.h">
 			</File>
 			<File
 				RelativePath=".\src\mp_logger.cpp">
@@ -130,6 +142,9 @@
 			</File>
 			<File
 				RelativePath=".\src\mp_path.h">
+			</File>
+			<File
+				RelativePath=".\resource.h">
 			</File>
 			<Filter
 				Name="qt"
@@ -185,15 +200,6 @@
 			Name="Header Files"
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}">
-			<File
-				RelativePath="..\modules\module_base\src\module_base.h">
-			</File>
-			<File
-				RelativePath=".\src\mp_dllmgr.h">
-			</File>
-			<File
-				RelativePath=".\resource.h">
-			</File>
 		</Filter>
 		<Filter
 			Name="Resource Files"

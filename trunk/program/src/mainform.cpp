@@ -110,6 +110,7 @@ void MainForm::remove_path()
 
 void MainForm::close_app()
 {
+	stop();
 	remove_path();
 	close();
 }

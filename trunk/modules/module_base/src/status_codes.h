@@ -12,6 +12,10 @@
 #define ST_FRAME_ERROR		0x05
 #define ST_ALREADY_EXISTS	0x06
 
+#define ST_MISSING_DLL		0x07
+#define ST_UNKNOWN_MODULE	0x08
+#define ST_EXPORT_ERROR		0x09
+
 #define ST_UNDEFINED		0x99
 
 //////////////////////////////////////////////////////////////////////////

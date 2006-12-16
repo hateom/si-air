@@ -99,6 +99,7 @@ public:
 	}
 	virtual int register_param( int type, void * value, char * name, char * description )
 	{
+		if( find_param( name ) != NULL ) return( ST_ALREADY_EXISTS );
 		mb_param * n_param = new mb_param;
 		n_param->data = value;
 		n_param->type = type;

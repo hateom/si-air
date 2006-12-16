@@ -14,7 +14,7 @@
 
 PrevForm::PrevForm( moduleBase * inbase, PrevForm * pr, QWidget* parent, const char* name, bool modal, WFlags fl )
 : QDialog( parent, name, modal, fl ), base(inbase), timer(NULL), sx(0), sy(0), sw(0), sh(0), select_time(0), 
-  prev(pr), next(NULL)
+  prev(pr), next(NULL), moving(false)
 {
 	if ( !name ) setName( "PrevForm" );
 
@@ -53,7 +53,7 @@ void PrevForm::render_frame( frame_data * frame )
 	QPainter painter( this );
 	painter.drawImage( QPoint(0, 0), img );
 
-	if( GetTickCount()-select_time < 2000 )
+	if( moving || GetTickCount()-select_time < 2000 )
 	{
 		painter.setPen( QColor( 255, 0, 0 ) );
 		painter.drawRect( QRect( sx, sy, sw, sh ) );
@@ -69,6 +69,8 @@ void PrevForm::mousePressEvent( QMouseEvent * e )
 	sx = e->x();
 	sy = e->y();
 	sw = sh = 0;
+
+	moving = true;
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -83,10 +85,18 @@ inline void swap( int & a, int & b )
 
 //////////////////////////////////////////////////////////////////////////
 
+void PrevForm::mouseMoveEvent( QMouseEvent * e )
+{
+	int nx = e->x(), ny = e->y();
+
+	sw = nx - sx;
+	sh = ny - sy;
+}
+
+//////////////////////////////////////////////////////////////////////////
+
 void PrevForm::mouseReleaseEvent( QMouseEvent * e )
 {
-//	LOG( ">>> mouseRelease (%003d,%003d)\n", e->x(), e->y() );
-
 	int nx = e->x(), ny = e->y();
 
 	if( nx < 0 ) nx = 0;
@@ -101,12 +111,12 @@ void PrevForm::mouseReleaseEvent( QMouseEvent * e )
 	sw = abs(sx - nx);
 	sh = abs(sy - ny);
 
-//	LOG( ">>> mouseRegion (%d,%d,%d,%d)\n", sx, sy, sw, sh );
 	base->mouse_select( sx, sy, sw, sh );
 
 	if( next ) next->select_right( sx, sy, sw, sh );
 	if( prev ) prev->select_left( sx, sy, sw, sh );
 
+	moving = false;
 	select_time = GetTickCount();
 }
 
@@ -126,44 +136,4 @@ void PrevForm::select_right( int sx, int sy, int sw, int sh )
 	base->mouse_select( sx, sy, sw, sh );
 }
 
-//////////////////////////////////////////////////////////////////////////
-
-void PrevForm::anim()
-{
-/*
-	int result;
-	frame_data * frame;
-	
-	frame = base->process_frame( &result );
-
-	if( result < 0 )
-	{
-		timer->stop();
-		delete timer;
-		timer = NULL;
-		base->free();
-		this->close();
-		return;
-	}
-
-	resize( QSize( frame->width, frame->height ).expandedTo(minimumSizeHint()) );
-	QImage img( (uchar*)frame->bits, frame->width, frame->height, 32, NULL, 256, QImage::LittleEndian );
-	QPainter painter( this );
-	painter.drawImage( QPoint(0, 0), img );
-*/
-}
-
-//////////////////////////////////////////////////////////////////////////
-/*
-void PrevForm::set_video_module( moduleBase * base )
-{
-	this->base = base;
-
-	timer = new QTimer( this );
-	connect( timer, SIGNAL(timeout()), this, SLOT(anim()));
-
-	LOG( "Callback saved. Setting frame capturing...\n" );
-	timer->start( 10 );
-}
-*/
 //////////////////////////////////////////////////////////////////////////

@@ -16,7 +16,7 @@ struct mp_dll_module
 {
 	std::string filename;
 	std::string description;
-	int			type;
+//	int			type;
 };
 
 //////////////////////////////////////////////////////////////////////////

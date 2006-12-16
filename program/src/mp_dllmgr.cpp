@@ -49,7 +49,7 @@ int mpdllMgr::read_module_directory( std::string directory )
 			if( ( err_no = get_module_information( item ) ) == 0 )
 			{
 				list.push_back( item );
-				LOG( "OK\n", item->description.c_str(), mt_description[item->type] );
+				LOG( "OK\n" /*, item->description.c_str(), mt_description[item->type]*/ );
 			}
 			else
 			{
@@ -94,7 +94,7 @@ int mpdllMgr::get_module_information( mp_dll_module * item )
 	if( base )
 	{
 		item->description = std::string( base->get_module_description() );
-		item->type = base->get_module_type();
+//		item->type = base->get_module_type();
 	}
 	else
 	{

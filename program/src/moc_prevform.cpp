@@ -1,7 +1,7 @@
 /****************************************************************************
 ** PrevForm meta object code from reading C++ file 'prevform.h'
 **
-** Created: So 16. gru 19:24:34 2006
+** Created: N 17. gru 13:41:55 2006
 **      by: The Qt MOC ($Id: moc_yacc.cpp,v 1.1.1.13 2006/05/05 17:43:42 chehrlic Exp $)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -53,15 +53,23 @@ QMetaObject* PrevForm::staticMetaObject()
 	return metaObj;
     QMetaObject* parentObject = QDialog::staticMetaObject();
     static const QUMethod slot_0 = {"languageChange", 0, 0 };
-    static const QUMethod slot_1 = {"anim", 0, 0 };
     static const QMetaData slot_tbl[] = {
-	{ "languageChange()", &slot_0, QMetaData::Protected },
-	{ "anim()", &slot_1, QMetaData::Protected }
+	{ "languageChange()", &slot_0, QMetaData::Protected }
+    };
+    static const QUParameter param_signal_0[] = {
+	{ "sx", &static_QUType_int, 0, QUParameter::In },
+	{ "sy", &static_QUType_int, 0, QUParameter::In },
+	{ "sw", &static_QUType_int, 0, QUParameter::In },
+	{ "sh", &static_QUType_int, 0, QUParameter::In }
+    };
+    static const QUMethod signal_0 = {"mouse_select", 4, param_signal_0 };
+    static const QMetaData signal_tbl[] = {
+	{ "mouse_select(int,int,int,int)", &signal_0, QMetaData::Protected }
     };
     metaObj = QMetaObject::new_metaobject(
 	"PrevForm", parentObject,
-	slot_tbl, 2,
-	0, 0,
+	slot_tbl, 1,
+	signal_tbl, 1,
 #ifndef QT_NO_PROPERTIES
 	0, 0,
 	0, 0,
@@ -78,11 +86,29 @@ void* PrevForm::qt_cast( const char* clname )
     return QDialog::qt_cast( clname );
 }
 
+#include <qobjectdefs.h>
+#include <qsignalslotimp.h>
+
+// SIGNAL mouse_select
+void PrevForm::mouse_select( int t0, int t1, int t2, int t3 )
+{
+    if ( signalsBlocked() )
+	return;
+    QConnectionList *clist = receivers( staticMetaObject()->signalOffset() + 0 );
+    if ( !clist )
+	return;
+    QUObject o[5];
+    static_QUType_int.set(o+1,t0);
+    static_QUType_int.set(o+2,t1);
+    static_QUType_int.set(o+3,t2);
+    static_QUType_int.set(o+4,t3);
+    activate_signal( clist, o );
+}
+
 bool PrevForm::qt_invoke( int _id, QUObject* _o )
 {
     switch ( _id - staticMetaObject()->slotOffset() ) {
     case 0: languageChange(); break;
-    case 1: anim(); break;
     default:
 	return QDialog::qt_invoke( _id, _o );
     }
@@ -91,7 +117,12 @@ bool PrevForm::qt_invoke( int _id, QUObject* _o )
 
 bool PrevForm::qt_emit( int _id, QUObject* _o )
 {
-    return QDialog::qt_emit(_id,_o);
+    switch ( _id - staticMetaObject()->signalOffset() ) {
+    case 0: mouse_select((int)static_QUType_int.get(_o+1),(int)static_QUType_int.get(_o+2),(int)static_QUType_int.get(_o+3),(int)static_QUType_int.get(_o+4)); break;
+    default:
+	return QDialog::qt_emit(_id,_o);
+    }
+    return TRUE;
 }
 #ifndef QT_NO_PROPERTIES
 

@@ -1,13 +1,29 @@
+/********************************************************************
+    Projekt z przedmiotu : Sztuczna Inteligencja i Sensoryka
+
+	stworzono:	17:12:2006   16:50
+	plik:    	exceptions
+	autorzy:	Tomasz Huczek, Andrzej Jasiñski
+	
+    cel:	    
+*********************************************************************/
+
 #ifndef __EXCEPTIONS_H__
 #define __EXCEPTIONS_H__
 
+//////////////////////////////////////////////////////////////////////////
+
 #include <string>
+
+//////////////////////////////////////////////////////////////////////////
 
 #ifdef _DEBUG
 #define MB_ASSERT( MSG, EXP ) if( !(EXP) ) { throw mbException( MSG, #EXP, __FILE__, __LINE__ ); }
 #else
 #define MB_ASSERT( MSG, EXP )
 #endif
+
+//////////////////////////////////////////////////////////////////////////
 
 class __declspec(dllexport) mbException
 {
@@ -27,5 +43,7 @@ private:
 	int line;
 	std::string msg, exp, file;
 };
+
+//////////////////////////////////////////////////////////////////////////
 
 #endif // __EXCEPTIONS_H__

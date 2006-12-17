@@ -1,3 +1,13 @@
+/********************************************************************
+    Projekt z przedmiotu : Sztuczna Inteligencja i Sensoryka
+
+	stworzono:	17:12:2006   16:52
+	plik:    	mainform
+	autorzy:	Tomasz Huczek, Andrzej Jasiñski
+	
+    cel:	    
+*********************************************************************/
+
 #ifndef MAINFORM_H
 #define MAINFORM_H
 
@@ -35,6 +45,7 @@ public:
     MainForm( QWidget* parent = 0, const char* name = 0, bool modal = FALSE, WFlags fl = 0 );
     ~MainForm();
 
+	QPushButton * buttonLoad;
     QPushButton * buttonOk;
 	QPushButton * buttonRun;
 	QListBox    * listBox;
@@ -57,10 +68,13 @@ public slots:
 	virtual void close_app();
 	virtual void lb_selected( QListBoxItem * );
 
+	virtual void load_modules();
+
 protected slots:
     virtual void languageChange();
 
 private:
+	void closeEvent( QCloseEvent * ce );
 	std::vector<modWidget*>		mod_widget;
 };
 

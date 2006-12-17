@@ -40,7 +40,7 @@ int PreviewMgr::register_preview()
 	PrevForm * form;
 	int prv_wnd = (int)prev_list.size();
 
-	form = new PrevForm();
+	form = new PrevForm( prv_wnd );
 	form->move( QPoint( poss2[prv_wnd*2], poss2[prv_wnd*2+1] ) );
 	form->show();
 
@@ -48,7 +48,7 @@ int PreviewMgr::register_preview()
 
 	prev_list.push_back( form );
 
-	return( (int)prev_list.size()-1 );
+	return( prv_wnd );
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -86,7 +86,7 @@ int PreviewMgr::close_preview( int preview )
 	{
 		disconnect( form, SIGNAL(mouse_select(int,int,int,int)), this, SLOT(in_mouse_select(int,int,int,int)) );
 		form->close();
-		delete form;
+//		delete form;
 		prev_list[preview] = NULL;
 	}
 
@@ -113,6 +113,24 @@ int PreviewMgr::close_all()
 void PreviewMgr::in_mouse_select( int sx, int sy, int sw, int sh )
 {
 	emit mouse_select( sx, sy, sw, sh );
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+void PreviewMgr::preview_closed( int id )
+{
+	if( id < 0 || id >= (int)prev_list.size() )
+	{
+		return;
+	}
+
+	PrevForm * form = prev_list[id];
+
+	if( form != NULL )
+	{
+		disconnect( form, SIGNAL(mouse_select(int,int,int,int)), this, SLOT(in_mouse_select(int,int,int,int)) );
+		prev_list[id] = NULL;
+	}
 }
 
 //////////////////////////////////////////////////////////////////////////

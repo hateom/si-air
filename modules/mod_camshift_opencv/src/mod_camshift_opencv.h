@@ -1,5 +1,17 @@
+/********************************************************************
+    Projekt z przedmiotu : Sztuczna Inteligencja i Sensoryka
+
+	stworzono:	17:12:2006   16:52
+	plik:    	mod_camshift_opencv
+	autorzy:	Tomasz Huczek, Andrzej Jasiñski
+	
+    cel:	    
+*********************************************************************/
+
 #ifndef __MOD_CAMSHIFT_OPENCV_H__
 #define __MOD_CAMSHIFT_OPENCV_H__
+
+//////////////////////////////////////////////////////////////////////////
 
 #include "../../module_base/src/module_base.h"
 #ifndef _EiC
@@ -9,6 +21,7 @@
 #include <ctype.h>
 #endif
 
+//////////////////////////////////////////////////////////////////////////
 
 class __declspec(dllexport) mod_camshift_opencv: public moduleBase
 {
@@ -37,5 +50,7 @@ private:
 	int bin_w;
 
 };
+
+//////////////////////////////////////////////////////////////////////////
 
 #endif // __MOD_CAMSHIFT_OPENCV_H__

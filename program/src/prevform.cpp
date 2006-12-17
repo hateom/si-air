@@ -2,6 +2,7 @@
 
 #include "prevform.h"
 #include "mp_logger.h"
+#include "preview_mgr.h"
 
 #include <windows.h>
 
@@ -12,9 +13,9 @@
 
 //////////////////////////////////////////////////////////////////////////
 
-PrevForm::PrevForm( QWidget* parent, const char* name, bool modal, WFlags fl )
+PrevForm::PrevForm( int nid, QWidget* parent, const char* name, bool modal, WFlags fl )
 : QDialog( parent, name, modal, fl ), timer(NULL), sx(0), sy(0), sw(0), sh(0), select_time(0), 
-  moving(false)
+  moving(false), id(nid)
 {
 	if ( !name ) setName( "PrevForm" );
 
@@ -108,6 +109,14 @@ void PrevForm::mouseReleaseEvent( QMouseEvent * e )
 
 	moving = false;
 	select_time = GetTickCount();
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+void PrevForm::closeEvent( QCloseEvent * ce )
+{
+	sPreviewMgr->preview_closed( get_id() );
+	ce->accept();
 }
 
 //////////////////////////////////////////////////////////////////////////

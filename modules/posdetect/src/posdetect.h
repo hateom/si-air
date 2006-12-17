@@ -1,13 +1,20 @@
+/********************************************************************
+    Projekt z przedmiotu : Sztuczna Inteligencja i Sensoryka
+
+	stworzono:	17:12:2006   16:53
+	plik:    	posdetect
+	autorzy:	Tomasz Huczek, Andrzej Jasiñski
+	
+    cel:	    
+*********************************************************************/
+
 #ifndef __POSDETECT_H__
 #define __POSDETECT_H__
+
 //////////////////////////////////////////////////////////////////////////
 
 #include "../../module_base/src/module_base.h"
 #include "../../module_base/src/types.h"
-
-//////////////////////////////////////////////////////////////////////////
-
-/// deklaracja typu uzytego wewnatrz klasy
 
 //////////////////////////////////////////////////////////////////////////
 

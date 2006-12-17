@@ -141,9 +141,12 @@ int ModuleMgr::unload_modules()
 
 	if( !size ) return( ST_OK );
 
+	LOG( ">>> unloading modules...\n" );
+
 	for( int i=0; i<size; ++i )
 	{
 		mod = module_list[i];
+		LOG( "    >> unloading `%s`\n", mod->get_module_description() );
 		emit module_unload( mod, i );
 		hdll = mod->get_library_handle();
 		mod->free();
@@ -155,6 +158,8 @@ int ModuleMgr::unload_modules()
 	}
 
 	module_list.clear();
+
+	LOG( ">>> modules unloaded safely.\n" );
 
 	return( ST_OK );
 }
@@ -270,6 +275,7 @@ void ModuleMgr::stop_processing()
 	}
 
 	is_running = false;
+	prev_list.clear();
 
 	disconnect( sPreviewMgr, SIGNAL(mouse_select(int,int,int,int)), this, SLOT(mouse_select(int,int,int,int)) );
 
@@ -332,3 +338,22 @@ void ModuleMgr::mouse_select( int sx, int sy, int sw, int sh )
 
 //////////////////////////////////////////////////////////////////////////
 
+void ModuleMgr::switch_preview( int module, bool on )
+{
+	if( module < 0 || module >= (int)module_list.size() ) return;
+
+	moduleBase * mod;
+	mod = module_list[module];
+	if( !mod ) return;
+
+	if( on )
+	{
+		mod->set_param( "preview_param", 1 );
+	}
+	else
+	{
+		mod->set_param( "preview_param", 0 );
+	}
+}
+
+//////////////////////////////////////////////////////////////////////////

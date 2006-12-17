@@ -1,6 +1,6 @@
 #include <qapplication.h>
 
-/// QT form header
+//#include <qthread.h>
 #include "mainform.h"
 #include "mp_path.h"
 
@@ -12,20 +12,23 @@
 #pragma comment(lib,"qt-mt3.lib")
 
 //////////////////////////////////////////////////////////////////////////
+/*
+class DllLoader: public QThread
+{
+public:
+	DllLoader() {};
+	~DllLoader() {};
+
+	virtual void run()
+	{
+		sModuleMgr->load_modules( GETPATH("modules") );
+	}
+};
+*/
+//////////////////////////////////////////////////////////////////////////
 
 int main( int argc, char * argv[] )
 {
-/*
-	try
-	{
-		MB_ASSERT( "TEST", 1 == 0 );
-	}
-	catch( mbException & e )
-	{
-		printf( "!!! %s\n", e.show() );
-	}
-
-*/
 	mpLogger::set_output( OT_CONSOLE );
 	LOG( "initializing application...\n" );
 
@@ -39,9 +42,10 @@ int main( int argc, char * argv[] )
 	a.setMainWidget( &form );
 	form.show();
 
-	LOG( "loading modules...\n" );
-//	form.loadModules( GETPATH("modules") );
-	sModuleMgr->load_modules( GETPATH("modules") );
+//	LOG( "loading modules...\n" );
+//	DllLoader load_dll;
+//	load_dll.start();
+//	sModuleMgr->load_modules( GETPATH("modules") );
 
 	return( a.exec() );
 }

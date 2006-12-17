@@ -1,7 +1,7 @@
 /****************************************************************************
 ** PreviewMgr meta object code from reading C++ file 'preview_mgr.h'
 **
-** Created: N 17. gru 13:31:39 2006
+** Created: N 17. gru 15:40:47 2006
 **      by: The Qt MOC ($Id: moc_yacc.cpp,v 1.1.1.13 2006/05/05 17:43:42 chehrlic Exp $)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -59,8 +59,13 @@ QMetaObject* PreviewMgr::staticMetaObject()
 	{ "sh", &static_QUType_int, 0, QUParameter::In }
     };
     static const QUMethod slot_0 = {"in_mouse_select", 4, param_slot_0 };
+    static const QUParameter param_slot_1[] = {
+	{ "id", &static_QUType_int, 0, QUParameter::In }
+    };
+    static const QUMethod slot_1 = {"preview_closed", 1, param_slot_1 };
     static const QMetaData slot_tbl[] = {
-	{ "in_mouse_select(int,int,int,int)", &slot_0, QMetaData::Public }
+	{ "in_mouse_select(int,int,int,int)", &slot_0, QMetaData::Public },
+	{ "preview_closed(int)", &slot_1, QMetaData::Public }
     };
     static const QUParameter param_signal_0[] = {
 	{ "sx", &static_QUType_int, 0, QUParameter::In },
@@ -74,7 +79,7 @@ QMetaObject* PreviewMgr::staticMetaObject()
     };
     metaObj = QMetaObject::new_metaobject(
 	"PreviewMgr", parentObject,
-	slot_tbl, 1,
+	slot_tbl, 2,
 	signal_tbl, 1,
 #ifndef QT_NO_PROPERTIES
 	0, 0,
@@ -115,6 +120,7 @@ bool PreviewMgr::qt_invoke( int _id, QUObject* _o )
 {
     switch ( _id - staticMetaObject()->slotOffset() ) {
     case 0: in_mouse_select((int)static_QUType_int.get(_o+1),(int)static_QUType_int.get(_o+2),(int)static_QUType_int.get(_o+3),(int)static_QUType_int.get(_o+4)); break;
+    case 1: preview_closed((int)static_QUType_int.get(_o+1)); break;
     default:
 	return QObject::qt_invoke( _id, _o );
     }

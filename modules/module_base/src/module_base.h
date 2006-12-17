@@ -1,3 +1,13 @@
+/********************************************************************
+    Projekt z przedmiotu : Sztuczna Inteligencja i Sensoryka
+
+	stworzono:	17:12:2006   16:50
+	plik:    	module_base
+	autorzy:	Tomasz Huczek, Andrzej Jasiñski
+	
+    cel:	    
+*********************************************************************/
+
 #ifndef __MODULE_BASE_H__
 #define __MODULE_BASE_H__
 
@@ -76,7 +86,7 @@ public:
 	virtual int input_type() = 0;
 	virtual int output_type() = 0;
 
-	virtual void mouse_select( int sx, int sz, int sw, int sh ) {}
+	virtual void mouse_select( int sx, int sy, int sw, int sh ) {}
 
 	virtual proc_data * process_frame( proc_data * prev_frame, int * result ) = 0;
 

@@ -1,7 +1,21 @@
+/********************************************************************
+    Projekt z przedmiotu : Sztuczna Inteligencja i Sensoryka
+
+	stworzono:	17:12:2006   16:53
+	plik:    	mod_light
+	autorzy:	Tomasz Huczek, Andrzej Jasiñski
+	
+    cel:	    
+*********************************************************************/
+
 #ifndef __MOD_LIGHT_H__
 #define __MOD_LIGHT_H__
 
+//////////////////////////////////////////////////////////////////////////
+
 #include "../../module_base/src/module_base.h"
+
+//////////////////////////////////////////////////////////////////////////
 
 class __declspec(dllexport) modLight: public moduleBase
 {
@@ -25,5 +39,7 @@ private:
 	long alloc_mem;
 	float factor;
 };
+
+//////////////////////////////////////////////////////////////////////////
 
 #endif // __MOD_LIGHT_H__

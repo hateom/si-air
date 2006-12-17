@@ -5,7 +5,7 @@
 #include "mp_path.h"
 
 #include "mp_logger.h"
-
+#include "module_mgr.h"
 #include "../../modules/module_base/src/exceptions.h"
 
 #pragma comment(lib,"qtmain.lib")
@@ -40,7 +40,8 @@ int main( int argc, char * argv[] )
 	form.show();
 
 	LOG( "loading modules...\n" );
-	form.loadModules( GETPATH("modules") );
+//	form.loadModules( GETPATH("modules") );
+	sModuleMgr->load_modules( GETPATH("modules") );
 
 	return( a.exec() );
 }

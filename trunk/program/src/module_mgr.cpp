@@ -1,10 +1,45 @@
 #include "module_mgr.h"
 #include "mp_logger.h"
+#include "preview_mgr.h"
 #include "../../modules/module_base/src/status_codes.h"
 
 //////////////////////////////////////////////////////////////////////////
 
+#define NO_PREVIEW -1
+
+//////////////////////////////////////////////////////////////////////////
+
 typedef moduleBase * (*t_export_func)();
+
+//////////////////////////////////////////////////////////////////////////
+
+static ModuleMgr modmgr_single;
+
+//////////////////////////////////////////////////////////////////////////
+
+ModuleMgr * ModuleMgr::singleton()
+{
+	return( &modmgr_single );
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+bool has_preview( moduleBase * mod )
+{
+	int has_preview = 0;
+
+	if( !mod ) return( false );
+
+	if( mod->get_param( "preview_param", &has_preview ) == ST_OK )
+	{
+		if( has_preview )
+		{
+			return( true );
+		}
+	}
+
+	return( false );
+}
 
 //////////////////////////////////////////////////////////////////////////
 
@@ -115,7 +150,7 @@ int ModuleMgr::unload_modules()
 		delete mod;
 		if( !FreeLibrary( hdll ) )
 		{
-			LOG( "!!! `LoadLibrary` failed\n");
+			LOG( "!!! `FreeLibrary` failed\n");
 		}
 	}
 
@@ -185,35 +220,35 @@ void ModuleMgr::start_processing()
 	int size = (int)path_list.size();
 	int result;
 
+	property_mgr.release();
+
 	for( int i=0; i<size; ++i )
 	{
 		mod = module_list[path_list[i]];
 		if( !mod ) return;
 
-		result = mod->init( /*&property_mgr*/ );
+		result = mod->init( &property_mgr );
 
 		if( result != ST_OK )
 		{
 			LOG( "!!! Initialization module error <%d>!\n", i );
 			return;
 		}
-/*
-		if( wdg->has_preview() )
+
+		if( has_preview( mod ) )
 		{
-			PrevForm * pf;
-			pf = new PrevForm( mod, previous );
-			wdg->set_preview( pf );
-			pf->move( QPoint( poss2[prv_wnd*2], poss2[prv_wnd*2+1] ) );
-			pf->show();
-			prv_wnd++;
-			previous = pf;
+			prev_list.push_back( sPreviewMgr->register_preview() );
 		}
-*/
+		else
+		{
+			prev_list.push_back( NO_PREVIEW );
+		}
 	}
 
 	timer = new QTimer( this );
 	connect( timer, SIGNAL(timeout()), this, SLOT(process_frame()));
-	
+	connect( sPreviewMgr, SIGNAL(mouse_select(int,int,int,int)), this, SLOT(mouse_select(int,int,int,int)) );
+
 	emit processing_started();
 
 	timer->start( 40 );
@@ -235,6 +270,10 @@ void ModuleMgr::stop_processing()
 	}
 
 	is_running = false;
+
+	disconnect( sPreviewMgr, SIGNAL(mouse_select(int,int,int,int)), this, SLOT(mouse_select(int,int,int,int)) );
+
+	sPreviewMgr->close_all();
 
 	emit processing_finished();
 }
@@ -261,12 +300,12 @@ void ModuleMgr::process_frame()
 				stop_processing();
 				return;
 			}
-/*
-			if( mod_widget[i]->has_preview() )
+
+			if( prev_list[i] != NO_PREVIEW )
 			{
-				mod_widget[i]->get_preview()->render_frame( res->frame );
+				sPreviewMgr->render_frame( prev_list[i], res->frame );
 			}
-*/
+
 			arg = res;
 		}
 	}
@@ -274,6 +313,20 @@ void ModuleMgr::process_frame()
 	{
 		LOG( "!!! frame processing exception.\n" );
 		stop_processing();
+	}
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+void ModuleMgr::mouse_select( int sx, int sy, int sw, int sh )
+{
+	int size = (int)path_list.size();
+	moduleBase * mod;
+
+	for( int i=0; i<size; ++i )
+	{
+		mod = module_list[path_list[i]];
+		if( mod ) mod->mouse_select( sx, sy, sw, sh );
 	}
 }
 

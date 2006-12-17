@@ -19,16 +19,11 @@ class PrevForm : public QDialog
 	Q_OBJECT
 
 public:
-	PrevForm( moduleBase * base, PrevForm * pr, QWidget* parent = 0, const char* name = 0, bool modal = FALSE, WFlags fl = 0 );
+	PrevForm( QWidget* parent = 0, const char* name = 0, bool modal = FALSE, WFlags fl = 0 );
 	~PrevForm();
 
-	HWND get_handle() { return( this->QWidget::winId() ); }
-//	void set_video_module( moduleBase * base );
-
+//	HWND get_handle() { return( this->QWidget::winId() ); }
 	void render_frame( frame_data * frame );
-
-	void set_prev( PrevForm * p ) { prev = p; }
-	void set_next( PrevForm * n ) { next = n; }
 
 protected slots:
 	virtual void languageChange();
@@ -38,20 +33,16 @@ protected:
 	virtual void mouseReleaseEvent( QMouseEvent * e );
 	virtual void mouseMoveEvent( QMouseEvent * e );
 
-	void select_left( int sx, int sy, int sw, int sh );
-	void select_right( int sx, int sy, int sw, int sh );
+signals:
+	void mouse_select( int sx, int sy, int sw, int sh );
 
 private:
-	moduleBase * base;
 	QTimer * timer;
 	bool moving;
 
 	int sx, sy;
 	int sw, sh;
 	long select_time;
-
-	PrevForm * prev;
-	PrevForm * next;
 };
 
 //////////////////////////////////////////////////////////////////////////

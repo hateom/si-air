@@ -20,11 +20,10 @@
 #include "prevform.h"
 #include "mp_path.h"
 #include "mp_logger.h"
+#include "module_mgr.h"
 #include "../../modules/module_base/src/status_codes.h"
 
 //////////////////////////////////////////////////////////////////////////
-
-#define FPS( FRM ) (1000/(FRM))
 
 static int poss1[] = 
 {
@@ -32,16 +31,10 @@ static int poss1[] =
 	240, 250,  240+150,  250,  240+300,  250,   240, 370,  240+150,  370,  240+300,  370
 };
 
-static int poss2[] = 
-{
-	50,     100,   50+330, 100,   50+660, 100,   50+990, 100,  50,     380,   50+330, 380,
-	50+660, 380,   50+990, 380,   50,     660,   50+330, 660,  50+660, 660,   50+990, 660
-};
-
 //////////////////////////////////////////////////////////////////////////
 
 MainForm::MainForm( QWidget* parent, const char* name, bool modal, WFlags fl )
-    : QDialog( parent, name, modal, fl ), timer(NULL), prv_wnd(0), is_running(false)
+    : QDialog( parent, name, modal, fl )
 {
     if ( !name )
 	setName( "MainForm" );
@@ -67,9 +60,15 @@ MainForm::MainForm( QWidget* parent, const char* name, bool modal, WFlags fl )
 
 	connect( buttonOk, SIGNAL(clicked()), this, SLOT(close_app()) );
 	connect( buttonRun, SIGNAL(clicked()), this, SLOT(run()) );
-	connect( buttonAdd, SIGNAL(clicked()), this, SLOT(add_module()) );
-	connect( buttonReset, SIGNAL(clicked()), this, SLOT(remove_path()) );
 	connect( listBox, SIGNAL(selected(QListBoxItem*)), this, SLOT(lb_selected(QListBoxItem*)) );
+	connect( buttonReset, SIGNAL(clicked()), sModuleMgr, SLOT(clear_path()) );
+	connect( buttonAdd, SIGNAL(clicked()), this, SLOT(add_module()) );
+	connect( sModuleMgr, SIGNAL(module_loaded(moduleBase*,int)), this, SLOT(module_loaded(moduleBase*,int)) );
+	connect( sModuleMgr, SIGNAL(module_unload(moduleBase*,int)), this, SLOT(module_unload(moduleBase*,int)) );
+	connect( sModuleMgr, SIGNAL(added_to_path(moduleBase*,int)), this, SLOT(added_to_path(moduleBase*,int)) );
+	connect( sModuleMgr, SIGNAL(path_cleared()), this, SLOT(path_cleared()) );
+	connect( sModuleMgr, SIGNAL(processing_started()), this, SLOT(processing_started()) );
+	connect( sModuleMgr, SIGNAL(processing_finished()), this, SLOT(processing_finished()) );
 
     languageChange();
     resize( QSize(710, 425).expandedTo(minimumSizeHint()) );
@@ -78,28 +77,8 @@ MainForm::MainForm( QWidget* parent, const char* name, bool modal, WFlags fl )
 
 //////////////////////////////////////////////////////////////////////////
 
-void MainForm::remove_path()
-{
-	if( is_running )
-	{
-		LOG( "ERROR: Processing is still running!\n" );
-		return;
-	}
-
-	for( int i=0; i<(int)mod_widget.size(); ++i )
-	{
-		mod_widget[i]->close();
-		delete mod_widget[i];
-	}
-	mod_widget.clear();
-}
-
-//////////////////////////////////////////////////////////////////////////
-
 void MainForm::close_app()
 {
-	stop();
-	remove_path();
 	close();
 }
 
@@ -107,7 +86,6 @@ void MainForm::close_app()
 
 MainForm::~MainForm()
 {
-	mgr.free();
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -125,203 +103,23 @@ void MainForm::languageChange()
 
 void MainForm::add_module()
 {
-	if( mod_widget.size() == 9 )
-	{
-		LOG( "ERROR: Maximum modules count is 9!\n" );
-		return;
-	}
-
-	if( is_running )
-	{
-		LOG( "ERROR: Processing is still running!\n" );
-		return;
-	}
-
-	LOG( "adding module %d <%s>\n", listBox->currentItem(), mod_list[listBox->currentItem()]->get_module_description() );
-
-	long id = listBox->currentItem();
-	moduleBase * module = mod_list[id];
-	modWidget * wdg, * prev;
-
-	if( mod_widget.empty() )
-	{
-		if( module->input_type() != MT_NONE )
-		{
-			LOG( "ERROR: This module cannot be used as first processing module!\n" );
-			return;
-		}
-	}
-	else
-	{
-		if( mod_widget[mod_widget.size()-1]->getModule()->output_type() != module->input_type() )
-		{
-			LOG( "ERROR: Module mismatch error!\n" );
-			return;
-		}
-	}
-
-	prev = mod_widget.size()>0?mod_widget[mod_widget.size()-1]:NULL;
-	int wd_no = (int)mod_widget.size();
-
-	wdg = new modWidget( id, module, prev, groupMod, "modWidget" );
-	wdg->setGeometry( QRect( poss1[wd_no*2]-230, poss1[wd_no*2+1], 140, 110 ) );
-
-	wdg->show();
-
-	mod_widget.push_back( wdg );
-}
-
-//////////////////////////////////////////////////////////////////////////
-
-void MainForm::loadModules( const char * directory )
-{
-	mgr.read_module_directory( directory );
-
-	for( int i=0; i<mgr.count(); ++i )
-	{
-		mp_dll_module * mod = mgr.get_module_info( i );
-		if( mod )
-		{
-			mod_list.push_back( mgr.load_module( mod ) );
-			listBox->insertItem( tr( mod->description.c_str() ) );
-		}
-	}
+	int item = listBox->currentItem();
+	sModuleMgr->add_to_path( item );
 }
 
 //////////////////////////////////////////////////////////////////////////
 
 void MainForm::lb_selected( QListBoxItem * )
 {
-	add_module();
-}
-
-//////////////////////////////////////////////////////////////////////////
-
-void MainForm::process_frame()
-{
-	int result;
-	moduleBase * mod;
-	proc_data * arg = NULL, * res = NULL;
-
-	try 
-	{
-		for( int i=0; i<(int)mod_widget.size(); ++i )
-		{
-			mod = mod_widget[i]->getModule();
-			if( !mod ) throw -1;
-			res = mod->process_frame( arg, &result );
-
-			if( result != ST_OK ) 
-			{
-				stop();
-				return;
-			}
-
-			if( mod_widget[i]->has_preview() )
-			{
-				mod_widget[i]->get_preview()->render_frame( res->frame );
-			}
-
-			arg = res;
-		}
-	}
-	catch( int err )
-	{
-		LOG( "ERROR: Internal error <%d>\n", err );
-	}
-	catch( ... )
-	{
-		LOG( "ERROR: frame processing exception.\n" );
-		release_proc_data();
-	}
-}
-
-//////////////////////////////////////////////////////////////////////////
-
-void MainForm::run()
-{
-	int result;
-	PrevForm * previous = NULL;
-
-	moduleBase * mod;
-	modWidget * wdg;
-
-	property_mgr.release();
-
-	for( int i=0; i<(int)mod_widget.size(); ++i )
-	{
-		wdg = mod_widget[i];
-		mod = wdg->getModule();
-		if( !mod ) return;
-
-		result = mod->init( &property_mgr );
-
-		if( result != ST_OK )
-		{
-			LOG( "ERROR: Initialization module error <%d>!\n", i );
-			return;
-		}
-
-		if( wdg->has_preview() )
-		{
-			PrevForm * pf;
-			pf = new PrevForm( mod, previous );
-			wdg->set_preview( pf );
-			pf->move( QPoint( poss2[prv_wnd*2], poss2[prv_wnd*2+1] ) );
-			pf->show();
-			prv_wnd++;
-			previous = pf;
-		}
-	}
-
-	timer = new QTimer( this );
-	connect( timer, SIGNAL(timeout()), this, SLOT(process_frame()));
-
-	is_running = true;
-	timer->start( FPS( 25 ) );
-
-	connect( buttonRun, SIGNAL(clicked()), this, SLOT(stop()) );
-	disconnect( buttonRun, SIGNAL(clicked()), this, SLOT(run()) );
-	buttonRun->setText( "Stop!" );
+	int item = listBox->currentItem();
+	sModuleMgr->add_to_path( item );
 }
 
 //////////////////////////////////////////////////////////////////////////
 
 void MainForm::stop()
 {
-	release_proc_data();
-}
-
-//////////////////////////////////////////////////////////////////////////
-
-void MainForm::release_proc_data()
-{
-	if( !is_running ) return;
-
-	if( timer )
-	{
-		timer->stop();
-		delete timer;
-		timer = NULL;
-	}
-
-	is_running = false;
-
-	prv_wnd = 0;
-
-	modWidget * wdg;
-
-	for( int i=0; i<(int)mod_widget.size(); ++i )
-	{
-		wdg = mod_widget[i];
-		if( wdg->has_preview() )
-		{
-			wdg->get_preview()->close();
-			delete wdg->get_preview();
-			wdg->set_preview( NULL );
-		}
-		wdg->getModule()->free();
-	}
+	sModuleMgr->stop_processing(); 
 
 	connect( buttonRun, SIGNAL(clicked()), this, SLOT(run()) );
 	disconnect( buttonRun, SIGNAL(clicked()), this, SLOT(stop()) );
@@ -330,3 +128,74 @@ void MainForm::release_proc_data()
 
 //////////////////////////////////////////////////////////////////////////
 
+void MainForm::run()
+{
+	connect( buttonRun, SIGNAL(clicked()), this, SLOT(stop()) );
+	disconnect( buttonRun, SIGNAL(clicked()), this, SLOT(run()) );
+	buttonRun->setText( "Stop!" );
+
+	sModuleMgr->start_processing();
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+void MainForm::module_loaded( moduleBase * base, int no )
+{
+	listBox->insertItem( tr( base->get_module_description() ) );
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+void MainForm::module_unload( moduleBase * base, int no )
+{
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+void MainForm::added_to_path( moduleBase * base, int no )
+{
+	LOG( ">>> inserting module widget <%d>\n", no );
+
+	modWidget * wdg;
+	int w_no = (int)mod_widget.size();
+
+	wdg = new modWidget( no, base, /*prev,*/ groupMod, "modWidget" );
+	wdg->setGeometry( QRect( poss1[w_no*2]-230, poss1[w_no*2+1], 140, 110 ) );
+
+	wdg->show();
+
+	mod_widget.push_back( wdg );
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+void MainForm::path_cleared()
+{
+	LOG( ">>> clearing path\n" );
+
+	modWidget * wdg;
+	int size = (int)mod_widget.size();
+
+	for( int i=0; i<size; ++i )
+	{
+		wdg = mod_widget[i];
+		wdg->close();
+		delete wdg;
+	}
+
+	mod_widget.clear();
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+void MainForm::processing_started()
+{
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+void MainForm::processing_finished()
+{
+}
+
+//////////////////////////////////////////////////////////////////////////

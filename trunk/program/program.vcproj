@@ -129,12 +129,6 @@
 				RelativePath=".\src\module_mgr.h">
 			</File>
 			<File
-				RelativePath=".\src\mp_dllmgr.cpp">
-			</File>
-			<File
-				RelativePath=".\src\mp_dllmgr.h">
-			</File>
-			<File
 				RelativePath=".\src\mp_logger.cpp">
 			</File>
 			<File

@@ -1,7 +1,7 @@
 /****************************************************************************
 ** MainForm meta object code from reading C++ file 'mainform.h'
 **
-** Created: So 16. gru 19:23:49 2006
+** Created: N 17. gru 13:41:55 2006
 **      by: The Qt MOC ($Id: moc_yacc.cpp,v 1.1.1.13 2006/05/05 17:43:42 chehrlic Exp $)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -52,30 +52,50 @@ QMetaObject* MainForm::staticMetaObject()
     if ( metaObj )
 	return metaObj;
     QMetaObject* parentObject = QDialog::staticMetaObject();
-    static const QUMethod slot_0 = {"run", 0, 0 };
-    static const QUMethod slot_1 = {"stop", 0, 0 };
-    static const QUMethod slot_2 = {"process_frame", 0, 0 };
-    static const QUMethod slot_3 = {"close_app", 0, 0 };
-    static const QUMethod slot_4 = {"add_module", 0, 0 };
-    static const QUParameter param_slot_5[] = {
+    static const QUParameter param_slot_0[] = {
+	{ "base", &static_QUType_ptr, "moduleBase", QUParameter::In },
+	{ "no", &static_QUType_int, 0, QUParameter::In }
+    };
+    static const QUMethod slot_0 = {"module_loaded", 2, param_slot_0 };
+    static const QUParameter param_slot_1[] = {
+	{ "base", &static_QUType_ptr, "moduleBase", QUParameter::In },
+	{ "no", &static_QUType_int, 0, QUParameter::In }
+    };
+    static const QUMethod slot_1 = {"module_unload", 2, param_slot_1 };
+    static const QUParameter param_slot_2[] = {
+	{ "base", &static_QUType_ptr, "moduleBase", QUParameter::In },
+	{ "no", &static_QUType_int, 0, QUParameter::In }
+    };
+    static const QUMethod slot_2 = {"added_to_path", 2, param_slot_2 };
+    static const QUMethod slot_3 = {"path_cleared", 0, 0 };
+    static const QUMethod slot_4 = {"processing_started", 0, 0 };
+    static const QUMethod slot_5 = {"processing_finished", 0, 0 };
+    static const QUMethod slot_6 = {"add_module", 0, 0 };
+    static const QUMethod slot_7 = {"run", 0, 0 };
+    static const QUMethod slot_8 = {"stop", 0, 0 };
+    static const QUMethod slot_9 = {"close_app", 0, 0 };
+    static const QUParameter param_slot_10[] = {
 	{ 0, &static_QUType_ptr, "QListBoxItem", QUParameter::In }
     };
-    static const QUMethod slot_5 = {"lb_selected", 1, param_slot_5 };
-    static const QUMethod slot_6 = {"languageChange", 0, 0 };
-    static const QUMethod slot_7 = {"remove_path", 0, 0 };
+    static const QUMethod slot_10 = {"lb_selected", 1, param_slot_10 };
+    static const QUMethod slot_11 = {"languageChange", 0, 0 };
     static const QMetaData slot_tbl[] = {
-	{ "run()", &slot_0, QMetaData::Public },
-	{ "stop()", &slot_1, QMetaData::Public },
-	{ "process_frame()", &slot_2, QMetaData::Public },
-	{ "close_app()", &slot_3, QMetaData::Public },
-	{ "add_module()", &slot_4, QMetaData::Public },
-	{ "lb_selected(QListBoxItem*)", &slot_5, QMetaData::Public },
-	{ "languageChange()", &slot_6, QMetaData::Protected },
-	{ "remove_path()", &slot_7, QMetaData::Protected }
+	{ "module_loaded(moduleBase*,int)", &slot_0, QMetaData::Public },
+	{ "module_unload(moduleBase*,int)", &slot_1, QMetaData::Public },
+	{ "added_to_path(moduleBase*,int)", &slot_2, QMetaData::Public },
+	{ "path_cleared()", &slot_3, QMetaData::Public },
+	{ "processing_started()", &slot_4, QMetaData::Public },
+	{ "processing_finished()", &slot_5, QMetaData::Public },
+	{ "add_module()", &slot_6, QMetaData::Public },
+	{ "run()", &slot_7, QMetaData::Public },
+	{ "stop()", &slot_8, QMetaData::Public },
+	{ "close_app()", &slot_9, QMetaData::Public },
+	{ "lb_selected(QListBoxItem*)", &slot_10, QMetaData::Public },
+	{ "languageChange()", &slot_11, QMetaData::Protected }
     };
     metaObj = QMetaObject::new_metaobject(
 	"MainForm", parentObject,
-	slot_tbl, 8,
+	slot_tbl, 12,
 	0, 0,
 #ifndef QT_NO_PROPERTIES
 	0, 0,
@@ -96,14 +116,18 @@ void* MainForm::qt_cast( const char* clname )
 bool MainForm::qt_invoke( int _id, QUObject* _o )
 {
     switch ( _id - staticMetaObject()->slotOffset() ) {
-    case 0: run(); break;
-    case 1: stop(); break;
-    case 2: process_frame(); break;
-    case 3: close_app(); break;
-    case 4: add_module(); break;
-    case 5: lb_selected((QListBoxItem*)static_QUType_ptr.get(_o+1)); break;
-    case 6: languageChange(); break;
-    case 7: remove_path(); break;
+    case 0: module_loaded((moduleBase*)static_QUType_ptr.get(_o+1),(int)static_QUType_int.get(_o+2)); break;
+    case 1: module_unload((moduleBase*)static_QUType_ptr.get(_o+1),(int)static_QUType_int.get(_o+2)); break;
+    case 2: added_to_path((moduleBase*)static_QUType_ptr.get(_o+1),(int)static_QUType_int.get(_o+2)); break;
+    case 3: path_cleared(); break;
+    case 4: processing_started(); break;
+    case 5: processing_finished(); break;
+    case 6: add_module(); break;
+    case 7: run(); break;
+    case 8: stop(); break;
+    case 9: close_app(); break;
+    case 10: lb_selected((QListBoxItem*)static_QUType_ptr.get(_o+1)); break;
+    case 11: languageChange(); break;
     default:
 	return QDialog::qt_invoke( _id, _o );
     }

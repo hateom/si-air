@@ -127,7 +127,7 @@ public:
 		par = find_param( name );
 		if( !par ) return( -1 );
 		*((T*)(par->data)) = value;
-		return( 0 );
+		return( ST_OK );
 	}
 	template<typename T> int get_param( const char * name, T * result )
 	{
@@ -135,7 +135,7 @@ public:
 		par = find_param( name );
 		if( !par ) return( -1 );
 		*result =  *((T*)(par->data));
-		return( 0 );
+		return( ST_OK );
 	}
 
 protected:

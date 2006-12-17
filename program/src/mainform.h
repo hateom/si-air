@@ -6,7 +6,6 @@
 #include <qvariant.h>
 #include <qdialog.h>
 
-#include "mp_dllmgr.h"
 #include "prevform.h"
 #include "modwidget.h"
 #include "../../modules/module_base/src/property_mgr.h"
@@ -41,35 +40,28 @@ public:
 	QListBox    * listBox;
 	QPushButton * buttonAdd;
 	QPushButton	* buttonReset;
-
 	QGroupBox   * groupMod;
 
-    virtual void loadModules( const char * directory );
-
 public slots:
+	virtual void module_loaded( moduleBase * base, int no );
+	virtual void module_unload( moduleBase * base, int no );
+	virtual void added_to_path( moduleBase * base, int no );
+	virtual void path_cleared();
+	virtual void processing_started();
+	virtual void processing_finished();
+	virtual void add_module();
+
 	virtual void run();
 	virtual void stop();
-	virtual void process_frame();
+
 	virtual void close_app();
-	virtual void add_module();
 	virtual void lb_selected( QListBoxItem * );
 
 protected slots:
     virtual void languageChange();
-	virtual void remove_path();
 
 private:
-	mpdllMgr mgr;
-	PropertyMgr property_mgr;
-	int prv_wnd;
-
-	std::vector<moduleBase*>	mod_list;
 	std::vector<modWidget*>		mod_widget;
-
-	void release_proc_data();
-
-	QTimer * timer;
-	bool	 is_running;
 };
 
 //////////////////////////////////////////////////////////////////////////

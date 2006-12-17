@@ -15,8 +15,10 @@
 #define ST_MISSING_DLL		0x07
 #define ST_UNKNOWN_MODULE	0x08
 #define ST_EXPORT_ERROR		0x09
+#define ST_OUT_OF_RANGE		0x0A
+#define ST_WINDOW_CLOSED	0x0B
 
-#define ST_UNDEFINED		0x99
+#define ST_UNDEFINED		0xFF
 
 //////////////////////////////////////////////////////////////////////////
 

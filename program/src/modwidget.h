@@ -4,8 +4,8 @@
 //////////////////////////////////////////////////////////////////////////
 
 #include <qgroupbox.h>
-#include "../../modules/module_base/src/module_base.h"
 #include "prevform.h"
+#include "../../modules/module_base/src/module_base.h"
 
 //////////////////////////////////////////////////////////////////////////
 
@@ -20,15 +20,11 @@ class modWidget: public QGroupBox
 	Q_OBJECT
 
 public:
-	modWidget( long id, moduleBase * mod, modWidget * prv, QWidget * parent = 0, const char * name = 0 );
+	modWidget( long id, moduleBase * mod, QWidget * parent = 0, const char * name = 0 );
 	virtual ~modWidget();
 
 	int getID() { return( id ); }
 	moduleBase * getModule() const { return( module ); }
-	void set_next_widget( modWidget * w ) { next = w; }
-
-	void set_preview( PrevForm * pf ) { preview = pf; }
-	PrevForm * get_preview() { return( preview ); }
 
 public:
 	bool has_preview();
@@ -45,11 +41,8 @@ private:
 	QTextEdit   * edit_name;
 	QCheckBox   * check_prev;
 
-	PrevForm * preview;
-
 	long id;
 	moduleBase * module;
-	modWidget * prev, * next;
 };
 
 //////////////////////////////////////////////////////////////////////////

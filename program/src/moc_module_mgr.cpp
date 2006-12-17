@@ -1,7 +1,7 @@
 /****************************************************************************
 ** ModuleMgr meta object code from reading C++ file 'module_mgr.h'
 **
-** Created: So 16. gru 22:34:05 2006
+** Created: N 17. gru 13:31:39 2006
 **      by: The Qt MOC ($Id: moc_yacc.cpp,v 1.1.1.13 2006/05/05 17:43:42 chehrlic Exp $)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -59,11 +59,21 @@ QMetaObject* ModuleMgr::staticMetaObject()
     static const QUMethod slot_1 = {"add_to_path", 1, param_slot_1 };
     static const QUMethod slot_2 = {"start_processing", 0, 0 };
     static const QUMethod slot_3 = {"stop_processing", 0, 0 };
+    static const QUMethod slot_4 = {"process_frame", 0, 0 };
+    static const QUParameter param_slot_5[] = {
+	{ "sx", &static_QUType_int, 0, QUParameter::In },
+	{ "sy", &static_QUType_int, 0, QUParameter::In },
+	{ "sw", &static_QUType_int, 0, QUParameter::In },
+	{ "sh", &static_QUType_int, 0, QUParameter::In }
+    };
+    static const QUMethod slot_5 = {"mouse_select", 4, param_slot_5 };
     static const QMetaData slot_tbl[] = {
 	{ "clear_path()", &slot_0, QMetaData::Public },
 	{ "add_to_path(int)", &slot_1, QMetaData::Public },
 	{ "start_processing()", &slot_2, QMetaData::Public },
-	{ "stop_processing()", &slot_3, QMetaData::Public }
+	{ "stop_processing()", &slot_3, QMetaData::Public },
+	{ "process_frame()", &slot_4, QMetaData::Public },
+	{ "mouse_select(int,int,int,int)", &slot_5, QMetaData::Public }
     };
     static const QUParameter param_signal_0[] = {
 	{ "base", &static_QUType_ptr, "moduleBase", QUParameter::In },
@@ -81,18 +91,20 @@ QMetaObject* ModuleMgr::staticMetaObject()
     };
     static const QUMethod signal_2 = {"added_to_path", 2, param_signal_2 };
     static const QUMethod signal_3 = {"path_cleared", 0, 0 };
-    static const QUMethod signal_4 = {"processing_finished", 0, 0 };
+    static const QUMethod signal_4 = {"processing_started", 0, 0 };
+    static const QUMethod signal_5 = {"processing_finished", 0, 0 };
     static const QMetaData signal_tbl[] = {
 	{ "module_loaded(moduleBase*,int)", &signal_0, QMetaData::Public },
 	{ "module_unload(moduleBase*,int)", &signal_1, QMetaData::Public },
 	{ "added_to_path(moduleBase*,int)", &signal_2, QMetaData::Public },
 	{ "path_cleared()", &signal_3, QMetaData::Public },
-	{ "processing_finished()", &signal_4, QMetaData::Public }
+	{ "processing_started()", &signal_4, QMetaData::Public },
+	{ "processing_finished()", &signal_5, QMetaData::Public }
     };
     metaObj = QMetaObject::new_metaobject(
 	"ModuleMgr", parentObject,
-	slot_tbl, 4,
-	signal_tbl, 5,
+	slot_tbl, 6,
+	signal_tbl, 6,
 #ifndef QT_NO_PROPERTIES
 	0, 0,
 	0, 0,
@@ -160,10 +172,16 @@ void ModuleMgr::path_cleared()
     activate_signal( staticMetaObject()->signalOffset() + 3 );
 }
 
+// SIGNAL processing_started
+void ModuleMgr::processing_started()
+{
+    activate_signal( staticMetaObject()->signalOffset() + 4 );
+}
+
 // SIGNAL processing_finished
 void ModuleMgr::processing_finished()
 {
-    activate_signal( staticMetaObject()->signalOffset() + 4 );
+    activate_signal( staticMetaObject()->signalOffset() + 5 );
 }
 
 bool ModuleMgr::qt_invoke( int _id, QUObject* _o )
@@ -173,6 +191,8 @@ bool ModuleMgr::qt_invoke( int _id, QUObject* _o )
     case 1: add_to_path((int)static_QUType_int.get(_o+1)); break;
     case 2: start_processing(); break;
     case 3: stop_processing(); break;
+    case 4: process_frame(); break;
+    case 5: mouse_select((int)static_QUType_int.get(_o+1),(int)static_QUType_int.get(_o+2),(int)static_QUType_int.get(_o+3),(int)static_QUType_int.get(_o+4)); break;
     default:
 	return QObject::qt_invoke( _id, _o );
     }
@@ -186,7 +206,8 @@ bool ModuleMgr::qt_emit( int _id, QUObject* _o )
     case 1: module_unload((moduleBase*)static_QUType_ptr.get(_o+1),(int)static_QUType_int.get(_o+2)); break;
     case 2: added_to_path((moduleBase*)static_QUType_ptr.get(_o+1),(int)static_QUType_int.get(_o+2)); break;
     case 3: path_cleared(); break;
-    case 4: processing_finished(); break;
+    case 4: processing_started(); break;
+    case 5: processing_finished(); break;
     default:
 	return QObject::qt_emit(_id,_o);
     }

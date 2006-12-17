@@ -9,14 +9,9 @@
 
 //////////////////////////////////////////////////////////////////////////
 
-modWidget::modWidget( long new_id, moduleBase * mod, modWidget * prv, QWidget * parent, const char * name ) : 
-	id(new_id), module(mod), prev(prv), next(NULL), preview(NULL), QGroupBox( parent, name )
+modWidget::modWidget( long new_id, moduleBase * mod, QWidget * parent, const char * name ) : 
+	id(new_id), module(mod), QGroupBox( parent, name )
 {
-	if( prev )
-	{
-		prev->set_next_widget( this );
-	}
-
 	edit_name = new QTextEdit( this, "editname" );
 	edit_name->setGeometry( QRect( 10, 10, 120, 25 ) );
 

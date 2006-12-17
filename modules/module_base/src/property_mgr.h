@@ -23,12 +23,16 @@
 
 //////////////////////////////////////////////////////////////////////////
 
+/// klasa przechowujaca globalne parametry modulow, dostepne dla 
+/// wszystkich pozostalych modulow - co umozliwia pewna komunikacje 
+/// pomiedzy modulami, zachwowujac jednak pewien poziom niezaleznosci
 class __declspec(dllexport) PropertyMgr
 {
 public:
 	PropertyMgr() {}
 	~PropertyMgr() {}
 
+	/// rejestracja parametru
 	int register_property( std::string name, void * value )
 	{
 		if( get_property( name ) != NULL ) return( ST_ALREADY_EXISTS );
@@ -39,11 +43,14 @@ public:
 		return( ST_OK );
 	}
 
+	/// metoda zwraca wskaznik do parametru jesli istnieje, 
+	/// NULL w przeciwnym przypadku
 	void * get_property( std::string name )
 	{
 		return( data[name] );
 	}
 
+	/// usuwa wszystkie zarejestrowane parametry
 	void release() { data.clear(); }
 
 private:

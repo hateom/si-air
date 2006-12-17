@@ -2,6 +2,8 @@
 #include "../../module_base/src/types.h"
 #include "../../module_base/src/status_codes.h"
 
+//////////////////////////////////////////////////////////////////////////
+
 #include <cv.h>
 #include <highgui.h>
 #include <cvcam.h>
@@ -13,12 +15,6 @@
 #pragma comment(lib,"ml")
 #pragma comment(lib,"highgui")
 
-#include <cassert>
-
-#define ASSERT( STR, EXP ) if( !(EXP) ) { throw STR; }
-
-//#pragma warning ( disable: 4244 )	// convertion float->int (RGBtoHSV)
-//#define DEPTH 4
 //////////////////////////////////////////////////////////////////////////
 
 piGeneral::piGeneral() : alloc_mem(0), selected_region(NULL), histogram(NULL)
@@ -28,22 +24,12 @@ piGeneral::piGeneral() : alloc_mem(0), selected_region(NULL), histogram(NULL)
 	REG_PARAM( PT_INT, Vmax,			"3. Wart. maxymalna V", 255 );
 	REG_PARAM( PT_INT, Vmin,			"4. Wart. minimalna V", 20 );
 	REG_PARAM( PT_INT, Smin,			"5. Wart. minimalna S", 0 );
-//	REG_PARAM( PT_INT, preview_param,	"Preview", 0 );
-	//if (selected_region) delete selected_region;
-	//if (histogram)
-	//{
-		//if (histogram->hist_vals) delete [] histogram->hist_vals;
-	//	delete histogram;
-	//}
-	//histogram = NULL;
-	//inFrame = NULL;
 }
 
 //////////////////////////////////////////////////////////////////////////
 
 piGeneral::~piGeneral()
 {
-
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -52,13 +38,6 @@ const char * piGeneral::get_module_description()
 {
 	static char descritpion[] = "Frame to Probability Image Processing Module : General";
 	return( descritpion );
-}
-
-//////////////////////////////////////////////////////////////////////////
-
-int piGeneral::get_module_type()
-{
-	return( MT_PROBABILITY );
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -83,7 +62,6 @@ proc_data * piGeneral::process_frame( proc_data * prev_frame, int * status )
 	int i=0;
 	float H, S, V;
 
-	//frame_data * inFrame;
 	inFrame = prev_frame->frame;
 
 	if( !inFrame )
@@ -154,8 +132,6 @@ proc_data * piGeneral::process_frame( proc_data * prev_frame, int * status )
 	}
 
 	// kopiowanie do struktury i zwrocenie
-	//if (!selected_region) p_data.input_frame = prev_frame->input_frame;
-	//else p_data.input_frame = selected_region;
 	p_data.input_frame = prev_frame->input_frame;
 	p_data.frame =  &static_frame;
 	p_data.prob = piTable;
@@ -172,28 +148,6 @@ void piGeneral::mouse_select(int sx, int sy, int sw, int sh )
 	int depth = inFrame->depth;
 	int size = sw*sh*depth;
 
-//	if (sx<0) sx=0;
-//	if (sy<0) sy=0;
-//	if (sx > (int)inFrame->width) sx=inFrame->width;
-//	if (sy > (int)inFrame->height) sy=inFrame->height;
-//	if (sx+sw>inFrame->width) sw=inFrame->width-sx;
-//	if (sy+sh>inFrame->height) sh=inFrame->height-sy;
-/*
-	try {
-
-	ASSERT( sx >= 0 );
-	ASSERT( sy >= 0 );
-	ASSERT( sx < (int)inFrame->width );
-	ASSERT( sy < (int)inFrame->height );
-	ASSERT( sx+sw <= (int)inFrame->width );
-	ASSERT( sy+sh <= (int)inFrame->height );
-
-	}
-	catch( ... )
-	{
-		printf( "!!! ASSERTION FAILED! ( sx=%d, sy=%d, sw=%d, sh=%d; f->w=%d, f->h=%d)\n", sx, sy, sw, sh, inFrame->width, inFrame->height );
-	}
-*/
 	if (!selected_region)
 	{
 		selected_region = new frame_data();
@@ -210,24 +164,10 @@ void piGeneral::mouse_select(int sx, int sy, int sw, int sh )
 		selected_region->bits = new unsigned char[size];
 	}
 
-//	try
-//	{
-
 	for (int i=0;i<sh;i++) 
 	{
-		//ASSERT( "1.", i*sw*depth + sw*depth < (int)(selected_region->height*selected_region->width*selected_region->depth) );
-		//ASSERT( "2.", ((i+sy)*inFrame->width+sx)*depth + sw*depth < inFrame->width*inFrame->height*inFrame->depth );
-
-
 		memcpy((selected_region->bits+i*sw*depth),(inFrame->bits+((i+sy)*inFrame->width+sx)*depth),sw*depth);
 	}
-
-//	}
-	//catch( const char * str )
-	//{
-//		printf( "!!! ASSERTION FAILURE <%s>!\n", str );
-//	}
-
 
 	hist();
 }
@@ -250,15 +190,14 @@ void piGeneral::hist()
 	height = selected_region->height;
 	depth = selected_region->depth;
 	size =  width*height*depth;
-	//for(int i=0;i<size-3;i++)
-//	try {
-	for (int i=0;i<360;i++) histogram->hist_vals[i]=0;
+
+//	for (int i=0;i<360;i++) histogram->hist_vals[i]=0;
+	memset( histogram->hist_vals, 0, 360*sizeof(int) );
+
 	for( int x=0; x<(int)width; ++x )
 	{
 		for( int y=0; y<(int)height; ++y )
 		{
-			//x=i % width;
-			//y=i*width*depth;
 			B = selected_region->bits[(x+y*width)*4+0];
 			G = selected_region->bits[(x+y*width)*4+1];
 			R = selected_region->bits[(x+y*width)*4+2];
@@ -267,7 +206,6 @@ void piGeneral::hist()
 			if(H >= 0)
 			{
 				if (H>360) H = 360.0; 
-				//ASSERT( "H >= 256!", H < 256.0f );
 				histogram->hist_vals[(int)H]++;
 				if(histogram->hist_vals[(int)H] > HHistMaxValue)
 					HHistMaxValue = histogram->hist_vals[(int)H];
@@ -293,11 +231,6 @@ void piGeneral::hist()
 
 		}
 	}
-
-//	} catch( const char * str )
-//	{
-//		printf( "ASSERTION FAILURE! <%s> : %3.3f \n", str, H );
-//	}
 
 	Hmax = (int)MaxH;
 	Hmin = (int)MinH;
@@ -396,21 +329,13 @@ void piGeneral::RGBtoHSV(int& r, int& g, int& b, float& h, float& s, float& v)
 //////////////////////////////////////////////////////////////////////////
 /// export funkcji exportujacej
 
-#ifdef __cplusplus
 extern "C" {
-#endif
-
-//////////////////////////////////////////////////////////////////////////
 
 __declspec(dllexport) piGeneral * export_module()
 {
 	return( new piGeneral );
 }
 
-//////////////////////////////////////////////////////////////////////////
-
-#ifdef __cplusplus
 };
-#endif
 
 //////////////////////////////////////////////////////////////////////////

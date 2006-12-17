@@ -13,7 +13,8 @@
 
 //////////////////////////////////////////////////////////////////////////
 
-/// mb_param::type
+/// mb_param::type - typy parametrow ktore moga byc 
+/// zarejestrowane przez moduly
 
 #define PT_UNDEFINED 0x00
 #define PT_INT		 0x01
@@ -25,12 +26,14 @@
 
 //////////////////////////////////////////////////////////////////////////
 
+/// struktura przechowujaca informacje o parametrze modulu
 struct mb_param
 {
-	int		type;
-	void *	data;
-	char *  name;
-	char *  description;
+	int		type;			/// typ parametru (definicje powyzej)
+	void *	data;			/// wskaznik do parametru
+	char *  name;			/// nazwa parametru
+	char *  description;	/// opis parametru
+	int		visible;		/// czy parametr ma byc widoczny w opcjach programu
 };
 
 //////////////////////////////////////////////////////////////////////////

@@ -122,6 +122,9 @@
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}">
 			<File
+				RelativePath=".\src\marker_data.h">
+			</File>
+			<File
 				RelativePath="..\module_base\src\module_base.h">
 			</File>
 			<File

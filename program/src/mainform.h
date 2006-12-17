@@ -37,6 +37,7 @@ class QCheckBox;
 
 //////////////////////////////////////////////////////////////////////////
 
+/// okno glowne programu
 class MainForm : public QDialog
 {
     Q_OBJECT

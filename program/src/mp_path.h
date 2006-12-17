@@ -18,18 +18,25 @@
 
 //////////////////////////////////////////////////////////////////////////
 
-/**
-	Object stores current path.
-*/
+/// makro ulatwiajace korzystanie z obiektu globalnego
+#define GETPATH( NFILE ) mpPath::Single()->GetFullPath( NFILE )
+
+//////////////////////////////////////////////////////////////////////////
+
+/// Klasa przechowujaca katalog w ktorym znajduje sie program glowny
 class mpPath
 {
 public:
 	mpPath();
 	virtual ~mpPath();
 
+	/// inicjalizacja obiektu
 	bool Init( HINSTANCE hInst );
+
+	/// metoda zwraca pelna sciezke dostepu do programu glownego
 	char * GetFullPath( char * file );
 
+	/// metoda zwraca wskaznik do obiektu globalnego
 	static mpPath * Single()
 	{
 		static mpPath singleton;
@@ -41,10 +48,6 @@ private:
 	bool created;
 	char separator;
 };
-
-//////////////////////////////////////////////////////////////////////////
-
-#define GETPATH( NFILE ) mpPath::Single()->GetFullPath( NFILE )
 
 //////////////////////////////////////////////////////////////////////////
 

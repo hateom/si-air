@@ -20,10 +20,12 @@
 
 //////////////////////////////////////////////////////////////////////////
 
+/// makro ulatwiajace korzystanie z obiektu globalnego
 #define sPreviewMgr PreviewMgr::singleton()
 
 //////////////////////////////////////////////////////////////////////////
 
+/// klasa zarzadzajaca oknami podgladu
 class PreviewMgr: public QObject
 {
 	Q_OBJECT
@@ -32,9 +34,17 @@ public:
 	PreviewMgr();
 	~PreviewMgr();
 
+	/// rejestruj okno podgladu
+	/// \return id okna podgladu
 	int register_preview();
+
+	/// renderuj ramke obrazu
 	int render_frame( int preview, frame_data * frame );
+
+	/// zamknij okno podgladu
 	int close_preview( int preview );
+
+	/// zamknij wszytkie okna podgladu
 	int close_all();
 
 	static PreviewMgr * singleton();

@@ -1,6 +1,8 @@
 #include "mod_camshift_opencv.h"
 #include "../../module_base/src/status_codes.h"
 
+//////////////////////////////////////////////////////////////////////////
+
 #pragma comment(lib,"cv.lib")
 #pragma comment(lib,"cvcam.lib")
 #pragma comment(lib,"cxcore.lib")
@@ -14,10 +16,6 @@
 #include <stdio.h>
 #include <ctype.h>
 #endif
-
-//////////////////////////////////////////////////////////////////////////
-
-//#define MIN( A, B ) (A)<(B)?(A):(B)
 
 //////////////////////////////////////////////////////////////////////////
 
@@ -38,6 +36,8 @@ CvScalar hsv2rgb( float hue )
 	return cvScalar(rgb[2], rgb[1], rgb[0],0);
 }
 
+//////////////////////////////////////////////////////////////////////////
+
 mod_camshift_opencv::mod_camshift_opencv() : alloc_mem(0L)
 {
 	REG_PARAM( PT_FLOAT, factor, "zmienna", 1.0f );
@@ -47,7 +47,6 @@ mod_camshift_opencv::mod_camshift_opencv() : alloc_mem(0L)
 
 mod_camshift_opencv::~mod_camshift_opencv()
 {
-
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -65,7 +64,7 @@ int mod_camshift_opencv::init( PropertyMgr * pm )
 {
 	USE_PROPERTY_MGR( pm );
 
-	track_object =1;
+	track_object = 1;
 	return( ST_OK );
 }
 
@@ -73,14 +72,6 @@ int mod_camshift_opencv::init( PropertyMgr * pm )
 
 void mod_camshift_opencv::free()
 {
-
-}
-
-//////////////////////////////////////////////////////////////////////////
-
-int mod_camshift_opencv::get_module_type()
-{
-	return( MT_POSGEST );
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -198,21 +189,14 @@ proc_data * mod_camshift_opencv::process_frame( proc_data * prev_frame, int * re
 //////////////////////////////////////////////////////////////////////////
 /// export funkcji exportujacej
 
-#ifdef __cplusplus
 extern "C" {
-#endif
 
-	//////////////////////////////////////////////////////////////////////////
+__declspec(dllexport) moduleBase * export_module()
+{
+	return( new mod_camshift_opencv );
+}
 
-	__declspec(dllexport) moduleBase * export_module()
-	{
-		return( new mod_camshift_opencv );
-	}
-
-	//////////////////////////////////////////////////////////////////////////
-
-#ifdef __cplusplus
 };
-#endif
+
 
 //////////////////////////////////////////////////////////////////////////

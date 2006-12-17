@@ -29,12 +29,13 @@ class QLabel;
 
 struct wdg_info
 {
-	QWidget * wdg;
-	int		  value_type;
+	QWidget * wdg;			/// kontrolka przechowujaca informacje o parametrze
+	int		  value_type;	/// typ parametru
 };
 
 //////////////////////////////////////////////////////////////////////////
 
+/// okno edycji parametrow modulu
 class OptForm : public QDialog
 {
 	Q_OBJECT

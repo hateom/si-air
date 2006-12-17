@@ -28,21 +28,23 @@
 
 //////////////////////////////////////////////////////////////////////////
 
+/// makro tworzace wskaŸnik typu void
 #define MK_PARAM( PP ) ((void*)&PP)
+
+/// makro u³atwiaj¹ce rejestracje parametrów modu³u
 #define REG_PARAM( TYPE, NAME, DESC, DEF_VAL ) \
 	register_param( TYPE, MK_PARAM(NAME), #NAME, DESC ); NAME = DEF_VAL;
 
+#define REG_PARAM_UNVISIBLE( TYPE, NAME, DESC, DEF_VAL ) \
+	register_param( TYPE, MK_PARAM(NAME), #NAME, DESC, 0 ); NAME = DEF_VAL;
+
+/// modu³ korzystaj¹cy z propertyManager-a powinien wywo³aæ to makro 
+/// w metodzie inicjalizacyjnej
 #define USE_PROPERTY_MGR( MGR ) property_mgr = MGR
 
 //////////////////////////////////////////////////////////////////////////
 
-/// Typy modu³ów - wartosci zwracane przez get_module_type
-
-#define MT_VIDEO_ACQ		0x01
-#define MT_PROBABILITY		0x02
-#define MT_GESTURES			0x03
-#define MT_INPUT			0x04
-
+/// typy modu³ów - wartosci zwracane prze input_type() oraz output_type()
 #define MT_NONE				0x00
 #define MT_FRAME			0x01
 #define MT_PROBDATA			0x02
@@ -67,36 +69,63 @@ static char * mt_description[] = {
 class __declspec(dllexport) moduleBase
 {
 public:
-	moduleBase() : lib_handle(NULL) { REG_PARAM( PT_INT, preview_param, "Preview", 0 ); }
+	moduleBase() : lib_handle(NULL) { REG_PARAM_UNVISIBLE( PT_INT, preview_param, "Preview", 0 ); }
 	virtual ~moduleBase() { free_params(); }
 
 	/// metoda zwracajaca opis danego modulu
 	/// \return opis danego modulu jako tablice znakow
 	virtual const char * get_module_description() = 0;
 
+	/// metoda inicjalizacyjna, wywolywana tuz przed rozpoczeciem 
+	/// przetwarzania obrazu
+	/// \param pm	wskaznik do PropertyMgr, inicjalizowany powinien byc
+	///				makrem USE_PROPERTY_MGR
+	/// \return ST_OK jesli wszystko ok
 	virtual int  init( PropertyMgr * pm = NULL ) = 0;
+
+	/// metoda, ktora powinna zwalniac zasoby - wywolywana jest po 
+	/// zakonczeniu przetwarzania obrazu
 	virtual void free() = 0;
 
-	/// zwraca informacja o typie modulu
-	/// \return typ modulu zadeklarowany jako MT_*
-//	virtual int get_module_type() = 0; <--  depreciated (nie uzywamy juz typow modulow, ale
-//											typ zwracany, i pobierany, wiec to jest niepotrzebne
-//											prosze usunac we wszystkich modulach ta metode
-
+	///zwraca informacje o typie wejsciowym
+	/// \return typ wejscia zadeklarowany jako MT_*
 	virtual int input_type() = 0;
+
+	/// zwraca informacje o typie wyjsciowym
+	/// \return typ wyjscia zadeklarowany jako MT_*
 	virtual int output_type() = 0;
 
+	/// metoda jest wywolywana w momencie zaznaczenia fragmentu na oknie podgladu
+	/// \param sx wspolrzedna x zaznaczenia
+	/// \param sy wspolrzedna y zaznaczenia
+	/// \param sw szerokosc zaznaczenia
+	/// \param sh wysokosc zaznaczenia
 	virtual void mouse_select( int sx, int sy, int sw, int sh ) {}
 
+	/// metoda wywolywana w kazdej ramce przetwarzania obrazu - kluczowa
+	/// \param prev_frame informacje pozyskane z poprzedniego modulu
+	/// \param result wartosc int zwracajaca status wykonania przetwarzania
+	///			      powinna zwracac ST_OK jesli wszystko w porzadku
+	/// \return wyjsciowe informacje po przetworzeniu ramki
 	virtual proc_data * process_frame( proc_data * prev_frame, int * result ) = 0;
 
+	/// zapisz uchwyt biblioteki DLL danego modulu, by mozliwe bylo bezpieczne
+	/// zwolnienie zasobow
 	virtual void assign_library_handle( HMODULE hlib ) { lib_handle = hlib; }
+
+	/// metoda zwraca uchwyt biblioteki dll
 	virtual HMODULE get_library_handle() { return( lib_handle ); }
 
 public:
-	/// parameter functions
+	/// zwraca liczbe parametrow modulu
 	virtual int param_count() { return( (int)param_list.size() ); }
+
+	/// pobiera parametr o indeksie `no`
 	virtual mb_param * get_param( int no ) { if( no >= 0 && no < param_count() ) return( param_list[no] ); else return( NULL ); }
+
+	/// metoda wyszukuje parametru o podanej nazwie
+	/// \return strukture przechowujacas informacje o parametrze, lub NULL w 
+	///         przypadku nie znalezienia parametru
 	virtual mb_param * find_param( const char * param )
 	{
 		mb_param * par = NULL;
@@ -110,7 +139,9 @@ public:
 		}
 		return( NULL );
 	}
-	virtual int register_param( int type, void * value, char * name, char * description )
+
+	/// metoda rejestruje nowy parametr modulu
+	virtual int register_param( int type, void * value, char * name, char * description, int visible = 1 )
 	{
 		if( find_param( name ) != NULL ) return( ST_ALREADY_EXISTS );
 		mb_param * n_param = new mb_param;
@@ -118,9 +149,12 @@ public:
 		n_param->type = type;
 		n_param->description = strdup( description );
 		n_param->name = strdup( name );
+		n_param->visible = visible;
 		param_list.push_back( n_param );
 		return( 0 );
 	}
+
+	/// metoda zwalnia zasoby przechowujace informacje o parametrach modulu
 	virtual void free_params()
 	{
 		for( int j=0; j<param_count(); ++j )
@@ -131,6 +165,8 @@ public:
 		}
 		param_list.clear();
 	}
+
+	/// metoda ustawia wartosc istniejacego parametru
 	template<typename T> int set_param( const char * name, T value )
 	{
 		mb_param * par;
@@ -139,6 +175,9 @@ public:
 		*((T*)(par->data)) = value;
 		return( ST_OK );
 	}
+
+	/// metoda pobiera wartosc istniejacego parametru
+	/// w przypadku gdy parametr nie zostanie znaleziony zwracana jest wartosc -1
 	template<typename T> int get_param( const char * name, T * result )
 	{
 		mb_param * par;
@@ -149,11 +188,10 @@ public:
 	}
 
 protected:
-	int preview_param;
-
-	HMODULE lib_handle;
-	std::vector<mb_param*> param_list;
-	PropertyMgr * property_mgr;
+	int preview_param;						/// parametr podgladu
+	HMODULE lib_handle;						/// uchwyt biblioteki dll modulu
+	std::vector<mb_param*> param_list;		/// wektor parametrow modulu
+	PropertyMgr * property_mgr;				/// wskaznik do PropertyMgr
 };
 
 //////////////////////////////////////////////////////////////////////////

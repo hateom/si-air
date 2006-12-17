@@ -1,13 +1,20 @@
+/********************************************************************
+    Projekt z przedmiotu : Sztuczna Inteligencja i Sensoryka
+
+	stworzono:	17:12:2006   16:54
+	plik:    	pi_general
+	autorzy:	Tomasz Huczek, Andrzej Jasiñski
+	
+    cel:	    
+*********************************************************************/
+
 #ifndef __PI_GENERAL_H__
 #define __PI_GENERAL_H__
+
 //////////////////////////////////////////////////////////////////////////
 
 #include "../../module_base/src/module_base.h"
 #include "../../module_base/src/types.h"
-
-//////////////////////////////////////////////////////////////////////////
-
-/// deklaracja typu uzytego wewnatrz klasy
 
 //////////////////////////////////////////////////////////////////////////
 

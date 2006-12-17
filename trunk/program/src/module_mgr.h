@@ -1,3 +1,13 @@
+/********************************************************************
+    Projekt z przedmiotu : Sztuczna Inteligencja i Sensoryka
+
+	stworzono:	17:12:2006   16:51
+	plik:    	module_mgr
+	autorzy:	Tomasz Huczek, Andrzej Jasiñski
+	
+    cel:	    
+*********************************************************************/
+
 #ifndef __MODULE_MGR_H__
 #define __MODULE_MGR_H__
 
@@ -39,6 +49,8 @@ public slots:
 	void stop_processing();
 	void process_frame();
 	void mouse_select( int sx, int sy, int sw, int sh );
+
+	void switch_preview( int module, bool on );
 
 signals:
 	void module_loaded( moduleBase * base, int no );

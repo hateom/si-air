@@ -1,7 +1,7 @@
 /****************************************************************************
 ** ModuleMgr meta object code from reading C++ file 'module_mgr.h'
 **
-** Created: N 17. gru 13:31:39 2006
+** Created: N 17. gru 15:53:12 2006
 **      by: The Qt MOC ($Id: moc_yacc.cpp,v 1.1.1.13 2006/05/05 17:43:42 chehrlic Exp $)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -67,13 +67,19 @@ QMetaObject* ModuleMgr::staticMetaObject()
 	{ "sh", &static_QUType_int, 0, QUParameter::In }
     };
     static const QUMethod slot_5 = {"mouse_select", 4, param_slot_5 };
+    static const QUParameter param_slot_6[] = {
+	{ "module", &static_QUType_int, 0, QUParameter::In },
+	{ "on", &static_QUType_bool, 0, QUParameter::In }
+    };
+    static const QUMethod slot_6 = {"switch_preview", 2, param_slot_6 };
     static const QMetaData slot_tbl[] = {
 	{ "clear_path()", &slot_0, QMetaData::Public },
 	{ "add_to_path(int)", &slot_1, QMetaData::Public },
 	{ "start_processing()", &slot_2, QMetaData::Public },
 	{ "stop_processing()", &slot_3, QMetaData::Public },
 	{ "process_frame()", &slot_4, QMetaData::Public },
-	{ "mouse_select(int,int,int,int)", &slot_5, QMetaData::Public }
+	{ "mouse_select(int,int,int,int)", &slot_5, QMetaData::Public },
+	{ "switch_preview(int,bool)", &slot_6, QMetaData::Public }
     };
     static const QUParameter param_signal_0[] = {
 	{ "base", &static_QUType_ptr, "moduleBase", QUParameter::In },
@@ -103,7 +109,7 @@ QMetaObject* ModuleMgr::staticMetaObject()
     };
     metaObj = QMetaObject::new_metaobject(
 	"ModuleMgr", parentObject,
-	slot_tbl, 6,
+	slot_tbl, 7,
 	signal_tbl, 6,
 #ifndef QT_NO_PROPERTIES
 	0, 0,
@@ -193,6 +199,7 @@ bool ModuleMgr::qt_invoke( int _id, QUObject* _o )
     case 3: stop_processing(); break;
     case 4: process_frame(); break;
     case 5: mouse_select((int)static_QUType_int.get(_o+1),(int)static_QUType_int.get(_o+2),(int)static_QUType_int.get(_o+3),(int)static_QUType_int.get(_o+4)); break;
+    case 6: switch_preview((int)static_QUType_int.get(_o+1),(bool)static_QUType_bool.get(_o+2)); break;
     default:
 	return QObject::qt_invoke( _id, _o );
     }

@@ -16,6 +16,7 @@
 #include <qcheckbox.h>
 #include <qpainter.h>
 
+#include "mp_path.h"
 #include "optform.h"
 #include "prevform.h"
 #include "mp_path.h"
@@ -48,17 +49,21 @@ MainForm::MainForm( QWidget* parent, const char* name, bool modal, WFlags fl )
 	listBox = new QListBox( this, "listBox" );
 	listBox->setGeometry( QRect( 10, 10, 220, 300 ) );
 
+	buttonLoad= new QPushButton( this, "buttonLoad" );
+	buttonLoad->setGeometry( QRect( 10, 320, 220, 26 ) );
+
 	buttonAdd= new QPushButton( this, "buttonAdd" );
-	buttonAdd->setGeometry( QRect( 10, 320, 220, 26 ) );
+	buttonAdd->setGeometry( QRect( 10, 350, 220, 26 ) );
 
 	buttonReset = new QPushButton( this, "buttonReset" );
-	buttonReset->setGeometry( QRect( 10, 350, 220, 26 ) );
+	buttonReset->setGeometry( QRect( 10, 380, 220, 26 ) );
 
 	groupMod = new QGroupBox( this, "groupMod" );
 	groupMod->setGeometry( QRect( 240, 10, 460, 370 ) );
 	groupMod->setFrameStyle( QFrame::Panel | QFrame::Sunken );
 
-	connect( buttonOk, SIGNAL(clicked()), this, SLOT(close_app()) );
+	connect( buttonLoad, SIGNAL(clicked()), this, SLOT(load_modules()) );
+	connect( buttonOk, SIGNAL(clicked()), this, SLOT(close()) );
 	connect( buttonRun, SIGNAL(clicked()), this, SLOT(run()) );
 	connect( listBox, SIGNAL(selected(QListBoxItem*)), this, SLOT(lb_selected(QListBoxItem*)) );
 	connect( buttonReset, SIGNAL(clicked()), sModuleMgr, SLOT(clear_path()) );
@@ -70,6 +75,10 @@ MainForm::MainForm( QWidget* parent, const char* name, bool modal, WFlags fl )
 	connect( sModuleMgr, SIGNAL(processing_started()), this, SLOT(processing_started()) );
 	connect( sModuleMgr, SIGNAL(processing_finished()), this, SLOT(processing_finished()) );
 
+	QTimer * load_timer = new QTimer( this );
+	connect( load_timer, SIGNAL(timeout()), this, SLOT(load_modules()) );
+	load_timer->start( 500, TRUE );
+
     languageChange();
     resize( QSize(710, 425).expandedTo(minimumSizeHint()) );
     clearWState( WState_Polished );
@@ -79,7 +88,7 @@ MainForm::MainForm( QWidget* parent, const char* name, bool modal, WFlags fl )
 
 void MainForm::close_app()
 {
-	close();
+	
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -97,6 +106,7 @@ void MainForm::languageChange()
 	buttonRun->setText( tr( "Run!" ) );
 	buttonAdd->setText( tr( "Add Module" ) );
 	buttonReset->setText( tr( "Clear Path" ) );
+	buttonLoad->setText( tr( "Load Modules" ) );
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -196,6 +206,30 @@ void MainForm::processing_started()
 
 void MainForm::processing_finished()
 {
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+void MainForm::closeEvent( QCloseEvent * ce )
+{
+	if( buttonRun->text() != tr("Stop!") )
+	{
+		ce->accept();
+		close_app();
+	}
+	else
+	{
+		LOG( ">>> Processing is still running!\n" );
+	}
+}	
+
+//////////////////////////////////////////////////////////////////////////
+
+void MainForm::load_modules()
+{
+	listBox->clear();
+	sModuleMgr->unload_modules();
+	sModuleMgr->load_modules( GETPATH("modules") );
 }
 
 //////////////////////////////////////////////////////////////////////////

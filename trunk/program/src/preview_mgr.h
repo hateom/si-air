@@ -1,3 +1,13 @@
+/********************************************************************
+    Projekt z przedmiotu : Sztuczna Inteligencja i Sensoryka
+
+	stworzono:	17:12:2006   16:51
+	plik:    	preview_mgr
+	autorzy:	Tomasz Huczek, Andrzej Jasiñski
+	
+    cel:	    
+*********************************************************************/
+
 #ifndef __PREVIEW_MGR_H__
 #define __PREVIEW_MGR_H__
 
@@ -31,6 +41,7 @@ public:
 
 public slots:
 	void in_mouse_select( int sx, int sy, int sw, int sh );
+	void preview_closed( int id );
 
 signals:
 	void mouse_select( int sx, int sy, int sw, int sh );

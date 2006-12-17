@@ -1,3 +1,13 @@
+/********************************************************************
+    Projekt z przedmiotu : Sztuczna Inteligencja i Sensoryka
+
+	stworzono:	17:12:2006   16:51
+	plik:    	types
+	autorzy:	Tomasz Huczek, Andrzej Jasiñski
+	
+    cel:	    
+*********************************************************************/
+
 #ifndef __INCLUDE_H__
 #define __INCLUDE_H__
 

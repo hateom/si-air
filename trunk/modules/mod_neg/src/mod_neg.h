@@ -1,7 +1,21 @@
+/********************************************************************
+    Projekt z przedmiotu : Sztuczna Inteligencja i Sensoryka
+
+	stworzono:	17:12:2006   16:53
+	plik:    	mod_neg
+	autorzy:	Tomasz Huczek, Andrzej Jasiñski
+	
+    cel:	    
+*********************************************************************/
+
 #ifndef __MOD_NEG_H__
 #define __MOD_NEG_H__
 
+//////////////////////////////////////////////////////////////////////////
+
 #include "../../module_base/src/module_base.h"
+
+//////////////////////////////////////////////////////////////////////////
 
 class __declspec(dllexport) modNeg: public moduleBase
 {
@@ -24,5 +38,7 @@ public:
 private:
 	int alloc_mem;
 };
+
+//////////////////////////////////////////////////////////////////////////
 
 #endif // __MOD_NEG_H__

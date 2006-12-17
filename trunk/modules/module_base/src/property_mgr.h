@@ -1,3 +1,13 @@
+/********************************************************************
+    Projekt z przedmiotu : Sztuczna Inteligencja i Sensoryka
+
+	stworzono:	17:12:2006   16:50
+	plik:    	property_mgr
+	autorzy:	Tomasz Huczek, Andrzej Jasiñski
+	
+    cel:	    
+*********************************************************************/
+
 #ifndef __PROPERTY_MGR_H__
 #define __PROPERTY_MGR_H__
 

@@ -1,3 +1,13 @@
+/********************************************************************
+    Projekt z przedmiotu : Sztuczna Inteligencja i Sensoryka
+
+	stworzono:	17:12:2006   16:51
+	plik:    	mp_path
+	autorzy:	Tomasz Huczek, Andrzej Jasiñski
+	
+    cel:	    
+*********************************************************************/
+
 #ifndef __MP_PATH_H__
 #define __MP_PATH_H__
 
@@ -8,7 +18,7 @@
 
 //////////////////////////////////////////////////////////////////////////
 
-/*!
+/**
 	Object stores current path.
 */
 class mpPath

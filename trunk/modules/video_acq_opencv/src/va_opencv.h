@@ -1,3 +1,13 @@
+/********************************************************************
+    Projekt z przedmiotu : Sztuczna Inteligencja i Sensoryka
+
+	stworzono:	17:12:2006   16:54
+	plik:    	va_opencv
+	autorzy:	Tomasz Huczek, Andrzej Jasiñski
+	
+    cel:	    
+*********************************************************************/
+
 #ifndef __VA_OPENCV_H__
 #define __VA_OPENCV_H__
 
@@ -28,18 +38,13 @@ public:
 	virtual int init( PropertyMgr * pm = NULL );
 	virtual void free();
 
-//	virtual void mouse_select(int sx, int sy, int sw, int sh );
-
-//	virtual frame_data * process_frame( int * result );
 	virtual proc_data * process_frame( proc_data * prev_frame, int * result );
 
 protected:
-//	int cam_count;
 	CvCapture * capture;
-	int alloc_mem;
-
-	int		device;		// device num parameter
-	char *	filename;	// when capturing from file
+	int			alloc_mem;
+	int			device;		// device num parameter
+	char *		filename;	// when capturing from file
 };
 
 //////////////////////////////////////////////////////////////////////////

@@ -17,6 +17,8 @@
 
 //////////////////////////////////////////////////////////////////////////
 
+/// makro assert implementowane tylko w wersji DEBUG projektu
+
 #ifdef _DEBUG
 #define MB_ASSERT( MSG, EXP ) if( !(EXP) ) { throw mbException( MSG, #EXP, __FILE__, __LINE__ ); }
 #else
@@ -25,13 +27,16 @@
 
 //////////////////////////////////////////////////////////////////////////
 
+/// klasa reprezentujaca wyjatek
 class __declspec(dllexport) mbException
 {
 public:
+	/// konstruktor zbierajacy mozliwie jak najwiecej informacji o wyjatku
 	mbException( const char * ms, const char * ex, const char * fil, int lin ) : 
 		line( lin ), msg( ms ), exp( ex ), file( fil ) {}
 	~mbException() {}
 
+	/// metoda zwracajaca opis wyjatku w sformatowanej formie
 	const char * show()
 	{
 		static char buffer[256] = "";

@@ -25,7 +25,6 @@ public:
 	virtual ~cPosdetect();
 
 	virtual const char * get_module_description();
-	virtual int get_module_type();
 
 	virtual int input_type();
 	virtual int output_type();
@@ -34,8 +33,6 @@ public:
 
 	virtual int  init( PropertyMgr * pm = NULL );
 	virtual void free();
-
-//	virtual Tpos * calc_position( float * piTable , float maxVal, int width, int height, int * status );
 
 private:
 	void draw_frame_marker( frame_data * frame, int posx, int posy, float angle );

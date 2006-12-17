@@ -28,8 +28,6 @@ public:
 	virtual int  init( PropertyMgr * pm );
 	virtual void free();
 
-	virtual int get_module_type();
-
 	virtual int input_type();
 	virtual int output_type();
 

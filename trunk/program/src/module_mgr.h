@@ -22,10 +22,12 @@
 
 //////////////////////////////////////////////////////////////////////////
 
+/// makro ulatwiajace korzystanie z modulu globalnego
 #define sModuleMgr ModuleMgr::singleton()
 
 //////////////////////////////////////////////////////////////////////////
 
+/// klasa zarzadzajaca modulami
 class ModuleMgr: public QObject
 {
 	Q_OBJECT
@@ -34,41 +36,45 @@ public:
 	ModuleMgr();
 	~ModuleMgr();
 
+	/// metoda laduje obiekty z dysku, z katalogu `directory`
 	int load_modules( std::string directory );
+
+	/// metoda zwalnia zasoby z modulow, i zwalnia biblioteki dll
 	int unload_modules();
 
+	/// metoda zwraca wskaznik do obiektu globalnego
 	static ModuleMgr * singleton();
 
 private:
 	moduleBase * last_on_path();
 
 public slots:
-	void clear_path();
-	void add_to_path( int module );
-	void start_processing();
-	void stop_processing();
-	void process_frame();
-	void mouse_select( int sx, int sy, int sw, int sh );
+	void clear_path();										/// slot czyszczacy tor przetwarzania
+	void add_to_path( int module );							/// slot dodajacy modul do toru przetwarzania
+	void start_processing();								/// slot rozpoczynajacy przetwarzanie
+	void stop_processing();									/// slot zatrzymujacy przetwarzanie
+	void process_frame();									/// slot rzetwarzajacy jedna ramke obrazu
+	void mouse_select( int sx, int sy, int sw, int sh );	/// zaznaczenie fragmentu okna podgladu
 
-	void switch_preview( int module, bool on );
+	void switch_preview( int module, bool on );				/// zamkniecie lub otworzenie okna podgladu
 
 signals:
-	void module_loaded( moduleBase * base, int no );
-	void module_unload( moduleBase * base, int no );
-	void added_to_path( moduleBase * base, int no );
-	void path_cleared();
-	void processing_started();
-	void processing_finished();
+	void module_loaded( moduleBase * base, int no );		/// sygnal zaladowania modulu
+	void module_unload( moduleBase * base, int no );		/// sygnal usuniecia modulu
+	void added_to_path( moduleBase * base, int no );		/// sygnal dodania modulu do toru
+	void path_cleared();									/// sygnal wyczyszczenia toru
+	void processing_started();								/// sygnal rozpoczenia przetwarzania
+	void processing_finished();								/// sygnal zatrzymania przetwarzania
 
 private:
-	int load_single_module( std::string filename );
-	std::vector<moduleBase*> module_list;
-	std::vector<int> path_list;
-	std::vector<int> prev_list;
+	int load_single_module( std::string filename );			/// metoda laduje pojedynczy modul
+	std::vector<moduleBase*> module_list;					/// wektor modulow
+	std::vector<int> path_list;								/// wektor modulow znajdujacych sie w torze
+	std::vector<int> prev_list;								/// wektor okien podgladu
 
-	bool is_running;
-	QTimer * timer;
-	PropertyMgr property_mgr;
+	bool is_running;										/// flaga oznaczajaca dzialanie przetwarzania
+	QTimer * timer;											/// timer taktujacy przetwarzanie ramek obrazu
+	PropertyMgr property_mgr;								/// obiekt do zarzadzania globalnymi parametrami
 };
 
 //////////////////////////////////////////////////////////////////////////

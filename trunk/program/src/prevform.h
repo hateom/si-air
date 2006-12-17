@@ -23,7 +23,7 @@ class QMouseEvent;
 
 //////////////////////////////////////////////////////////////////////////
 
-/// preview form
+/// okno podgladu
 class PrevForm : public QDialog
 {
 	Q_OBJECT
@@ -32,7 +32,6 @@ public:
 	PrevForm( int id, QWidget* parent = 0, const char* name = 0, bool modal = FALSE, WFlags fl = 0 );
 	~PrevForm();
 
-//	HWND get_handle() { return( this->QWidget::winId() ); }
 	void render_frame( frame_data * frame );
 	int get_id() const { return( id ); }
 

@@ -25,6 +25,7 @@ class QTextEdit;
 
 //////////////////////////////////////////////////////////////////////////
 
+/// kontrolka reprezentujaca pojedynczy modul na oknie programu glownego
 class modWidget: public QGroupBox
 {
 	Q_OBJECT

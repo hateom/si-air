@@ -38,19 +38,25 @@ OptForm::OptForm( QWidget* parent, const char* name, bool modal, WFlags fl, modu
 	label = new QLabel*[pcount];
 
 	char temp[128] = "";
-	for( int i=0; i<pcount; ++i )
+	int i=0;
+	for( int k=0; k<pcount; ++k )
 	{
+		if( base->get_param(k)->visible == 0 )
+		{
+			continue;
+		}
+
 		temp[0] = (char)('a'+i);
 		temp[1] = '\0';
 		
-		switch( base->get_param(i)->type )
+		switch( base->get_param(k)->type )
 		{
 			case PT_INT:
 			case PT_LONG:
 				{
 					QTextEdit * edt;
 					edt = new QTextEdit( groupBox, tr("param_edit_") + tr(temp) );
-					sprintf( temp, "%d", (int)(*((int*)base->get_param(i)->data)) );
+					sprintf( temp, "%d", (int)(*((int*)base->get_param(k)->data)) );
 					edt->setText( tr( temp ) );
 					info = create_wdg_info( edt, PT_LONG );
 				}
@@ -59,7 +65,7 @@ OptForm::OptForm( QWidget* parent, const char* name, bool modal, WFlags fl, modu
 				{
 					QTextEdit * edt;
 					edt = new QTextEdit( groupBox, tr("param_edit_") + tr(temp) );
-					sprintf( temp, "%f", (float)(*((float*)base->get_param(i)->data)) );
+					sprintf( temp, "%f", (float)(*((float*)base->get_param(k)->data)) );
 					edt->setText( tr( temp ) );
 					info = create_wdg_info( edt, PT_LONG );
 				}
@@ -68,7 +74,7 @@ OptForm::OptForm( QWidget* parent, const char* name, bool modal, WFlags fl, modu
 				{
 					QTextEdit * edt;
 					edt = new QTextEdit( groupBox, tr("param_edit_") + tr(temp) );
-					sprintf( temp, "%s", (char*)(*((char**)base->get_param(i)->data)) );
+					sprintf( temp, "%s", (char*)(*((char**)base->get_param(k)->data)) );
 					edt->setText( tr( temp ) );
 					info = create_wdg_info( edt, PT_LONG );
 				}
@@ -78,7 +84,7 @@ OptForm::OptForm( QWidget* parent, const char* name, bool modal, WFlags fl, modu
 					fnWidget * fnw;
 					fnw = new fnWidget( groupBox, tr("param_fnw_") + tr(temp) );
 					fnw->show();
-					sprintf( temp, "%s", (char*)(*((char**)base->get_param(i)->data)) );
+					sprintf( temp, "%s", (char*)(*((char**)base->get_param(k)->data)) );
 					fnw->setText( temp );
 					info = create_wdg_info( fnw, PT_LONG );
 				}
@@ -91,9 +97,10 @@ OptForm::OptForm( QWidget* parent, const char* name, bool modal, WFlags fl, modu
 		info->wdg->setGeometry( QRect( 100, 15+i*30, 220, 25 ) );
 		wdg_list.push_back( info );
 
-		label[i] = new QLabel( groupBox, tr(base->get_param(i)->name ) );
+		label[i] = new QLabel( groupBox, tr(base->get_param(k)->name ) );
 		label[i]->setGeometry( QRect( 10, 15+i*30, 90, 25 ) );
-		label[i]->setText( tr(base->get_param(i)->name) );
+		label[i]->setText( tr(base->get_param(k)->name) );
+		i++;
 	}
 
 	btn_ok = new QPushButton( this, tr("btnOK") );
@@ -118,32 +125,39 @@ void OptForm::save_conf()
 {
 	int pcount = module->param_count();
 
-	for( int i=0; i<pcount; ++i )
+	int i=0;
+	for( int k=0; k<pcount; ++k )
 	{
-		switch( module->get_param(i)->type )
+		if( module->get_param(k)->visible == 0 )
+		{
+			continue;
+		}
+
+		switch( module->get_param(k)->type )
 		{
 		case PT_INT:
 		case PT_LONG:
 			long * ptrl;
-			ptrl = ((long*)(module->get_param(i)->data));
+			ptrl = ((long*)(module->get_param(k)->data));
 			*ptrl = ((QTextEdit*)(wdg_list[i]->wdg))->text().toLong();
 			break;
 		case PT_FLOAT:
 			float * ptrf;
-			ptrf = ((float*)(module->get_param(i)->data));
+			ptrf = ((float*)(module->get_param(k)->data));
 			*ptrf = ((QTextEdit*)(wdg_list[i]->wdg))->text().toFloat();
 			break;
 		case PT_STRING:
 			char ** ptrc;
-			ptrc = ((char**)(module->get_param(i)->data));
+			ptrc = ((char**)(module->get_param(k)->data));
 			*ptrc = strdup( ((char*)(((QTextEdit*)(wdg_list[i]->wdg))->text().ascii())) );
 			break;
 		case PT_FILENAME:
 			char ** ptrfn;
-			ptrfn = ((char**)(module->get_param(i)->data));
+			ptrfn = ((char**)(module->get_param(k)->data));
 			*ptrfn = strdup( ((char*)(((fnWidget*)(wdg_list[i]->wdg))->get_filename().ascii())) );
 			break;
 		}
+		i++;
 	}
 	close();
 }

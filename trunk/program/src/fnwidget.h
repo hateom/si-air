@@ -23,6 +23,9 @@ class QString;
 
 //////////////////////////////////////////////////////////////////////////
 
+/// kotrolka wyboru pliku z dysku, skladajaca sie z pola edycji, 
+/// oraz przycisku, po ktoergo wcisnieciu pokazuje sie dialog z 
+/// wyborem pliku
 class fnWidget: public QWidget
 {
 	Q_OBJECT
@@ -31,7 +34,10 @@ public:
 	virtual ~fnWidget();
 
 public:
+	/// \return nazwa pliku
 	QString get_filename();
+
+	/// metoda ustawia wartos pola edycji
 	void setText( QString txt );
 
 protected slots:

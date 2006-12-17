@@ -17,12 +17,14 @@
 
 //////////////////////////////////////////////////////////////////////////
 
-#define OT_NONE    0x00
-#define OT_CONSOLE 0x01
-#define OT_WINDOW  0x02
+/// typ logowania
+#define OT_NONE    0x00		/// brak logowania
+#define OT_CONSOLE 0x01		/// loguj do konsoli
+#define OT_WINDOW  0x02		/// loguj do okienka
 
 //////////////////////////////////////////////////////////////////////////
 
+/// makra ulatwiajace wywolanie loggera
 #define LOGF( ARG ) mpLogger::log( "%s [%d]: %s", __FILE__, __LINE__, ARG )
 #define LOG mpLogger::log
 
@@ -34,8 +36,10 @@ public:
 	mpLogger();
 	virtual ~mpLogger();
 
+	/// ustawia typ wyjscia
 	static void set_output( int output_type );
 
+	/// loguj
 	static void log( std::string text );
 	static void log( const char * text, ... );
 

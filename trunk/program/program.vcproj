@@ -165,6 +165,9 @@
 					RelativePath=".\src\main_arrow.h">
 				</File>
 				<File
+					RelativePath=".\src\main_buttons.h">
+				</File>
+				<File
 					RelativePath=".\src\main_head.h">
 				</File>
 				<File

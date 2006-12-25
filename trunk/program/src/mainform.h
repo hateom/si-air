@@ -24,6 +24,7 @@ class QLabel;
 class QGroupBox;
 class QPushButton;
 class QTextEdit;
+class QToolButton;
 
 class MainForm : public QMainWindow
 {
@@ -38,14 +39,15 @@ public:
 	QLabel* headImg;
     OptionsBox* optionsBox;
     QGroupBox* panelGroup;
-    QPushButton* startButton;
-    QPushButton* reloadButton;
+    QToolButton* startButton;
+    QToolButton* reloadButton;
     QTextEdit* textEdit1;
     QMenuBar *MenuBarEditor;
     QPopupMenu *Processing;
     QPopupMenu *About;
     QAction* processingExitAction;
-	QPushButton	* buttonReset;
+	QToolButton	* buttonReset;
+	QLabel *labelInfo;
 
 public slots:
 	virtual void module_loaded( moduleBase * base, int no );
@@ -74,6 +76,9 @@ private:
     QPixmap image0;
 	QPixmap image1;
 
+	QPixmap btn_reload;
+	QPixmap btn_clear;
+	QPixmap btn_start;
 };
 
 #endif // MAINFORM_H

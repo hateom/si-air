@@ -10,7 +10,7 @@
 
 modLight::modLight() : alloc_mem(0L)
 {
-	REG_PARAM( PT_FLOAT, factor, "Lighting factor (1.0f = neutral)", 1.0f );
+	REG_PARAM( PT_FLOAT_RANGE, factor, "Lighting factor (1.0f = neutral)", float_range( 1.0f, 0.1f, 10.0f ) );
 }
 
 //////////////////////////////////////////////////////////////////////////

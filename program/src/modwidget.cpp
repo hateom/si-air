@@ -1,8 +1,9 @@
 #include "modwidget.h"
 
 #include <qpushbutton.h>
-#include <qtextedit.h>
+#include <qlineedit.h>
 #include <qcheckbox.h>
+#include <qapp.h>
 
 #include "optform.h"
 #include "mp_logger.h"
@@ -16,7 +17,7 @@ modWidget::modWidget( long new_id, moduleBase * mod, OptionsBox * opt_f, QWidget
 	del_btn( (const char**) btn2_data ), cfg_btn((const char**) btn0_data),
 	prv_btn( (const char**) btn5_data )
 {
-	edit_name = new QTextEdit( this, "editname" );
+	edit_name = new QLineEdit( this, "editname" );
 	edit_name->setGeometry( QRect( 10, 10, 180, 25 ) );
 
 	check_prev = new QPushButton( this, "checkPrev" );
@@ -111,6 +112,7 @@ void modWidget::configure_mod()
 	opt_form->set_current_cfg_form( optForm );
 	optForm->setGeometry( QRect( 5, 15, 250, 320 ) );
 	optForm->show();
+	qApp->processEvents();
 }
 
 //////////////////////////////////////////////////////////////////////////

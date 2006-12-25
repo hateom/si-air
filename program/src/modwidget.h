@@ -23,7 +23,7 @@
 
 class QPushButton;
 class QCheckBox;
-class QTextEdit;
+class QLineEdit;
 
 //////////////////////////////////////////////////////////////////////////
 
@@ -51,7 +51,7 @@ public slots:
 private:
 	QPushButton * button_conf;
 	QPushButton * button_del;
-	QTextEdit   * edit_name;
+	QLineEdit   * edit_name;
 	QPushButton * check_prev;
 	OptionsBox	* opt_form;
 

@@ -7,7 +7,7 @@
 
 //////////////////////////////////////////////////////////////////////////
 
-class QTextEdit;
+class QLineEdit;
 class QSlider;
 
 //////////////////////////////////////////////////////////////////////////
@@ -46,7 +46,7 @@ public slots:
 	void edit_changed();
 
 protected:
-	QTextEdit * edit;
+	QLineEdit * edit;
 	QSlider * slider;
 
 	int value;

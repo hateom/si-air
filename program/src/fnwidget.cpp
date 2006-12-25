@@ -1,7 +1,7 @@
 #include "fnwidget.h"
 
 #include <qpushbutton.h>
-#include <qtextedit.h>
+#include <qlineedit.h>
 #include <qstring.h>
 #include <qfiledialog.h>
 
@@ -12,7 +12,7 @@ fnWidget::fnWidget( QWidget* parent, const char* name, WFlags f ) : QWidget( par
 	btn_browse = new QPushButton( this, "btn_browse" );
 	btn_browse->setGeometry( QRect( 200, 0, 30, 24 ) );
 
-	edt_filename = new QTextEdit( this, "edt_filename" );
+	edt_filename = new QLineEdit( this, "edt_filename" );
 	edt_filename->setGeometry( QRect( 0, 0, 190, 24 ) );
 
 	btn_browse->setText( tr("...") );

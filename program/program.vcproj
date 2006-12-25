@@ -14,7 +14,7 @@
 		<Configuration
 			Name="Debug|Win32"
 			OutputDirectory="bin"
-			IntermediateDirectory="obj"
+			IntermediateDirectory="obj\debug"
 			ConfigurationType="1"
 			CharacterSet="2">
 			<Tool
@@ -33,7 +33,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalOptions="/entry:&quot;mainCRTStartup&quot;"
-				OutputFile="$(OutDir)/program.exe"
+				OutputFile="$(OutDir)/program_debug.exe"
 				LinkIncremental="2"
 				GenerateDebugInformation="TRUE"
 				ProgramDatabaseFile="$(OutDir)/program.pdb"
@@ -62,8 +62,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="Release"
-			IntermediateDirectory="Release"
+			OutputDirectory="bin"
+			IntermediateDirectory="obj\release"
 			ConfigurationType="1"
 			CharacterSet="2">
 			<Tool
@@ -78,10 +78,11 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalOptions="/entry:&quot;mainCRTStartup&quot;"
 				OutputFile="$(OutDir)/program.exe"
 				LinkIncremental="1"
 				GenerateDebugInformation="TRUE"
-				SubSystem="1"
+				SubSystem="2"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
 				TargetMachine="1"/>

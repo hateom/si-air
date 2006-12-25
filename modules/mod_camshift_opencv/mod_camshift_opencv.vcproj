@@ -14,7 +14,7 @@
 		<Configuration
 			Name="Debug|Win32"
 			OutputDirectory="bin"
-			IntermediateDirectory="bin"
+			IntermediateDirectory="obj\debug"
 			ConfigurationType="2"
 			CharacterSet="2">
 			<Tool
@@ -32,7 +32,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				OutputFile="$(OutDir)/mod_camshift_opencv.dll"
+				OutputFile="$(OutDir)/camshift_cv_debug.dll"
 				LinkIncremental="2"
 				GenerateDebugInformation="TRUE"
 				ProgramDatabaseFile="$(OutDir)/mod_camshift_opencv.pdb"
@@ -62,8 +62,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="Release"
-			IntermediateDirectory="Release"
+			OutputDirectory="bin"
+			IntermediateDirectory="obj\release"
 			ConfigurationType="2"
 			CharacterSet="2">
 			<Tool
@@ -78,7 +78,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				OutputFile="$(OutDir)/mod_camshift_opencv.dll"
+				OutputFile="$(OutDir)/camshift_cv.dll"
 				LinkIncremental="1"
 				GenerateDebugInformation="TRUE"
 				SubSystem="2"

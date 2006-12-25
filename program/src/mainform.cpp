@@ -15,13 +15,15 @@
 #include <qtoolbar.h>
 #include <qimage.h>
 #include <qpixmap.h>
+#include <qtoolbutton.h>
+#include <qimage.h>
 
 #include "mp_path.h"
 #include "module_mgr.h"
 #include "mp_logger.h"
 #include "main_head.h"
 #include "main_arrow.h"
-
+#include "main_buttons.h"
 
 /*
  *  Constructs a MainForm as a child of 'parent', with the
@@ -30,7 +32,9 @@
  */
 MainForm::MainForm( QWidget* parent, const char* name, WFlags fl )
     : QMainWindow( parent, name, fl ),
-      image0( (const char **) image0_data ), image1((const char **) image1_data)
+      image0( (const char **) image0_data ), image1((const char **) image1_data),
+	  btn_start( (const char **)btn6_data ), btn_reload( (const char **)btn7_data ), 
+	  btn_clear( (const char **)btn8_data )
 {
 //    (void)statusBar();
     if ( !name )
@@ -53,6 +57,11 @@ MainForm::MainForm( QWidget* parent, const char* name, WFlags fl )
 	headImg->setPixmap( image1 );
 	headImg->setScaledContents( TRUE );
 
+	labelInfo = new QLabel( frame3, "labelInfo" );
+	labelInfo->setGeometry( QRect( 90, 330, 200, 24 ) );
+	labelInfo->setText( tr(">> Hint: Right click, and select module") );
+	labelInfo->setPaletteForegroundColor( QColor( 120, 120, 120 ) );
+
     optionsBox = new OptionsBox( frame3, "optionsBox" );
     optionsBox->setGeometry( QRect( 390, 8, 270, 341 ) );
 
@@ -60,14 +69,23 @@ MainForm::MainForm( QWidget* parent, const char* name, WFlags fl )
     panelGroup->setGeometry( QRect( 10, 380, 681, 40 ) );
 	panelGroup->setPaletteBackgroundColor( QColor( 255, 255, 255 ) );
 
-    startButton = new QPushButton( panelGroup, "startButton" );
+    startButton = new QToolButton( panelGroup, "startButton" );
     startButton->setGeometry( QRect( 590, 10, 80, 24 ) );
+	startButton->setIconSet( QIconSet( btn_start ) );
+	startButton->setUsesTextLabel( TRUE );
+	startButton->setTextPosition( QToolButton::BesideIcon );
 
-    reloadButton = new QPushButton( panelGroup, "reloadButton" );
+    reloadButton = new QToolButton( panelGroup, "reloadButton" );
     reloadButton->setGeometry( QRect( 10, 9, 80, 24 ) );
+	reloadButton->setIconSet( QIconSet( btn_reload ) );
+	reloadButton->setUsesTextLabel( TRUE );
+	reloadButton->setTextPosition( QToolButton::BesideIcon );
 
-	buttonReset = new QPushButton( panelGroup, "buttonReset" );
+	buttonReset = new QToolButton( panelGroup, "buttonReset" );
 	buttonReset->setGeometry( QRect( 100, 9, 80, 24 ) );
+	buttonReset->setIconSet( QIconSet( btn_clear ) );
+	buttonReset->setUsesTextLabel( TRUE );
+	buttonReset->setTextPosition( QToolButton::BesideIcon );
 
     textEdit1 = new QTextEdit( centralWidget(), "textEdit1" );
     textEdit1->setGeometry( QRect( 10, 430, 678, 70 ) );
@@ -138,9 +156,18 @@ void MainForm::languageChange()
     setCaption( tr( "SI Project :: Tomasz Huczek & Andrzej Jasinski :: AiR 2006 (R) (C)" ) );
     optionsBox->setTitle( tr( "Module Options" ) );
     panelGroup->setTitle( QString::null );
-    startButton->setText( tr( "Start" ) );
+/*
+	startButton->setText( tr( "Start" ) );
     reloadButton->setText( tr( "Reload" ) );
 	buttonReset->setText( tr( "Clear path" ) );
+*/
+	startButton->setText( QString::null );
+	startButton->setTextLabel( tr( "Start" ) );
+	reloadButton->setText( QString::null );
+	reloadButton->setTextLabel( tr( "Reload" ) );
+	buttonReset->setText( QString::null );
+	buttonReset->setTextLabel( tr( "Clear path" ) );
+
     processingExitAction->setText( tr( "&Exit" ) );
     processingExitAction->setMenuText( tr( "&Exit" ) );
     if (MenuBarEditor->findItem(1))
@@ -204,9 +231,31 @@ void MainForm::module_unload( moduleBase * base, int no )
 
 //////////////////////////////////////////////////////////////////////////
 
+inline const char * shortcut( const char * txt )
+{
+	static char buffer[34] = "";
+
+	if( strlen( txt ) > 32 )
+	{
+		memcpy( buffer, txt, 29 );
+		buffer[29] = '.';
+		buffer[30] = '.';
+		buffer[31] = '.';
+		buffer[32] = '\0';
+	}
+	else
+	{
+		strcpy( buffer, txt );
+	}
+
+	return( buffer );
+}
+
+//////////////////////////////////////////////////////////////////////////
+
 void MainForm::added_to_path( moduleBase * base, int no )
 {
-	LOG( ">>> inserting module widget <%d>\n", no );
+	LOG( ">>> inserting module widget <%s>\n", shortcut( base->get_module_description() ) );
 
 	modWidget * wdg;
 	int w_no = (int)mod_widget.size();

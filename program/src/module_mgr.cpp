@@ -190,9 +190,9 @@ moduleBase * ModuleMgr::last_on_path()
 
 void ModuleMgr::add_to_path( int module )
 {
-	if( path_list.size() == 5 )
+	if( path_list.size() == 6 )
 	{
-		LOG( "!!! Module path limit is 5!\n" );
+		LOG( "!!! Module path limit is 6!\n" );
 		return;
 	}
 

@@ -14,6 +14,7 @@
 //////////////////////////////////////////////////////////////////////////
 
 #include <qgroupbox.h>
+#include <qpixmap.h>
 #include "prevform.h"
 #include "options_box.h"
 #include "../../modules/module_base/src/module_base.h"
@@ -51,8 +52,12 @@ private:
 	QPushButton * button_conf;
 	QPushButton * button_del;
 	QTextEdit   * edit_name;
-	QCheckBox   * check_prev;
+	QPushButton * check_prev;
 	OptionsBox	* opt_form;
+
+	QPixmap del_btn;
+	QPixmap cfg_btn;
+	QPixmap prv_btn;
 
 	long id;
 	moduleBase * module;

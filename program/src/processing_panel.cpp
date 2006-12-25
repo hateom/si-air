@@ -48,7 +48,6 @@ void procFrame::mousePressEvent ( QMouseEvent * e )
 
 void procFrame::in_popup( int id )
 {
-	LOG( ">>> Popup pressed <%d>\n", id );
 	emit popup_exe( mod_list[id] );
 }
 

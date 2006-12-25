@@ -288,6 +288,15 @@ void ModuleMgr::stop_processing()
 	is_running = false;
 	prev_list.clear();
 
+	moduleBase * mod;
+	int size = (int)path_list.size();
+
+	for( int i=0; i<size; ++i )
+	{
+		mod = module_list[path_list[i]];
+		mod->free();
+	}
+
 	disconnect( sPreviewMgr, SIGNAL(mouse_select(int,int,int,int)), this, SLOT(mouse_select(int,int,int,int)) );
 
 	sPreviewMgr->close_all();

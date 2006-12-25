@@ -18,7 +18,7 @@
 
 //////////////////////////////////////////////////////////////////////////
 
-class __declspec(dllexport) cPosdetect: public moduleBase
+class EXPORT_MODULE cPosdetect: public moduleBase
 {
 public:
 	cPosdetect();

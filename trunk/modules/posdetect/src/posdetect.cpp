@@ -1,3 +1,4 @@
+#define MOD_CPP
 #include "posdetect.h"
 #include "../../module_base/src/types.h"
 #include "../../module_base/src/status_codes.h"

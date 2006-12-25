@@ -1,3 +1,4 @@
+#define MOD_CPP
 #include "mod_neg.h"
 #include "../../module_base/src/status_codes.h"
 

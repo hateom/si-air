@@ -24,7 +24,7 @@ struct CvCapture;
 //////////////////////////////////////////////////////////////////////////
 
 /// modul akwizycji wideo oparty o biblioteke OpenCV
-class __declspec(dllexport) vaOpenCV: public moduleBase
+class EXPORT_MODULE vaOpenCV: public moduleBase
 {
 public:
 	vaOpenCV();

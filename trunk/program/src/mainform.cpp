@@ -199,7 +199,7 @@ void MainForm::stop()
 
 	connect( startButton, SIGNAL(clicked()), this, SLOT(run()) );
 	disconnect( startButton, SIGNAL(clicked()), this, SLOT(stop()) );
-	startButton->setText( "Run!" );
+	startButton->setTextLabel( tr( "Start" ) );
 
 }
 
@@ -209,7 +209,7 @@ void MainForm::run()
 {
 	connect( startButton, SIGNAL(clicked()), this, SLOT(stop()) );
 	disconnect( startButton, SIGNAL(clicked()), this, SLOT(run()) );
-	startButton->setText( "Stop!" );
+	startButton->setTextLabel( tr( "Stop" ) );
 
 	sModuleMgr->start_processing();
 }
@@ -324,7 +324,7 @@ void MainForm::close_app()
 
 void MainForm::closeEvent( QCloseEvent * ce )
 {
-	if( startButton->text() != tr("Stop!") )
+	if( startButton->textLabel() != tr("Stop") )
 	{
 		ce->accept();
 		close_app();

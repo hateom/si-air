@@ -23,7 +23,7 @@
 
 //////////////////////////////////////////////////////////////////////////
 
-class __declspec(dllexport) mod_camshift_opencv: public moduleBase
+class EXPORT_MODULE mod_camshift_opencv: public moduleBase
 {
 public:
 	mod_camshift_opencv();

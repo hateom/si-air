@@ -1,3 +1,4 @@
+#define MOD_CPP
 #include "pi_general.h"
 #include "../../module_base/src/types.h"
 #include "../../module_base/src/status_codes.h"

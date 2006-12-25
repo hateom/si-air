@@ -1,7 +1,7 @@
 /****************************************************************************
 ** rangeWidget meta object code from reading C++ file 'rangewidget.h'
 **
-** Created: Pn 25. gru 18:32:03 2006
+** Created: Pn 25. gru 21:00:46 2006
 **      by: The Qt MOC ($Id: moc_yacc.cpp,v 1.1.1.13 2006/05/05 17:43:42 chehrlic Exp $)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -56,10 +56,13 @@ QMetaObject* rangeWidget::staticMetaObject()
 	{ "sv", &static_QUType_int, 0, QUParameter::In }
     };
     static const QUMethod slot_0 = {"slider_changed", 1, param_slot_0 };
-    static const QUMethod slot_1 = {"edit_changed", 0, 0 };
+    static const QUParameter param_slot_1[] = {
+	{ "str", &static_QUType_QString, 0, QUParameter::In }
+    };
+    static const QUMethod slot_1 = {"edit_changed", 1, param_slot_1 };
     static const QMetaData slot_tbl[] = {
 	{ "slider_changed(int)", &slot_0, QMetaData::Public },
-	{ "edit_changed()", &slot_1, QMetaData::Public }
+	{ "edit_changed(const QString&)", &slot_1, QMetaData::Public }
     };
     metaObj = QMetaObject::new_metaobject(
 	"rangeWidget", parentObject,
@@ -85,7 +88,7 @@ bool rangeWidget::qt_invoke( int _id, QUObject* _o )
 {
     switch ( _id - staticMetaObject()->slotOffset() ) {
     case 0: slider_changed((int)static_QUType_int.get(_o+1)); break;
-    case 1: edit_changed(); break;
+    case 1: edit_changed((const QString&)static_QUType_QString.get(_o+1)); break;
     default:
 	return QWidget::qt_invoke( _id, _o );
     }

@@ -1,5 +1,5 @@
 #include "rangewidget.h"
-
+#include "mp_logger.h"
 #include <qlineedit.h>
 #include <qslider.h>
 
@@ -18,7 +18,7 @@ rangeWidget::rangeWidget( int t, QWidget* parent, const char* name, WFlags f ) :
 	slider->setMinValue( 0 );
 
 	connect( slider, SIGNAL(sliderMoved(int)), this, SLOT(slider_changed(int)) );
-	connect( edit, SIGNAL(textChanged()), this, SLOT(edit_changed()) );
+	connect( edit, SIGNAL(textChanged(const QString&)), this, SLOT(edit_changed(const QString&)) );
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -36,7 +36,7 @@ void rangeWidget::setup( int min, int max, int current )
 	value = current;
 
 	edit->setText( QString().number(current) );
-	edit_changed();
+//	edit_changed();
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -48,7 +48,7 @@ void rangeWidget::setup( float min, float max, float current )
 	valuef = current;
 
 	edit->setText( QString().number(current) );
-	edit_changed();
+//	edit_changed();
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -58,7 +58,7 @@ void rangeWidget::set_minmax( int min, int max )
 	min_value = min;
 	max_value = max;
 
-	edit_changed();
+	edit_changed( edit->text() );
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -68,7 +68,7 @@ void rangeWidget::set_minmax( float min, float max )
 	min_valuef = min;
 	max_valuef = max;
 
-	edit_changed();
+	edit_changed( edit->text() );
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -78,7 +78,7 @@ void rangeWidget::set_value( int val )
 	value = val;
 
 	edit->setText( QString().number(val) );
-	edit_changed();
+//	edit_changed();
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -88,7 +88,7 @@ void rangeWidget::set_value( float val )
 	valuef = val;
 
 	edit->setText( QString().number(val) );
-	edit_changed();
+//	edit_changed();
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -157,15 +157,12 @@ void rangeWidget::slider_changed( int sv )
 
 //////////////////////////////////////////////////////////////////////////
 
-void rangeWidget::edit_changed()
+void rangeWidget::edit_changed( const QString & str )
 {
-	QString str = edit->text();
-
 	if( type == RT_INT )
 	{
 		value = str.toInt();
 		float perc = (float)(min_value+value)/(float)(max_value-min_value);
-
 		if( !slider_lock ) slider->setValue( (int)(perc*100.0f) );
 	}
 	else

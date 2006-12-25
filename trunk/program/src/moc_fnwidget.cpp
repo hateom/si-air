@@ -1,7 +1,7 @@
 /****************************************************************************
 ** fnWidget meta object code from reading C++ file 'fnwidget.h'
 **
-** Created: N 3. gru 18:50:29 2006
+** Created: Pn 25. gru 20:55:57 2006
 **      by: The Qt MOC ($Id: moc_yacc.cpp,v 1.1.1.13 2006/05/05 17:43:42 chehrlic Exp $)
 **
 ** WARNING! All changes made in this file will be lost!

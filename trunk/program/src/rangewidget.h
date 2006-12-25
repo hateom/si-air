@@ -43,7 +43,7 @@ public:
 
 public slots:
 	void slider_changed( int sv );
-	void edit_changed();
+	void edit_changed( const QString & str );
 
 protected:
 	QLineEdit * edit;

@@ -1,3 +1,4 @@
+#define MOD_CPP
 #include "mod_camshift_opencv.h"
 #include "../../module_base/src/status_codes.h"
 

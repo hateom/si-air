@@ -17,7 +17,7 @@
 
 //////////////////////////////////////////////////////////////////////////
 
-class __declspec(dllexport) modLight: public moduleBase
+class EXPORT_MODULE modLight: public moduleBase
 {
 public:
 	modLight();

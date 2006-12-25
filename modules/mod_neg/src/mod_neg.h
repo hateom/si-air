@@ -17,7 +17,7 @@
 
 //////////////////////////////////////////////////////////////////////////
 
-class __declspec(dllexport) modNeg: public moduleBase
+class EXPORT_MODULE modNeg: public moduleBase
 {
 public:
 	modNeg();

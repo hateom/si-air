@@ -15,6 +15,7 @@
 
 #include <string>
 #include <map>
+#include "types.h"
 #include "status_codes.h"
 
 //////////////////////////////////////////////////////////////////////////
@@ -26,7 +27,7 @@
 /// klasa przechowujaca globalne parametry modulow, dostepne dla 
 /// wszystkich pozostalych modulow - co umozliwia pewna komunikacje 
 /// pomiedzy modulami, zachwowujac jednak pewien poziom niezaleznosci
-class __declspec(dllexport) PropertyMgr
+class PropertyMgr
 {
 public:
 	PropertyMgr() {}

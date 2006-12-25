@@ -66,7 +66,7 @@ static char * mt_description[] = {
 //////////////////////////////////////////////////////////////////////////
 
 /// klasa bazowa dla wszystkich modulow
-class __declspec(dllexport) moduleBase
+class EXPORT_MODULE moduleBase
 {
 public:
 	moduleBase() : lib_handle(NULL) { REG_PARAM_UNVISIBLE( PT_INT, preview_param, "Preview", 0 ); }

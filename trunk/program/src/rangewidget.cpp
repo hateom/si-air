@@ -1,6 +1,6 @@
 #include "rangewidget.h"
 
-#include <qtextedit.h>
+#include <qlineedit.h>
 #include <qslider.h>
 
 //////////////////////////////////////////////////////////////////////////
@@ -8,7 +8,7 @@
 rangeWidget::rangeWidget( int t, QWidget* parent, const char* name, WFlags f ) : 
 	QWidget( parent, name, f ), type(t), slider_lock(0)
 {
-	edit = new QTextEdit( this, tr("editBox") );
+	edit = new QLineEdit( this, tr("editBox") );
 	edit->setGeometry( QRect( 0, 0, 60, 24 ) );
 
 	slider = new QSlider( this, tr("slider") );

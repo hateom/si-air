@@ -3,7 +3,7 @@
 #include "optform.h"
 
 #include <qgroupbox.h>
-#include <qtextedit.h>
+#include <qlineedit.h>
 #include <qlabel.h>
 #include <qpushbutton.h>
 #include "fnwidget.h"
@@ -55,8 +55,8 @@ OptForm::OptForm( moduleBase * base, QWidget* parent, const char* name, WFlags f
 			case PT_INT:
 			case PT_LONG:
 				{
-					QTextEdit * edt;
-					edt = new QTextEdit( this, tr("param_edit_") + tr(temp) );
+					QLineEdit * edt;
+					edt = new QLineEdit( this, tr("param_edit_") + tr(temp) );
 					sprintf( temp, "%d", (int)(*((int*)base->get_param(k)->data)) );
 					edt->setText( tr( temp ) );
 					info = create_wdg_info( edt, PT_LONG );
@@ -64,8 +64,8 @@ OptForm::OptForm( moduleBase * base, QWidget* parent, const char* name, WFlags f
 				break;
 			case PT_FLOAT:
 				{
-					QTextEdit * edt;
-					edt = new QTextEdit( this, tr("param_edit_") + tr(temp) );
+					QLineEdit * edt;
+					edt = new QLineEdit( this, tr("param_edit_") + tr(temp) );
 					sprintf( temp, "%f", (float)(*((float*)base->get_param(k)->data)) );
 					edt->setText( tr( temp ) );
 					info = create_wdg_info( edt, PT_LONG );
@@ -73,8 +73,8 @@ OptForm::OptForm( moduleBase * base, QWidget* parent, const char* name, WFlags f
 				break;
 			case PT_STRING:
 				{
-					QTextEdit * edt;
-					edt = new QTextEdit( this, tr("param_edit_") + tr(temp) );
+					QLineEdit * edt;
+					edt = new QLineEdit( this, tr("param_edit_") + tr(temp) );
 					sprintf( temp, "%s", (char*)(*((char**)base->get_param(k)->data)) );
 					edt->setText( tr( temp ) );
 					info = create_wdg_info( edt, PT_LONG );
@@ -162,17 +162,17 @@ void OptForm::save_conf()
 		case PT_LONG:
 			long * ptrl;
 			ptrl = ((long*)(module->get_param(k)->data));
-			*ptrl = ((QTextEdit*)(wdg_list[i]->wdg))->text().toLong();
+			*ptrl = ((QLineEdit*)(wdg_list[i]->wdg))->text().toLong();
 			break;
 		case PT_FLOAT:
 			float * ptrf;
 			ptrf = ((float*)(module->get_param(k)->data));
-			*ptrf = ((QTextEdit*)(wdg_list[i]->wdg))->text().toFloat();
+			*ptrf = ((QLineEdit*)(wdg_list[i]->wdg))->text().toFloat();
 			break;
 		case PT_STRING:
 			char ** ptrc;
 			ptrc = ((char**)(module->get_param(k)->data));
-			*ptrc = strdup( ((char*)(((QTextEdit*)(wdg_list[i]->wdg))->text().ascii())) );
+			*ptrc = strdup( ((char*)(((QLineEdit*)(wdg_list[i]->wdg))->text().ascii())) );
 			break;
 		case PT_FILENAME:
 			char ** ptrfn;

@@ -20,11 +20,17 @@
 
 piGeneral::piGeneral() : alloc_mem(0), selected_region(NULL), histogram(NULL)
 {
-	REG_PARAM( PT_INT, Hmax,			"1. Wart. maxymalna H", 35 );
-	REG_PARAM( PT_INT, Hmin,			"2. Wart. minimalna H", 10 );
-	REG_PARAM( PT_INT, Vmax,			"3. Wart. maxymalna V", 255 );
-	REG_PARAM( PT_INT, Vmin,			"4. Wart. minimalna V", 20 );
-	REG_PARAM( PT_INT, Smin,			"5. Wart. minimalna S", 0 );
+//	REG_PARAM( PT_INT, Hmax,			"Wart. maxymalna H", 35 );
+//	REG_PARAM( PT_INT, Hmin,			"Wart. minimalna H", 10 );
+//	REG_PARAM( PT_INT, Vmax,			"Wart. maxymalna V", 255 );
+//	REG_PARAM( PT_INT, Vmin,			"Wart. minimalna V", 20 );
+//	REG_PARAM( PT_INT, Smin,			"5. Wart. minimalna S", 0 );
+
+	REG_PARAM( PT_INT_RANGE, Hmax, "Wart. maxymalna H", int_range(  35, 0, 360 ) );
+	REG_PARAM( PT_INT_RANGE, Hmin, "Wart. minimalna H", int_range(  10, 0, 360 ) );
+	REG_PARAM( PT_INT_RANGE, Vmax, "Wart. maxymalna V", int_range( 255, 0, 255 ) );
+	REG_PARAM( PT_INT_RANGE, Vmin, "Wart. minimalna V", int_range(  20, 0, 255 ) );
+	REG_PARAM( PT_INT_RANGE, Smin, "Wart. minimalna S", int_range(   0, 0, 200 ) );
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -62,6 +68,8 @@ proc_data * piGeneral::process_frame( proc_data * prev_frame, int * status )
 	int R, G, B;
 	int i=0;
 	float H, S, V;
+
+//	int Smin = Smin_r.value;
 
 	inFrame = prev_frame->frame;
 
@@ -186,6 +194,7 @@ void piGeneral::hist()
 		MinS = -1,
 		MaxH = -1,
 		MinH = -1;
+//	int Smin = Smin_r.value;
 
 	width = selected_region->width;
 	height = selected_region->height;

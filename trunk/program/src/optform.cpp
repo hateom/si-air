@@ -7,6 +7,7 @@
 #include <qlabel.h>
 #include <qpushbutton.h>
 #include "fnwidget.h"
+#include "rangewidget.h"
 
 //////////////////////////////////////////////////////////////////////////
 
@@ -24,6 +25,8 @@ wdg_info * create_wdg_info( QWidget * wdg, int val_type )
 OptForm::OptForm( moduleBase * base, QWidget* parent, const char* name, WFlags fl )
 : QWidget( parent, name, fl )
 {
+	int type;
+
 	if( !name ) setName( "OptForm" );
 
 	module = base;
@@ -46,7 +49,8 @@ OptForm::OptForm( moduleBase * base, QWidget* parent, const char* name, WFlags f
 		temp[0] = (char)('a'+i);
 		temp[1] = '\0';
 		
-		switch( base->get_param(k)->type )
+		type = base->get_param(k)->type;
+		switch( type )
 		{
 			case PT_INT:
 			case PT_LONG:
@@ -84,6 +88,28 @@ OptForm::OptForm( moduleBase * base, QWidget* parent, const char* name, WFlags f
 					sprintf( temp, "%s", (char*)(*((char**)base->get_param(k)->data)) );
 					fnw->setText( temp );
 					info = create_wdg_info( fnw, PT_LONG );
+				}
+				break;
+			case PT_FLOAT_RANGE:
+				{
+					rangeWidget * rnwf;
+					float_range * fr;
+					rnwf = new rangeWidget( RT_FLOAT, this, tr("param_rnw_") + tr(temp) );
+					rnwf->show();
+					fr = (float_range*)(base->get_param(k)->data);
+					rnwf->setup( fr->minv, fr->maxv, fr->value );
+					info = create_wdg_info( rnwf, PT_FLOAT_RANGE );
+				}
+				break;
+			case PT_INT_RANGE:
+				{
+					rangeWidget * rnw;
+					int_range * ir;
+					rnw = new rangeWidget( RT_INT, this, tr("param_rnw_") + tr(temp) );
+					rnw->show();
+					ir = (int_range*)(base->get_param(k)->data);
+					rnw->setup( ir->minv, ir->maxv, ir->value );
+					info = create_wdg_info( rnw, PT_INT_RANGE );
 				}
 				break;
 			default:
@@ -152,6 +178,20 @@ void OptForm::save_conf()
 			char ** ptrfn;
 			ptrfn = ((char**)(module->get_param(k)->data));
 			*ptrfn = strdup( ((char*)(((fnWidget*)(wdg_list[i]->wdg))->get_filename().ascii())) );
+			break;
+		case PT_FLOAT_RANGE:
+			float_range * fr;
+			fr = (float_range*)(module->get_param(k)->data);
+			fr->value = ((rangeWidget*)(wdg_list[i]->wdg))->get_valuef();
+			fr->maxv = ((rangeWidget*)(wdg_list[i]->wdg))->get_maxf();
+			fr->minv = ((rangeWidget*)(wdg_list[i]->wdg))->get_minf();
+			break;
+		case PT_INT_RANGE:
+			int_range * ir;
+			ir = (int_range*)(module->get_param(k)->data);
+			ir->value = ((rangeWidget*)(wdg_list[i]->wdg))->get_value();
+			ir->maxv = ((rangeWidget*)(wdg_list[i]->wdg))->get_max();
+			ir->minv = ((rangeWidget*)(wdg_list[i]->wdg))->get_min();
 			break;
 		}
 		i++;

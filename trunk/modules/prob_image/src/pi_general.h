@@ -38,7 +38,10 @@ public:
 protected:
 	int temp_param;
 	int alloc_mem;
-	int Hmax,Hmin,Vmax,Vmin,Smin;
+	//int Hmax,Hmin,Vmax,Vmin,Smin;
+	
+	int_range Hmax,Hmin,Vmax,Vmin,Smin;;
+
 	frame_data * inFrame;
 	frame_data * selected_region;
 	hist_data  * histogram;

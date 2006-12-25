@@ -64,6 +64,7 @@ MainForm::MainForm( QWidget* parent, const char* name, WFlags fl )
 
     optionsBox = new OptionsBox( frame3, "optionsBox" );
     optionsBox->setGeometry( QRect( 390, 8, 270, 341 ) );
+	optionsBox->setPaletteBackgroundColor( QColor( 240, 240, 255 ) );
 
     panelGroup = new QGroupBox( centralWidget(), "panelGroup" );
     panelGroup->setGeometry( QRect( 10, 380, 681, 40 ) );

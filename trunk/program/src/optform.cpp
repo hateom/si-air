@@ -21,8 +21,8 @@ wdg_info * create_wdg_info( QWidget * wdg, int val_type )
 
 //////////////////////////////////////////////////////////////////////////
 
-OptForm::OptForm( QWidget* parent, const char* name, bool modal, WFlags fl, moduleBase * base )
-: QDialog( parent, name, modal, fl )
+OptForm::OptForm( moduleBase * base, QWidget* parent, const char* name, WFlags fl )
+: QWidget( parent, name, fl )
 {
 	if( !name ) setName( "OptForm" );
 
@@ -31,9 +31,6 @@ OptForm::OptForm( QWidget* parent, const char* name, bool modal, WFlags fl, modu
 	int	pcount = base->param_count();
 	int	space_height = pcount*30+30;
 	wdg_info *	info;
-
-	groupBox = new QGroupBox( this, "paramSpace" );
-	groupBox->setGeometry( QRect( 10, 10, 340, space_height ) );
 
 	label = new QLabel*[pcount];
 
@@ -55,7 +52,7 @@ OptForm::OptForm( QWidget* parent, const char* name, bool modal, WFlags fl, modu
 			case PT_LONG:
 				{
 					QTextEdit * edt;
-					edt = new QTextEdit( groupBox, tr("param_edit_") + tr(temp) );
+					edt = new QTextEdit( this, tr("param_edit_") + tr(temp) );
 					sprintf( temp, "%d", (int)(*((int*)base->get_param(k)->data)) );
 					edt->setText( tr( temp ) );
 					info = create_wdg_info( edt, PT_LONG );
@@ -64,7 +61,7 @@ OptForm::OptForm( QWidget* parent, const char* name, bool modal, WFlags fl, modu
 			case PT_FLOAT:
 				{
 					QTextEdit * edt;
-					edt = new QTextEdit( groupBox, tr("param_edit_") + tr(temp) );
+					edt = new QTextEdit( this, tr("param_edit_") + tr(temp) );
 					sprintf( temp, "%f", (float)(*((float*)base->get_param(k)->data)) );
 					edt->setText( tr( temp ) );
 					info = create_wdg_info( edt, PT_LONG );
@@ -73,7 +70,7 @@ OptForm::OptForm( QWidget* parent, const char* name, bool modal, WFlags fl, modu
 			case PT_STRING:
 				{
 					QTextEdit * edt;
-					edt = new QTextEdit( groupBox, tr("param_edit_") + tr(temp) );
+					edt = new QTextEdit( this, tr("param_edit_") + tr(temp) );
 					sprintf( temp, "%s", (char*)(*((char**)base->get_param(k)->data)) );
 					edt->setText( tr( temp ) );
 					info = create_wdg_info( edt, PT_LONG );
@@ -82,7 +79,7 @@ OptForm::OptForm( QWidget* parent, const char* name, bool modal, WFlags fl, modu
 			case PT_FILENAME:
 				{
 					fnWidget * fnw;
-					fnw = new fnWidget( groupBox, tr("param_fnw_") + tr(temp) );
+					fnw = new fnWidget( this, tr("param_fnw_") + tr(temp) );
 					fnw->show();
 					sprintf( temp, "%s", (char*)(*((char**)base->get_param(k)->data)) );
 					fnw->setText( temp );
@@ -94,25 +91,25 @@ OptForm::OptForm( QWidget* parent, const char* name, bool modal, WFlags fl, modu
 				break;
 		}
 
-		info->wdg->setGeometry( QRect( 100, 15+i*30, 220, 25 ) );
+		info->wdg->setGeometry( QRect( 10, 25+i*52, 230, 24 ) );
 		wdg_list.push_back( info );
 
-		label[i] = new QLabel( groupBox, tr(base->get_param(k)->name ) );
-		label[i]->setGeometry( QRect( 10, 15+i*30, 90, 25 ) );
+		label[i] = new QLabel( this, tr(base->get_param(k)->name ) );
+		label[i]->setGeometry( QRect( 10, i*52, 230, 24 ) );
 		label[i]->setText( tr(base->get_param(k)->name) );
 		i++;
 	}
 
 	btn_ok = new QPushButton( this, tr("btnOK") );
-	btn_ok->setGeometry( QRect( 360, 10, 140, 26 ) );
-	btn_ok->setText( tr("OK") );
+	btn_ok->setGeometry( QRect( 10, 25+i*52, 140, 24 ) );
+	btn_ok->setText( tr("&Apply") );
 
-	btn_cancel = new QPushButton( this, tr("btnCancel") );
-	btn_cancel->setGeometry( QRect( 360, 40, 140, 26 ) );
-	btn_cancel->setText( tr("Cancel") );
+//	btn_cancel = new QPushButton( this, tr("btnCancel") );
+//	btn_cancel->setGeometry( QRect( 360, 40, 140, 26 ) );
+//	btn_cancel->setText( tr("Cancel") );
 
 	connect( btn_ok, SIGNAL(clicked()), this, SLOT(save_conf()) );
-	connect( btn_cancel, SIGNAL(clicked()), this, SLOT(close()) );
+//	connect( btn_cancel, SIGNAL(clicked()), this, SLOT(close()) );
 
 	languageChange();
 	resize( QSize( 525, space_height + 20 ).expandedTo(minimumSizeHint()) );
@@ -159,7 +156,7 @@ void OptForm::save_conf()
 		}
 		i++;
 	}
-	close();
+//	close();
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -173,8 +170,8 @@ OptForm::~OptForm()
 
 void OptForm::languageChange()
 {
-	setCaption( tr( "SI Module Parameters Editor" ) );
-	groupBox->setTitle( tr( "Module Parameters" ) );
+//	setCaption( tr( "SI Module Parameters Editor" ) );
+//	groupBox->setTitle( tr( "Module Parameters" ) );
 }
 
 //////////////////////////////////////////////////////////////////////////

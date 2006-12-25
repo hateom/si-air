@@ -1,58 +1,51 @@
-/********************************************************************
-    Projekt z przedmiotu : Sztuczna Inteligencja i Sensoryka
-
-	stworzono:	17:12:2006   16:52
-	plik:    	mainform
-	autorzy:	Tomasz Huczek, Andrzej Jasiñski
-	
-    cel:	    
-*********************************************************************/
-
 #ifndef MAINFORM_H
 #define MAINFORM_H
 
-//////////////////////////////////////////////////////////////////////////
-
 #include <qvariant.h>
-#include <qdialog.h>
+#include <qpixmap.h>
+#include <qmainwindow.h>
 
-#include "prevform.h"
+#include <vector>
+#include "../../modules/module_base/src/module_base.h"
 #include "modwidget.h"
-#include "../../modules/module_base/src/property_mgr.h"
-
-//////////////////////////////////////////////////////////////////////////
+#include "processing_panel.h"
+#include "options_box.h"
 
 class QVBoxLayout;
 class QHBoxLayout;
 class QGridLayout;
 class QSpacerItem;
+class QAction;
+class QActionGroup;
+class QToolBar;
+class QPopupMenu;
+class QFrame;
+class QLabel;
 class QGroupBox;
-class QTextEdit;
-class QListBox;
-class QListBoxItem;
 class QPushButton;
-class QComboBox;
-class QTimer;
-class QCheckBox;
+class QTextEdit;
 
-//////////////////////////////////////////////////////////////////////////
-
-/// okno glowne programu
-class MainForm : public QDialog
+class MainForm : public QMainWindow
 {
     Q_OBJECT
 
 public:
-    MainForm( QWidget* parent = 0, const char* name = 0, bool modal = FALSE, WFlags fl = 0 );
+    MainForm( QWidget* parent = 0, const char* name = 0, WFlags fl = WType_TopLevel );
     ~MainForm();
 
-	QPushButton * buttonLoad;
-    QPushButton * buttonOk;
-	QPushButton * buttonRun;
-	QListBox    * listBox;
-	QPushButton * buttonAdd;
+    procFrame* frame3;
+    QLabel* processingImg;
+	QLabel* headImg;
+    OptionsBox* optionsBox;
+    QGroupBox* panelGroup;
+    QPushButton* startButton;
+    QPushButton* reloadButton;
+    QTextEdit* textEdit1;
+    QMenuBar *MenuBarEditor;
+    QPopupMenu *Processing;
+    QPopupMenu *About;
+    QAction* processingExitAction;
 	QPushButton	* buttonReset;
-	QGroupBox   * groupMod;
 
 public slots:
 	virtual void module_loaded( moduleBase * base, int no );
@@ -61,24 +54,26 @@ public slots:
 	virtual void path_cleared();
 	virtual void processing_started();
 	virtual void processing_finished();
-	virtual void add_module();
+	virtual void add_module( moduleBase * mod );
 
 	virtual void run();
 	virtual void stop();
 
 	virtual void close_app();
-	virtual void lb_selected( QListBoxItem * );
+//	virtual void lb_selected( QListBoxItem * );
 
 	virtual void load_modules();
 
 protected slots:
-    virtual void languageChange();
+	virtual void languageChange();
 
 private:
+	void update_popup();
 	void closeEvent( QCloseEvent * ce );
 	std::vector<modWidget*>		mod_widget;
-};
+    QPixmap image0;
+	QPixmap image1;
 
-//////////////////////////////////////////////////////////////////////////
+};
 
 #endif // MAINFORM_H

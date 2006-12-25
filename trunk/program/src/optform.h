@@ -36,19 +36,18 @@ struct wdg_info
 //////////////////////////////////////////////////////////////////////////
 
 /// okno edycji parametrow modulu
-class OptForm : public QDialog
+class OptForm : public QWidget
 {
 	Q_OBJECT
 
 public:
-	OptForm( QWidget* parent = 0, const char* name = 0, bool modal = FALSE, WFlags fl = 0, moduleBase * mod = NULL );
+	OptForm( moduleBase * mod = NULL, QWidget* parent = 0, const char* name = 0, WFlags fl = 0 );
 	~OptForm();
 
 private:
-	QGroupBox   *  groupBox;
 	QLabel	    ** label;
 	QPushButton *  btn_ok;
-	QPushButton *  btn_cancel;
+//	QPushButton *  btn_cancel;
 
 protected slots:
 	virtual void save_conf();

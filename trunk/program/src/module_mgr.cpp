@@ -174,8 +174,8 @@ void ModuleMgr::clear_path()
 		return;
 	}
 
-	emit path_cleared();
 	path_list.clear();
+	emit path_cleared();
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -190,9 +190,9 @@ moduleBase * ModuleMgr::last_on_path()
 
 void ModuleMgr::add_to_path( int module )
 {
-	if( path_list.size() == 9 )
+	if( path_list.size() == 5 )
 	{
-		LOG( "!!! Module path limit is 9!\n" );
+		LOG( "!!! Module path limit is 5!\n" );
 		return;
 	}
 
@@ -213,8 +213,19 @@ void ModuleMgr::add_to_path( int module )
 		return;
 	}
 
-	emit added_to_path( module_list[module], module );
 	path_list.push_back( module );
+	emit added_to_path( module_list[module], module );
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+void ModuleMgr::add_to_path( moduleBase * mod )
+{
+	int size = (int)module_list.size();
+	for( int i=0; i<size; ++i )
+	{
+		if( module_list[i] == mod ) add_to_path( i );
+	}
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -354,6 +365,34 @@ void ModuleMgr::switch_preview( int module, bool on )
 	{
 		mod->set_param( "preview_param", 0 );
 	}
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+int ModuleMgr::get_proper_modules( std::vector<moduleBase*> & list )
+{
+	moduleBase * mod;
+	int size = (int)module_list.size();
+	
+
+	for( int i=0; i<size; ++i )
+	{
+		mod = module_list[i];
+
+		if( !last_on_path() )
+		{
+			if( mod->input_type() == MT_NONE )
+			{
+				list.push_back( mod );
+			}
+		}
+		else if(  last_on_path()->output_type() == mod->input_type() )
+		{
+			list.push_back( mod );
+		}
+	}
+
+	return( ST_OK );
 }
 
 //////////////////////////////////////////////////////////////////////////

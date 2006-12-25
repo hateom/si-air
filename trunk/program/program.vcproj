@@ -162,6 +162,12 @@
 					RelativePath=".\src\fnwidget.h">
 				</File>
 				<File
+					RelativePath=".\src\main_arrow.h">
+				</File>
+				<File
+					RelativePath=".\src\main_head.h">
+				</File>
+				<File
 					RelativePath=".\src\mainform.cpp">
 				</File>
 				<File
@@ -183,6 +189,9 @@
 					RelativePath=".\src\moc_prevform.cpp">
 				</File>
 				<File
+					RelativePath=".\src\moc_processing_panel.cpp">
+				</File>
+				<File
 					RelativePath=".\src\modwidget.cpp">
 				</File>
 				<File
@@ -195,10 +204,22 @@
 					RelativePath=".\src\optform.h">
 				</File>
 				<File
+					RelativePath=".\src\options_box.cpp">
+				</File>
+				<File
+					RelativePath=".\src\options_box.h">
+				</File>
+				<File
 					RelativePath=".\src\prevform.cpp">
 				</File>
 				<File
 					RelativePath=".\src\prevform.h">
+				</File>
+				<File
+					RelativePath=".\src\processing_panel.cpp">
+				</File>
+				<File
+					RelativePath=".\src\processing_panel.h">
 				</File>
 			</Filter>
 		</Filter>

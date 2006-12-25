@@ -15,6 +15,7 @@
 
 #include <qgroupbox.h>
 #include "prevform.h"
+#include "options_box.h"
 #include "../../modules/module_base/src/module_base.h"
 
 //////////////////////////////////////////////////////////////////////////
@@ -31,7 +32,7 @@ class modWidget: public QGroupBox
 	Q_OBJECT
 
 public:
-	modWidget( long id, moduleBase * mod, QWidget * parent = 0, const char * name = 0 );
+	modWidget( long id, moduleBase * mod, OptionsBox * opt_form, QWidget * parent = 0, const char * name = 0 );
 	virtual ~modWidget();
 
 	int getID() { return( id ); }
@@ -51,6 +52,7 @@ private:
 	QPushButton * button_del;
 	QTextEdit   * edit_name;
 	QCheckBox   * check_prev;
+	OptionsBox	* opt_form;
 
 	long id;
 	moduleBase * module;

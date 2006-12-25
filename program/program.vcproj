@@ -195,6 +195,9 @@
 					RelativePath=".\src\moc_processing_panel.cpp">
 				</File>
 				<File
+					RelativePath=".\src\moc_rangewidget.cpp">
+				</File>
+				<File
 					RelativePath=".\src\modwidget.cpp">
 				</File>
 				<File
@@ -223,6 +226,12 @@
 				</File>
 				<File
 					RelativePath=".\src\processing_panel.h">
+				</File>
+				<File
+					RelativePath=".\src\rangewidget.cpp">
+				</File>
+				<File
+					RelativePath=".\src\rangewidget.h">
 				</File>
 			</Filter>
 		</Filter>

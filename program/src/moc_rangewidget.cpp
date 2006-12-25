@@ -1,5 +1,5 @@
 /****************************************************************************
-** OptForm meta object code from reading C++ file 'optform.h'
+** rangeWidget meta object code from reading C++ file 'rangewidget.h'
 **
 ** Created: Pn 25. gru 18:32:03 2006
 **      by: The Qt MOC ($Id: moc_yacc.cpp,v 1.1.1.13 2006/05/05 17:43:42 chehrlic Exp $)
@@ -8,7 +8,7 @@
 *****************************************************************************/
 
 #undef QT_NO_COMPAT
-#include "optform.h"
+#include "rangewidget.h"
 #include <qmetaobject.h>
 #include <qapplication.h>
 
@@ -19,27 +19,27 @@
 #error "(The moc has changed too much.)"
 #endif
 
-const char *OptForm::className() const
+const char *rangeWidget::className() const
 {
-    return "OptForm";
+    return "rangeWidget";
 }
 
-QMetaObject *OptForm::metaObj = 0;
-static QMetaObjectCleanUp cleanUp_OptForm( "OptForm", &OptForm::staticMetaObject );
+QMetaObject *rangeWidget::metaObj = 0;
+static QMetaObjectCleanUp cleanUp_rangeWidget( "rangeWidget", &rangeWidget::staticMetaObject );
 
 #ifndef QT_NO_TRANSLATION
-QString OptForm::tr( const char *s, const char *c )
+QString rangeWidget::tr( const char *s, const char *c )
 {
     if ( qApp )
-	return qApp->translate( "OptForm", s, c, QApplication::DefaultCodec );
+	return qApp->translate( "rangeWidget", s, c, QApplication::DefaultCodec );
     else
 	return QString::fromLatin1( s );
 }
 #ifndef QT_NO_TRANSLATION_UTF8
-QString OptForm::trUtf8( const char *s, const char *c )
+QString rangeWidget::trUtf8( const char *s, const char *c )
 {
     if ( qApp )
-	return qApp->translate( "OptForm", s, c, QApplication::UnicodeUTF8 );
+	return qApp->translate( "rangeWidget", s, c, QApplication::UnicodeUTF8 );
     else
 	return QString::fromUtf8( s );
 }
@@ -47,19 +47,22 @@ QString OptForm::trUtf8( const char *s, const char *c )
 
 #endif // QT_NO_TRANSLATION
 
-QMetaObject* OptForm::staticMetaObject()
+QMetaObject* rangeWidget::staticMetaObject()
 {
     if ( metaObj )
 	return metaObj;
     QMetaObject* parentObject = QWidget::staticMetaObject();
-    static const QUMethod slot_0 = {"save_conf", 0, 0 };
-    static const QUMethod slot_1 = {"languageChange", 0, 0 };
+    static const QUParameter param_slot_0[] = {
+	{ "sv", &static_QUType_int, 0, QUParameter::In }
+    };
+    static const QUMethod slot_0 = {"slider_changed", 1, param_slot_0 };
+    static const QUMethod slot_1 = {"edit_changed", 0, 0 };
     static const QMetaData slot_tbl[] = {
-	{ "save_conf()", &slot_0, QMetaData::Protected },
-	{ "languageChange()", &slot_1, QMetaData::Protected }
+	{ "slider_changed(int)", &slot_0, QMetaData::Public },
+	{ "edit_changed()", &slot_1, QMetaData::Public }
     };
     metaObj = QMetaObject::new_metaobject(
-	"OptForm", parentObject,
+	"rangeWidget", parentObject,
 	slot_tbl, 2,
 	0, 0,
 #ifndef QT_NO_PROPERTIES
@@ -67,38 +70,38 @@ QMetaObject* OptForm::staticMetaObject()
 	0, 0,
 #endif // QT_NO_PROPERTIES
 	0, 0 );
-    cleanUp_OptForm.setMetaObject( metaObj );
+    cleanUp_rangeWidget.setMetaObject( metaObj );
     return metaObj;
 }
 
-void* OptForm::qt_cast( const char* clname )
+void* rangeWidget::qt_cast( const char* clname )
 {
-    if ( !qstrcmp( clname, "OptForm" ) )
+    if ( !qstrcmp( clname, "rangeWidget" ) )
 	return this;
     return QWidget::qt_cast( clname );
 }
 
-bool OptForm::qt_invoke( int _id, QUObject* _o )
+bool rangeWidget::qt_invoke( int _id, QUObject* _o )
 {
     switch ( _id - staticMetaObject()->slotOffset() ) {
-    case 0: save_conf(); break;
-    case 1: languageChange(); break;
+    case 0: slider_changed((int)static_QUType_int.get(_o+1)); break;
+    case 1: edit_changed(); break;
     default:
 	return QWidget::qt_invoke( _id, _o );
     }
     return TRUE;
 }
 
-bool OptForm::qt_emit( int _id, QUObject* _o )
+bool rangeWidget::qt_emit( int _id, QUObject* _o )
 {
     return QWidget::qt_emit(_id,_o);
 }
 #ifndef QT_NO_PROPERTIES
 
-bool OptForm::qt_property( int id, int f, QVariant* v)
+bool rangeWidget::qt_property( int id, int f, QVariant* v)
 {
     return QWidget::qt_property( id, f, v);
 }
 
-bool OptForm::qt_static_property( QObject* , int , int , QVariant* ){ return FALSE; }
+bool rangeWidget::qt_static_property( QObject* , int , int , QVariant* ){ return FALSE; }
 #endif // QT_NO_PROPERTIES

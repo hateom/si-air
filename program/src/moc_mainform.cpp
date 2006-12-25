@@ -1,7 +1,7 @@
 /****************************************************************************
 ** MainForm meta object code from reading C++ file 'mainform.h'
 **
-** Created: N 17. gru 16:30:59 2006
+** Created: Pn 25. gru 00:17:48 2006
 **      by: The Qt MOC ($Id: moc_yacc.cpp,v 1.1.1.13 2006/05/05 17:43:42 chehrlic Exp $)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -51,7 +51,7 @@ QMetaObject* MainForm::staticMetaObject()
 {
     if ( metaObj )
 	return metaObj;
-    QMetaObject* parentObject = QDialog::staticMetaObject();
+    QMetaObject* parentObject = QMainWindow::staticMetaObject();
     static const QUParameter param_slot_0[] = {
 	{ "base", &static_QUType_ptr, "moduleBase", QUParameter::In },
 	{ "no", &static_QUType_int, 0, QUParameter::In }
@@ -70,16 +70,15 @@ QMetaObject* MainForm::staticMetaObject()
     static const QUMethod slot_3 = {"path_cleared", 0, 0 };
     static const QUMethod slot_4 = {"processing_started", 0, 0 };
     static const QUMethod slot_5 = {"processing_finished", 0, 0 };
-    static const QUMethod slot_6 = {"add_module", 0, 0 };
+    static const QUParameter param_slot_6[] = {
+	{ "mod", &static_QUType_ptr, "moduleBase", QUParameter::In }
+    };
+    static const QUMethod slot_6 = {"add_module", 1, param_slot_6 };
     static const QUMethod slot_7 = {"run", 0, 0 };
     static const QUMethod slot_8 = {"stop", 0, 0 };
     static const QUMethod slot_9 = {"close_app", 0, 0 };
-    static const QUParameter param_slot_10[] = {
-	{ 0, &static_QUType_ptr, "QListBoxItem", QUParameter::In }
-    };
-    static const QUMethod slot_10 = {"lb_selected", 1, param_slot_10 };
-    static const QUMethod slot_11 = {"load_modules", 0, 0 };
-    static const QUMethod slot_12 = {"languageChange", 0, 0 };
+    static const QUMethod slot_10 = {"load_modules", 0, 0 };
+    static const QUMethod slot_11 = {"languageChange", 0, 0 };
     static const QMetaData slot_tbl[] = {
 	{ "module_loaded(moduleBase*,int)", &slot_0, QMetaData::Public },
 	{ "module_unload(moduleBase*,int)", &slot_1, QMetaData::Public },
@@ -87,17 +86,16 @@ QMetaObject* MainForm::staticMetaObject()
 	{ "path_cleared()", &slot_3, QMetaData::Public },
 	{ "processing_started()", &slot_4, QMetaData::Public },
 	{ "processing_finished()", &slot_5, QMetaData::Public },
-	{ "add_module()", &slot_6, QMetaData::Public },
+	{ "add_module(moduleBase*)", &slot_6, QMetaData::Public },
 	{ "run()", &slot_7, QMetaData::Public },
 	{ "stop()", &slot_8, QMetaData::Public },
 	{ "close_app()", &slot_9, QMetaData::Public },
-	{ "lb_selected(QListBoxItem*)", &slot_10, QMetaData::Public },
-	{ "load_modules()", &slot_11, QMetaData::Public },
-	{ "languageChange()", &slot_12, QMetaData::Protected }
+	{ "load_modules()", &slot_10, QMetaData::Public },
+	{ "languageChange()", &slot_11, QMetaData::Protected }
     };
     metaObj = QMetaObject::new_metaobject(
 	"MainForm", parentObject,
-	slot_tbl, 13,
+	slot_tbl, 12,
 	0, 0,
 #ifndef QT_NO_PROPERTIES
 	0, 0,
@@ -112,7 +110,7 @@ void* MainForm::qt_cast( const char* clname )
 {
     if ( !qstrcmp( clname, "MainForm" ) )
 	return this;
-    return QDialog::qt_cast( clname );
+    return QMainWindow::qt_cast( clname );
 }
 
 bool MainForm::qt_invoke( int _id, QUObject* _o )
@@ -124,28 +122,27 @@ bool MainForm::qt_invoke( int _id, QUObject* _o )
     case 3: path_cleared(); break;
     case 4: processing_started(); break;
     case 5: processing_finished(); break;
-    case 6: add_module(); break;
+    case 6: add_module((moduleBase*)static_QUType_ptr.get(_o+1)); break;
     case 7: run(); break;
     case 8: stop(); break;
     case 9: close_app(); break;
-    case 10: lb_selected((QListBoxItem*)static_QUType_ptr.get(_o+1)); break;
-    case 11: load_modules(); break;
-    case 12: languageChange(); break;
+    case 10: load_modules(); break;
+    case 11: languageChange(); break;
     default:
-	return QDialog::qt_invoke( _id, _o );
+	return QMainWindow::qt_invoke( _id, _o );
     }
     return TRUE;
 }
 
 bool MainForm::qt_emit( int _id, QUObject* _o )
 {
-    return QDialog::qt_emit(_id,_o);
+    return QMainWindow::qt_emit(_id,_o);
 }
 #ifndef QT_NO_PROPERTIES
 
 bool MainForm::qt_property( int id, int f, QVariant* v)
 {
-    return QDialog::qt_property( id, f, v);
+    return QMainWindow::qt_property( id, f, v);
 }
 
 bool MainForm::qt_static_property( QObject* , int , int , QVariant* ){ return FALSE; }

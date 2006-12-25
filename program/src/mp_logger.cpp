@@ -1,9 +1,12 @@
 #include "mp_logger.h"
 #include <cstdarg>
+#include <qtextedit.h>
+#include <qstring.h>
 
 //////////////////////////////////////////////////////////////////////////
 
 int mpLogger::output_type = OT_NONE;
+QTextEdit * mpLogger::te = NULL;
 
 mpLogger::mpLogger()
 {
@@ -17,9 +20,14 @@ mpLogger::~mpLogger()
 
 //////////////////////////////////////////////////////////////////////////
 
-void mpLogger::set_output( int ot )
+void mpLogger::set_output( int ot, QTextEdit * t_e )
 {
 	output_type = ot;
+
+	if( ot == OT_WINDOW )
+	{
+		te = t_e;
+	}
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -46,7 +54,10 @@ void mpLogger::log( const char * text, ... )
 		printf( buffer );
 		break;
 	case OT_WINDOW:
-		/// under construction
+		if( te != NULL )
+		{
+			te->insert( QString(buffer) );
+		}
 		break;
 	default:
 		/// none

@@ -30,6 +30,10 @@
 
 //////////////////////////////////////////////////////////////////////////
 
+class QTextEdit;
+
+//////////////////////////////////////////////////////////////////////////
+
 class mpLogger
 {
 public:
@@ -37,7 +41,7 @@ public:
 	virtual ~mpLogger();
 
 	/// ustawia typ wyjscia
-	static void set_output( int output_type );
+	static void set_output( int output_type, QTextEdit * ctrl = NULL );
 
 	/// loguj
 	static void log( std::string text );
@@ -45,6 +49,7 @@ public:
 
 private:
 	static int output_type;
+	static QTextEdit * te;
 };
 
 //////////////////////////////////////////////////////////////////////////

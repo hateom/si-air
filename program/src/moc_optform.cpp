@@ -1,7 +1,7 @@
 /****************************************************************************
 ** OptForm meta object code from reading C++ file 'optform.h'
 **
-** Created: So 16. gru 19:24:34 2006
+** Created: Pn 25. gru 00:17:49 2006
 **      by: The Qt MOC ($Id: moc_yacc.cpp,v 1.1.1.13 2006/05/05 17:43:42 chehrlic Exp $)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -51,7 +51,7 @@ QMetaObject* OptForm::staticMetaObject()
 {
     if ( metaObj )
 	return metaObj;
-    QMetaObject* parentObject = QDialog::staticMetaObject();
+    QMetaObject* parentObject = QWidget::staticMetaObject();
     static const QUMethod slot_0 = {"save_conf", 0, 0 };
     static const QUMethod slot_1 = {"languageChange", 0, 0 };
     static const QMetaData slot_tbl[] = {
@@ -75,7 +75,7 @@ void* OptForm::qt_cast( const char* clname )
 {
     if ( !qstrcmp( clname, "OptForm" ) )
 	return this;
-    return QDialog::qt_cast( clname );
+    return QWidget::qt_cast( clname );
 }
 
 bool OptForm::qt_invoke( int _id, QUObject* _o )
@@ -84,20 +84,20 @@ bool OptForm::qt_invoke( int _id, QUObject* _o )
     case 0: save_conf(); break;
     case 1: languageChange(); break;
     default:
-	return QDialog::qt_invoke( _id, _o );
+	return QWidget::qt_invoke( _id, _o );
     }
     return TRUE;
 }
 
 bool OptForm::qt_emit( int _id, QUObject* _o )
 {
-    return QDialog::qt_emit(_id,_o);
+    return QWidget::qt_emit(_id,_o);
 }
 #ifndef QT_NO_PROPERTIES
 
 bool OptForm::qt_property( int id, int f, QVariant* v)
 {
-    return QDialog::qt_property( id, f, v);
+    return QWidget::qt_property( id, f, v);
 }
 
 bool OptForm::qt_static_property( QObject* , int , int , QVariant* ){ return FALSE; }

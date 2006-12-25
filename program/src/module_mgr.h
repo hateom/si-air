@@ -15,6 +15,7 @@
 
 #include <qobject.h>
 #include <qtimer.h>
+#include <qstring.h>
 #include <vector>
 #include <string>
 #include "../../modules/module_base/src/module_base.h"
@@ -45,12 +46,15 @@ public:
 	/// metoda zwraca wskaznik do obiektu globalnego
 	static ModuleMgr * singleton();
 
+	int get_proper_modules( std::vector<moduleBase*> & list );
+
 private:
 	moduleBase * last_on_path();
 
 public slots:
 	void clear_path();										/// slot czyszczacy tor przetwarzania
 	void add_to_path( int module );							/// slot dodajacy modul do toru przetwarzania
+	void add_to_path( moduleBase * mod );					/// j/w
 	void start_processing();								/// slot rozpoczynajacy przetwarzanie
 	void stop_processing();									/// slot zatrzymujacy przetwarzanie
 	void process_frame();									/// slot rzetwarzajacy jedna ramke obrazu

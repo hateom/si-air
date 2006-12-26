@@ -6,6 +6,7 @@
 #include <qlineedit.h>
 #include <qlabel.h>
 #include <qpushbutton.h>
+#include <qcheckbox.h>
 #include "fnwidget.h"
 #include "rangewidget.h"
 
@@ -60,6 +61,17 @@ OptForm::OptForm( moduleBase * base, QWidget* parent, const char* name, WFlags f
 					sprintf( temp, "%d", (int)(*((int*)base->get_param(k)->data)) );
 					edt->setText( tr( temp ) );
 					info = create_wdg_info( edt, PT_LONG );
+				}
+				break;
+			case PT_BOOL:
+				{
+					QCheckBox * box;
+					int on_off;
+					box = new QCheckBox( this, tr("param_check_") + tr(temp) );
+					box->setText( tr(base->get_param(k)->description) );
+					on_off = (int)(*((int*)base->get_param(k)->data));
+					box->setChecked( on_off == 1 );
+					info = create_wdg_info( box, PT_BOOL );
 				}
 				break;
 			case PT_FLOAT:
@@ -163,6 +175,11 @@ void OptForm::save_conf()
 			long * ptrl;
 			ptrl = ((long*)(module->get_param(k)->data));
 			*ptrl = ((QLineEdit*)(wdg_list[i]->wdg))->text().toLong();
+			break;
+		case PT_BOOL:
+			int * ptrb;
+			ptrb = ((int*)(module->get_param(k)->data));
+			*ptrb = ((QCheckBox*)(wdg_list[i]->wdg))->isChecked();
 			break;
 		case PT_FLOAT:
 			float * ptrf;

@@ -19,12 +19,13 @@
 //#define PT_UNDEFINED	0x00	<- depreciated
 #define PT_INT			0x01
 #define PT_LONG			0x02
-#define PT_FLOAT		0x03
-#define PT_DOUBLE		0x04
-#define PT_STRING		0x05
-#define PT_FILENAME		0x06
-#define PT_INT_RANGE	0x07
-#define PT_FLOAT_RANGE	0x08
+#define PT_BOOL			0x03
+#define PT_FLOAT		0x04
+#define PT_DOUBLE		0x05
+#define PT_STRING		0x06
+#define PT_FILENAME		0x07
+#define PT_INT_RANGE	0x08
+#define PT_FLOAT_RANGE	0x09
 
 //////////////////////////////////////////////////////////////////////////
 

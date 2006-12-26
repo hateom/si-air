@@ -5,7 +5,7 @@
 	plik:    	pi_general
 	autorzy:	Tomasz Huczek, Andrzej Jasiñski
 	
-    cel:	    
+    cel:		Modul generujacy obraz prawdopodobienstwa
 *********************************************************************/
 
 #ifndef __PI_GENERAL_H__
@@ -45,8 +45,12 @@ protected:
 	frame_data * inFrame;
 	frame_data * selected_region;
 	hist_data  * histogram;
-
+	/// funkcja konwertujaca z formatu RGB do HSV
+	/// \return void
 	void piGeneral::RGBtoHSV(int& r, int& g, int& b, float& h, float& s, float& v);
+
+	/// funkcja wyliczajaca histogram dla obszaru zaznaczenia
+	/// \return void
 	void hist();
 };
 

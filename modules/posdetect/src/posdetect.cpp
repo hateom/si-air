@@ -76,7 +76,7 @@ proc_data * cPosdetect::process_frame( proc_data * prev_frame, int * result )
 	//maxVal = 1.0f;
 	piTable = prev_frame->prob;
 	
-	int xs = 0, xk = width, ys = 0, yk = height, ObjHeight, ObjWidth, s = 0;
+	int xs = 0, xk = width, ys = 0, yk = height, ObjHeight=0, ObjWidth=0, s = 0;
 	float xc = 0.0f, yc = 0.0f;
 	maxVal = prev_frame->max_prob;
 	for( int k=0; k<2; k++ )
@@ -237,15 +237,15 @@ proc_data * cPosdetect::process_frame( proc_data * prev_frame, int * result )
 	}
 	MaxX = (int)(0.5f*((float)X2+(float)X1));
 	MaxY = (int)(0.5f*((float)Y2+(float)Y1));
-
+/*
 	Dx = MaxX-MinX;
 	Dy = MaxY-MinY;
-	/*
+	
 	if(!Dx)
 		tan_fi = 100.0;
 	if(Dx)
 		tan_fi =((float)Dy)/((float)Dx);
-		*/
+*/		
 	if (M00) tan_fi=(2*(M11/M00)-xc*yc)/(((M20/M00)-xc*xc)-((M02/M00)-yc*yc));
 	pos.gesture=GESTURE_NULL;
 	pos.angle=atan(tan_fi)/2;
@@ -321,6 +321,7 @@ void cPosdetect::draw_frame_marker( frame_data * frame, int posx, int posy, floa
 				frame->bits[offs1+1] = marker[offs2+1];
 				frame->bits[offs1+2] = marker[offs2+2];
 				if (angle*57>angle_max) frame->bits[offs1+2] = 100;
+				if (angle*57<-angle_max) frame->bits[offs1+2] = 200;
 			}
 		}
 	}

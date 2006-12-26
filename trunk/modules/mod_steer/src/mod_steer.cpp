@@ -12,6 +12,7 @@
 modSteer::modSteer() : alloc_mem(0L)
 {
 	//REG_PARAM( PT_FLOAT_RANGE, factor, "Lighting factor (1.0f = neutral)", float_range( 1.0f, 0.1f, 10.0f ) );
+	REG_PARAM( PT_INT, on_off, "Turn steering on or off", 0 );
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -67,11 +68,11 @@ proc_data * modSteer::process_frame( proc_data * prev_frame, int * result )
 	int screenHeight = GetSystemMetrics(SM_CYSCREEN);
 	int movieHeight = prev_frame->frame->height;
 	int movieWidth = prev_frame->frame->width;
-	float Xaspect = screenWitdh/movieWidth;
-	float Yaspect = screenHeight/movieHeight;
+	float Xaspect = (float)screenWitdh/(float)movieWidth;
+	float Yaspect = (float)screenHeight/(float)movieHeight;
 	int x=(int)Xaspect*wx;
 	int y=(int)Yaspect*wy;
-	SetCursorPos(x,y);
+	if( on_off ) SetCursorPos(x,y);
 	return prev_frame;
 }
 

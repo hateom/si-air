@@ -124,8 +124,8 @@ proc_data * piGeneral::process_frame( proc_data * prev_frame, int * status )
 			{
 				piTable[x+y*width] = 1.0;
 			}
-			if (histogram->histMaxVal) piTable[x+y*width] += (float)histogram->hist_vals[int(H)]*(1/histogram->histMaxVal);
-
+			if( ( V >= Vmin ) && ( V < Vmax ) && ( Smin < S ) )
+				if (histogram->histMaxVal) piTable[x+y*width] += (float)histogram->hist_vals[ int(H)]/histogram->histMaxVal;
 			if( preview_param )
 			{
 				float chVal = piTable[x+y*width]*255.0f;
@@ -180,7 +180,7 @@ void piGeneral::mouse_select(int sx, int sy, int sw, int sh )
 
 	hist();
 }
-
+//////////////////////////////////////////////////////////////////////////
 void piGeneral::hist()
 {
 	int width,height,size,depth; //x, y
@@ -251,8 +251,11 @@ void piGeneral::hist()
 	histogram->minS = MinS;
 	histogram->minV = MinV;
 	histogram->histMaxVal = HHistMaxValue;
+	histogram->h_size=360;
 
 }
+
+//////////////////////////////////////////////////////////////////////////
 
 int piGeneral::init( PropertyMgr * pm )
 {

@@ -4,3 +4,4 @@
 @copy ..\..\..\modules\mod_neg\bin\*.dll
 @copy ..\..\..\modules\mod_light\bin\*.dll
 @copy ..\..\..\modules\mod_camshift_opencv\bin\*.dll
+@copy ..\..\..\modules\mod_steer\bin\*.dll

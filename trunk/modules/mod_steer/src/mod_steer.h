@@ -1,50 +1,43 @@
 /********************************************************************
     Projekt z przedmiotu : Sztuczna Inteligencja i Sensoryka
 
-	stworzono:	17:12:2006   16:53
-	plik:    	posdetect
+	stworzono:	26:12:2006   13:20
+	plik:    	mod_steer
 	autorzy:	Tomasz Huczek, Andrzej Jasiñski
 	
-    cel:	    Modul wykrywajacy polozenie obiektu oraz orientacje
+    cel: modul generujacy zdarzenia dla systemu operacyjnego    
 *********************************************************************/
 
-#ifndef __POSDETECT_H__
-#define __POSDETECT_H__
+#ifndef __MOD_STEER_H__
+#define __MOD_STEER_H__
 
 //////////////////////////////////////////////////////////////////////////
 
 #include "../../module_base/src/module_base.h"
-#include "../../module_base/src/types.h"
 
 //////////////////////////////////////////////////////////////////////////
 
-class EXPORT_MODULE cPosdetect: public moduleBase
+class EXPORT_MODULE modSteer: public moduleBase
 {
 public:
-	cPosdetect();
-	virtual ~cPosdetect();
+	modSteer();
+	virtual ~modSteer();
 
 	virtual const char * get_module_description();
+
+	virtual int  init( PropertyMgr * pm );
+	virtual void free();
 
 	virtual int input_type();
 	virtual int output_type();
 
 	virtual proc_data * process_frame( proc_data * prev_frame, int * result );
 
-	virtual int  init( PropertyMgr * pm = NULL );
-	virtual void free();
-
 private:
-	/// funkcja rysuje marker na obrazie
-	/// \return void
-	void draw_frame_marker( frame_data * frame, int posx, int posy, float angle );
-
-protected:
-	int or_mask_size;
-	int alloc_mem;
-	int angle_max;
+	long alloc_mem;
+	float_range factor;
 };
 
 //////////////////////////////////////////////////////////////////////////
 
-#endif // __POSDETECT_H__
+#endif // __MOD_STEER_H__

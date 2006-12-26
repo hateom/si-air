@@ -33,11 +33,17 @@ public:
 
 	virtual proc_data * process_frame( proc_data * prev_frame, int * result );
 
+	int get_control_state ();
+	void set_control_state( int param );
+
 private:
 	long alloc_mem;
 	float_range factor;
 
 	int	on_off;
+	HHOOK hook;
+
+	//LRESULT CALLBACK KeyboardProc (int nCode, WPARAM wParam, LPARAM lParam);
 };
 
 //////////////////////////////////////////////////////////////////////////

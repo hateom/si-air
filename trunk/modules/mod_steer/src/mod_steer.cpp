@@ -1,13 +1,34 @@
 #define MOD_CPP
 #include "mod_steer.h"
 #include "../../module_base/src/status_codes.h"
-#include <Windows.h>
+#include <windows.h>
+#include <winuser.h>
 
 //////////////////////////////////////////////////////////////////////////
 
 #define MIN( A, B ) (A)<(B)?(A):(B)
 
 //////////////////////////////////////////////////////////////////////////
+
+LRESULT CALLBACK KeyboardProc (int nCode, WPARAM wParam, LPARAM lParam)
+{
+	return 0;
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+int modSteer::get_control_state ()
+{
+	return on_off;
+}
+//////////////////////////////////////////////////////////////////////////
+
+void modSteer::set_control_state( int param )
+{
+	on_off = param;
+}
+//////////////////////////////////////////////////////////////////////////
+
 
 modSteer::modSteer() : alloc_mem(0L)
 {
@@ -35,6 +56,7 @@ const char * modSteer::get_module_description()
 int modSteer::init( PropertyMgr * pm )
 {
 	USE_PROPERTY_MGR( pm );
+	hook = SetWindowsHookEx (13, (HOOKPROC) KeyboardProc, GetModuleHandle (NULL), 0);
 	return( ST_OK );
 }
 
@@ -73,6 +95,10 @@ proc_data * modSteer::process_frame( proc_data * prev_frame, int * result )
 	int x=(int)Xaspect*wx;
 	int y=(int)Yaspect*wy;
 	if( on_off ) SetCursorPos(x,y);
+	/*
+	INPUT ip; ZeroMemory(&ip,sizeof(ip)); ip.type=INPUT_MOUSE; ip.mi.dwFlags=MOUSEEVENTF_RIGHTDOWN;
+	SendInput(1,&ip,sizeof(ip));
+	*/
 	return prev_frame;
 }
 

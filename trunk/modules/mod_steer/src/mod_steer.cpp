@@ -12,7 +12,7 @@
 modSteer::modSteer() : alloc_mem(0L)
 {
 	//REG_PARAM( PT_FLOAT_RANGE, factor, "Lighting factor (1.0f = neutral)", float_range( 1.0f, 0.1f, 10.0f ) );
-	REG_PARAM( PT_INT, on_off, "Turn steering on or off", 0 );
+	REG_PARAM( PT_BOOL, on_off, "Turn steering on or off", 0 );
 }
 
 //////////////////////////////////////////////////////////////////////////

@@ -125,11 +125,34 @@ proc_data * modSteer::process_frame( proc_data * prev_frame, int * result )
 	float Yaspect = (float)screenHeight/(float)movieHeight;
 	int x=(int)Xaspect*wx;
 	int y=(int)Yaspect*wy;
-	if( on_off ) SetCursorPos(x,y);
-	/*
-	INPUT ip; ZeroMemory(&ip,sizeof(ip)); ip.type=INPUT_MOUSE; ip.mi.dwFlags=MOUSEEVENTF_RIGHTDOWN;
-	SendInput(1,&ip,sizeof(ip));
-	*/
+	static int prev_gest = GESTURE_NULL;
+	if( on_off ) 
+	{
+		SetCursorPos(x,y);
+		if (prev_frame->position->gesture==GESTURE_RMBDOWN && prev_gest == GESTURE_NULL)
+		{
+			INPUT ip; ZeroMemory(&ip,sizeof(ip)); ip.type=INPUT_MOUSE; ip.mi.dwFlags=MOUSEEVENTF_RIGHTDOWN;
+			SendInput(1,&ip,sizeof(ip));
+		}
+		else  if (prev_frame->position->gesture==GESTURE_NULL && prev_gest == GESTURE_LMBDOWN) 
+		{
+			INPUT ip; ZeroMemory(&ip,sizeof(ip)); ip.type=INPUT_MOUSE; ip.mi.dwFlags=MOUSEEVENTF_LEFTDOWN;
+			SendInput(1,&ip,sizeof(ip));	
+		}
+		else  if (prev_frame->position->gesture==GESTURE_NULL && prev_gest == GESTURE_RMBDOWN) 
+		{
+			INPUT ip; ZeroMemory(&ip,sizeof(ip)); ip.type=INPUT_MOUSE; ip.mi.dwFlags=MOUSEEVENTF_RIGHTUP;
+			SendInput(1,&ip,sizeof(ip));	
+		}
+		else  if (prev_frame->position->gesture==GESTURE_NULL && prev_gest == GESTURE_LMBDOWN) 
+		{
+			INPUT ip; ZeroMemory(&ip,sizeof(ip)); ip.type=INPUT_MOUSE; ip.mi.dwFlags=MOUSEEVENTF_LEFTUP;
+			SendInput(1,&ip,sizeof(ip));	
+		}
+		prev_gest = prev_frame->position->gesture;
+	}
+
+	
 	return prev_frame;
 }
 

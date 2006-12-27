@@ -252,15 +252,20 @@ proc_data * cPosdetect::process_frame( proc_data * prev_frame, int * result )
 
 	Dx = MaxX-MinX;
 	Dy = MaxY-MinY;
-	
+	/*
 	if(!Dx)
 		tan_fi = 100.0;
 	if(Dx)
 		tan_fi =((float)Dy)/((float)Dx);
-		
-	//if (M00) tan_fi=(2*(M11/M00)-xc*yc)/(((M20/M00)-xc*xc)-((M02/M00)-yc*yc));
-	pos.gesture=GESTURE_NULL;
+	*/	
+	if (M00) tan_fi=(2*(M11/M00)-xc*yc)/(((M20/M00)-xc*xc)-((M02/M00)-yc*yc));
+	//pos.gesture=GESTURE_NULL;
 	float u = atan(tan_fi)/2;
+	if ((int)(u*57)>angle_max) 
+	{
+		pos.gesture=GESTURE_RMBDOWN;
+	}
+	else pos.gesture=GESTURE_NULL;
 	pos.angle=atan(tan_fi)/2;
 	pos.x = (int)xc;
 	pos.y = (int)yc;

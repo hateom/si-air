@@ -23,9 +23,10 @@
 //////////////////////////////////////////////////////////////////////////
 
 #define GESTURE_NULL		0x00
-#define GESTURE_LMBCLICK	0x01
-#define GESTURE_RMBCLICK	0x02
-#define GESTURE_LMBDBCLICK	0x03
+#define GESTURE_LMBDOWN		0x01
+#define GESTURE_LMBUP		0x02
+#define GESTURE_RMBDOWN		0x04
+#define GESTURE_RMBUP		0x08
 
 //////////////////////////////////////////////////////////////////////////
 

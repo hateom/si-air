@@ -45,7 +45,10 @@ public:
     QMenuBar *MenuBarEditor;
     QPopupMenu *Processing;
     QPopupMenu *About;
-    QAction* processingExitAction;
+    QAction* procExitAction;
+	QAction* procStartAction;
+	QAction* procClearAction;
+	QAction* aboutAction;
 	QToolButton	* buttonReset;
 	QLabel *labelInfo;
 

@@ -25,14 +25,17 @@ modWidget::modWidget( long new_id, moduleBase * mod, OptionsBox * opt_f,
 	check_prev->setGeometry( QRect( 205, 10, 30, 25 ) );
 	check_prev->setPixmap( prv_btn );
 	check_prev->setToggleButton( true );
+	check_prev->setBackgroundColor( QColor( 244, 244, 244 ) );
 
 	button_conf = new QPushButton( this, "buttonConf" );
 	button_conf->setGeometry( QRect( 245, 10, 25, 25 ) );
 	button_conf->setPixmap( cfg_btn );
+	button_conf->setBackgroundColor( QColor( 244, 244, 244 ) );
 
 	button_del = new QPushButton( this, "buttonDel" );
 	button_del->setGeometry( QRect( 275, 10, 25, 25 ) );
 	button_del->setPixmap( del_btn );
+	button_del->setBackgroundColor( QColor( 244, 244, 244 ) );
 
 	connect( button_conf, SIGNAL(clicked()), this, SLOT(configure_mod()) );
 	connect( button_del, SIGNAL(clicked()), this, SLOT(rm_mod()) );
@@ -114,7 +117,7 @@ void modWidget::configure_mod()
 	opt_form->set_current_cfg_form( optForm );
 //	optForm->setGeometry( QRect( 5, 15, 250, 320 ) );
 //	sview->addChild( optForm );
-	opt_form->addChild( optForm );
+	opt_form->addChild( optForm/*, 0, 34*/ );
 	optForm->show();
 	qApp->processEvents();
 }

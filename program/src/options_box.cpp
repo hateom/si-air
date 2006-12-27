@@ -3,7 +3,7 @@
 //////////////////////////////////////////////////////////////////////////
 
 OptionsBox::OptionsBox( QWidget* parent, const char* name ) : 
-	QGroupBox( parent, name ), last(NULL)
+	/*QGroupBox( parent, name ),*/QScrollView( parent, name ), last(NULL)
 {
 }
 

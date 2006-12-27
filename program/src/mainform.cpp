@@ -1,5 +1,6 @@
 #include "mainform.h"
 
+#include <qscrollview.h>
 #include <qvariant.h>
 #include <qframe.h>
 #include <qlabel.h>
@@ -62,8 +63,8 @@ MainForm::MainForm( QWidget* parent, const char* name, WFlags fl )
 	labelInfo->setText( tr(">> Hint: Right click, and select module") );
 	labelInfo->setPaletteForegroundColor( QColor( 120, 120, 120 ) );
 
-    optionsBox = new OptionsBox( frame3, "optionsBox" );
-    optionsBox->setGeometry( QRect( 390, 8, 270, 341 ) );
+	optionsBox = new OptionsBox( frame3, "optionsBox" );
+	optionsBox->setGeometry( QRect( 390, 8, 270, 341 ) );
 	optionsBox->setPaletteBackgroundColor( QColor( 240, 240, 255 ) );
 
     panelGroup = new QGroupBox( centralWidget(), "panelGroup" );
@@ -155,7 +156,7 @@ MainForm::~MainForm()
 void MainForm::languageChange()
 {
     setCaption( tr( "SI Project :: Tomasz Huczek & Andrzej Jasinski :: AiR 2006 (R) (C)" ) );
-    optionsBox->setTitle( tr( "Module Options" ) );
+//    optionsBox->setTitle( tr( "Module Options" ) );
     panelGroup->setTitle( QString::null );
 /*
 	startButton->setText( tr( "Start" ) );

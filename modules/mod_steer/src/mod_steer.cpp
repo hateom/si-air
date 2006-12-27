@@ -94,7 +94,7 @@ int modSteer::init( PropertyMgr * pm )
 void modSteer::free()
 {
 	g_modSteer = NULL;
-	UnhookWindowsHookEx(hook);
+	UnhookWindowsHookEx( hook );
 }
 
 //////////////////////////////////////////////////////////////////////////

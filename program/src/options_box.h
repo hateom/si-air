@@ -4,11 +4,12 @@
 //////////////////////////////////////////////////////////////////////////
 
 #include <qgroupbox.h>
+#include <qscrollview.h>
 #include "optform.h"
 
 //////////////////////////////////////////////////////////////////////////
 
-class OptionsBox: public QGroupBox
+class OptionsBox: public QScrollView
 {
 public:
 	OptionsBox( QWidget* parent=0, const char* name=0 );

@@ -236,12 +236,11 @@ void MainForm::lb_selected( QListBoxItem * )
 
 void MainForm::stop()
 {
-	sModuleMgr->stop_processing(); 
-
 	connect( startButton, SIGNAL(clicked()), this, SLOT(run()) );
 	disconnect( startButton, SIGNAL(clicked()), this, SLOT(stop()) );
 	startButton->setTextLabel( tr( "Start" ) );
 
+	sModuleMgr->stop_processing(); 
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -354,6 +353,14 @@ void MainForm::processing_started()
 
 void MainForm::processing_finished()
 {
+	/*
+	if( startButton->text() != tr("Start") )
+	{
+		connect( startButton, SIGNAL(clicked()), this, SLOT(run()) );
+		disconnect( startButton, SIGNAL(clicked()), this, SLOT(stop()) );
+		startButton->setTextLabel( tr( "Start" ) );
+	}
+	*/
 }
 
 //////////////////////////////////////////////////////////////////////////

@@ -2,16 +2,41 @@
 #include "mod_steer.h"
 #include "../../module_base/src/status_codes.h"
 #include <windows.h>
-#include <winuser.h>
 
 //////////////////////////////////////////////////////////////////////////
 
 #define MIN( A, B ) (A)<(B)?(A):(B)
 
+static modSteer * g_modSteer = NULL;
+
 //////////////////////////////////////////////////////////////////////////
 
-LRESULT CALLBACK KeyboardProc (int nCode, WPARAM wParam, LPARAM lParam)
+LRESULT CALLBACK KeyboardProc( int nCode, WPARAM wParam, LPARAM lParam )
 {
+	if( nCode < 0 )
+	{
+		return CallNextHookEx( NULL, nCode, wParam, lParam );
+	}
+
+	KBDLLHOOKSTRUCT * ptr = (KBDLLHOOKSTRUCT*)lParam;
+
+	if( ptr->vkCode == VK_F12 )
+	{
+		if( wParam == WM_KEYDOWN )
+		{
+			if( g_modSteer->get_control_state() != 1 )
+			{
+				printf( ">>> on\n" );
+				g_modSteer->set_control_state( 1 );
+			}
+		}
+		else if( wParam == WM_KEYUP )
+		{
+			printf( ">>> off\n" );
+			g_modSteer->set_control_state( 0 );
+		}
+	}
+
 	return 0;
 }
 
@@ -55,8 +80,9 @@ const char * modSteer::get_module_description()
 
 int modSteer::init( PropertyMgr * pm )
 {
-	USE_PROPERTY_MGR( pm );
-	hook = SetWindowsHookEx (13, (HOOKPROC) KeyboardProc, GetModuleHandle (NULL), 0);
+	USE_PROPERTY_MGR( pm ); 
+	g_modSteer = this;
+	hook = SetWindowsHookEx( WH_KEYBOARD_LL, (HOOKPROC)KeyboardProc, GetModuleHandle( NULL ), 0 );
 	return( ST_OK );
 }
 
@@ -64,6 +90,7 @@ int modSteer::init( PropertyMgr * pm )
 
 void modSteer::free()
 {
+	g_modSteer = NULL;
 }
 
 //////////////////////////////////////////////////////////////////////////

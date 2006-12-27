@@ -66,6 +66,7 @@ proc_data * cPosdetect::process_frame( proc_data * prev_frame, int * result )
 	float M11;
 	static float tan_fi;
 	int InitialValue = 1;
+	int offs1, offs2;
 
 	int width, height;
 	float maxVal;
@@ -106,19 +107,21 @@ proc_data * cPosdetect::process_frame( proc_data * prev_frame, int * result )
 		M02 = 0.0f;
 		M11 = 0.0f;
 		
-		for (int x=xs; x<xk; x++ ) 
+		for (int y=ys; y<yk; y++ )
 		{
-			for (int y=ys; y<yk; y++ )
+			offs1 = y*width;
+			for (int x=xs; x<xk; x++ )
 			{
-				M00 += piTable[x+y*width];
-				M10 += piTable[x+y*width]*(float)x;
-				M01 += piTable[x+y*width]*(float)y;
-				M20 += piTable[x+y*width]*(float)x*(float)x;
-				M02 += piTable[x+y*width]*(float)y*(float)y;
-				M11 += piTable[x+y*width]*(float)x*(float)y;
+				offs2 = (x+offs1);
+				M00 += piTable[offs2];
+				M10 += piTable[offs2]*(float)x;
+				M01 += piTable[offs2]*(float)y;
+				M20 += piTable[offs2]*(float)x*(float)x;
+				M02 += piTable[offs2]*(float)y*(float)y;
+				M11 += piTable[offs2]*(float)x*(float)y;
 			}
 		}
-		if( M00 )
+		if( M00 > 20)
 		{
 			xc = M10/M00;
 			yc = M01/M00;
@@ -140,7 +143,7 @@ proc_data * cPosdetect::process_frame( proc_data * prev_frame, int * result )
 				///////////////////////////////////////////////////////////////////////
 			}
 		}
-		if ((M00 < 20) && (!retry))
+		else if (!retry)
 		{
 			xs=0;
 			ys=0;
@@ -151,7 +154,6 @@ proc_data * cPosdetect::process_frame( proc_data * prev_frame, int * result )
 		}
 		if( maxVal ) s = (int)sqrtf( M00/maxVal );
 	}
-	retry=1;
 	// kod z poprzedniego roq.
 
 	int MinX = width,                              // Zmienne sluzace do zapisania krancowych punktow objektu

@@ -149,6 +149,8 @@ OptForm::OptForm( moduleBase * base, QWidget* parent, const char* name, WFlags f
 	connect( btn_ok, SIGNAL(clicked()), this, SLOT(save_conf()) );
 //	connect( btn_cancel, SIGNAL(clicked()), this, SLOT(close()) );
 
+	setPaletteBackgroundColor( QColor( 240, 240, 255 ) );
+
 	languageChange();
 	resize( QSize( 248, 55+i*52 + 20 ).expandedTo(minimumSizeHint()) );
 	clearWState( WState_Polished );

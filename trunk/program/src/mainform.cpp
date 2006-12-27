@@ -18,6 +18,7 @@
 #include <qpixmap.h>
 #include <qtoolbutton.h>
 #include <qimage.h>
+#include <qwmatrix.h>
 
 #include "mp_path.h"
 #include "module_mgr.h"
@@ -64,8 +65,19 @@ MainForm::MainForm( QWidget* parent, const char* name, WFlags fl )
 	labelInfo->setPaletteForegroundColor( QColor( 120, 120, 120 ) );
 
 	optionsBox = new OptionsBox( frame3, "optionsBox" );
-	optionsBox->setGeometry( QRect( 390, 8, 270, 341 ) );
-	optionsBox->setPaletteBackgroundColor( QColor( 240, 240, 255 ) );
+	optionsBox->setGeometry( QRect( 390, 24+8, 270, 341-24 ) );
+//	optionsBox->setPaletteBackgroundColor( QColor( 240, 240, 255 ) );
+	optionsBox->viewport()->setPaletteBackgroundColor( QColor( 240, 240, 255 ) );
+
+	QFont font( tr("Arial") );
+	font.setBold( true );
+	QLabel * optLabel = new QLabel( frame3, "optLabel" );
+	optLabel->setPaletteBackgroundColor( QColor( 255, 255, 255 ) );
+	optLabel->setFont( font );
+	optLabel->setGeometry( QRect( 400, 8, 120, 24 ) );
+	optLabel->setText( tr( "Module options" ) );
+
+	//optionsBox->addChild( optLabel, 10, 10 );
 
     panelGroup = new QGroupBox( centralWidget(), "panelGroup" );
     panelGroup->setGeometry( QRect( 10, 380, 681, 40 ) );
@@ -76,18 +88,21 @@ MainForm::MainForm( QWidget* parent, const char* name, WFlags fl )
 	startButton->setIconSet( QIconSet( btn_start ) );
 	startButton->setUsesTextLabel( TRUE );
 	startButton->setTextPosition( QToolButton::BesideIcon );
+	startButton->setBackgroundColor( QColor( 244, 244, 244 ) );
 
     reloadButton = new QToolButton( panelGroup, "reloadButton" );
     reloadButton->setGeometry( QRect( 10, 9, 80, 24 ) );
 	reloadButton->setIconSet( QIconSet( btn_reload ) );
 	reloadButton->setUsesTextLabel( TRUE );
 	reloadButton->setTextPosition( QToolButton::BesideIcon );
+	reloadButton->setBackgroundColor( QColor( 244, 244, 244 ) );
 
 	buttonReset = new QToolButton( panelGroup, "buttonReset" );
 	buttonReset->setGeometry( QRect( 100, 9, 80, 24 ) );
 	buttonReset->setIconSet( QIconSet( btn_clear ) );
 	buttonReset->setUsesTextLabel( TRUE );
 	buttonReset->setTextPosition( QToolButton::BesideIcon );
+	buttonReset->setBackgroundColor( QColor( 244, 244, 244 ) );
 
     textEdit1 = new QTextEdit( centralWidget(), "textEdit1" );
     textEdit1->setGeometry( QRect( 10, 430, 678, 70 ) );
@@ -95,10 +110,16 @@ MainForm::MainForm( QWidget* parent, const char* name, WFlags fl )
 	mpLogger::set_output( OT_WINDOW, textEdit1 );
 
     // actions
-    processingExitAction = new QAction( this, "processingExitAction" );
 
+	QWMatrix m;
+	m.scale( 12.0/20.0, 12.0/20.0 );
 
-	
+    procExitAction = new QAction( this, "procExitAction" );
+	procStartAction = new QAction( this, "procStartAction" );
+	procStartAction->setIconSet( QIconSet(btn_start.xForm(m)) );
+	procClearAction = new QAction( this, "procClearAction" );
+	procClearAction->setIconSet( QIconSet(btn_clear.xForm(m)) );
+	aboutAction = new QAction( this, "aboutAction" );
 
 //	connect( frame3, SIGNAL(right_click()), popup, SLOT(exec()) );
 
@@ -110,10 +131,16 @@ MainForm::MainForm( QWidget* parent, const char* name, WFlags fl )
 
 
     Processing = new QPopupMenu( this );
-    processingExitAction->addTo( Processing );
+	procStartAction->addTo( Processing );
+	procClearAction->addTo( Processing );
+    procExitAction->addTo( Processing );
+
     MenuBarEditor->insertItem( QString(""), Processing, 1 );
 
+	connect( procExitAction, SIGNAL( activated() ) , this, SLOT( close() ) );
+
     About = new QPopupMenu( this );
+	aboutAction->addTo( About );
     MenuBarEditor->insertItem( QString(""), About, 2 );
 
 
@@ -135,6 +162,8 @@ MainForm::MainForm( QWidget* parent, const char* name, WFlags fl )
 	QTimer * load_timer = new QTimer( this );
 	connect( load_timer, SIGNAL(timeout()), this, SLOT(load_modules()) );
 	load_timer->start( 500, TRUE );
+
+	setBackgroundColor( QColor( 244, 244, 244 ) );
 
     languageChange();
     resize( QSize(700, 530).expandedTo(minimumSizeHint()) );
@@ -170,8 +199,18 @@ void MainForm::languageChange()
 	buttonReset->setText( QString::null );
 	buttonReset->setTextLabel( tr( "Clear path" ) );
 
-    processingExitAction->setText( tr( "&Exit" ) );
-    processingExitAction->setMenuText( tr( "&Exit" ) );
+    procExitAction->setText( tr( "&Exit" ) );
+    procExitAction->setMenuText( tr( "&Exit" ) );
+
+	procStartAction->setText( tr( "&Start" ) );
+	procStartAction->setMenuText( tr( "&Start" ) );
+
+	procClearAction->setText( tr( "&Clear Path" ) );
+	procClearAction->setMenuText( tr( "&Clear Path" ) );
+
+	aboutAction->setText( tr( "&Us" ) );
+	aboutAction->setMenuText( tr( "&Us" ) );
+
     if (MenuBarEditor->findItem(1))
         MenuBarEditor->findItem(1)->setText( tr( "&Processing" ) );
     if (MenuBarEditor->findItem(2))
@@ -290,6 +329,8 @@ void MainForm::path_cleared()
 	}
 
 	mod_widget.clear();
+
+	optionsBox->remove_last_cfg_form();
 
 	update_popup();
 }

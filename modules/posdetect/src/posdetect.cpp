@@ -76,13 +76,17 @@ proc_data * cPosdetect::process_frame( proc_data * prev_frame, int * result )
 	//maxVal = 1.0f;
 	piTable = prev_frame->prob;
 	
-	int xs = 0, xk = width, ys = 0, yk = height, ObjHeight=0, ObjWidth=0, s = 0;
+	static int xs = 0, xk = width, ys = 0, yk = height, ObjHeight=0, ObjWidth=0, s = 0;
 	float xc = 0.0f, yc = 0.0f;
 	maxVal = prev_frame->max_prob;
 	for( int k=0; k<2; k++ )
 	{
 		if( k )
 		{
+			xs=(int)xc;
+			ys=(int)yc;
+			xk=(int)xc;
+			yk=(int)yc;
 			xs -= s;
 			xk += s;
 			ys -= (int)( 1.2f*(float)s );
@@ -93,15 +97,17 @@ proc_data * cPosdetect::process_frame( proc_data * prev_frame, int * result )
 			if( ys < 0 ) ys=0;
 			if( yk > height ) yk = height;
 		}
+		
 		M00 = 0.0f;
 		M10 = 0.0f;
 		M01 = 0.0f;
 		M20 = 0.0f;
 		M02 = 0.0f;
 		M11 = 0.0f;
+		
 		for (int x=xs; x<xk; x++ ) 
 		{
-			for (int y=0; y<yk; y++ )
+			for (int y=ys; y<yk; y++ )
 			{
 				M00 += piTable[x+y*width];
 				M10 += piTable[x+y*width]*(float)x;
@@ -127,14 +133,20 @@ proc_data * cPosdetect::process_frame( proc_data * prev_frame, int * result )
 				if(lptmp > 0) sqtmp = sqrt(lptmp);
 				if(lptmp <= 0) sqtmp = 0;
 				//if(a+c+sqtmp > 0) ObjHeight = sqrt((a+c+sqtmp)/2);
-				if( a+c+sqtmp > 0.0f ) ObjHeight = (int)sqrtf(2*(a+c+sqtmp));
+				if( a+c+sqtmp > 0.0f ) ObjHeight = (int)sqrtf((a+c+sqtmp));
 				//if(a+c-sqtmp > 0) ObjWidth = sqrt((a+c-sqtmp)/2);
-				if( a+c+sqtmp > 0.0f ) ObjWidth = (int)sqrtf((a+c+sqtmp));
+				if( a+c-sqtmp > 0.0f ) ObjWidth = (int)sqrtf((a+c-sqtmp));
 				///////////////////////////////////////////////////////////////////////
 			}
 		}
+		if (M00 < 20)
+		{
+			xs=0;
+			ys=0;
+			xk=width;
+			yk=height;
+		}
 		if( maxVal ) s = (int)sqrtf( M00/maxVal );
-
 	}
 
 	// kod z poprzedniego roq.
@@ -237,7 +249,7 @@ proc_data * cPosdetect::process_frame( proc_data * prev_frame, int * result )
 	}
 	MaxX = (int)(0.5f*((float)X2+(float)X1));
 	MaxY = (int)(0.5f*((float)Y2+(float)Y1));
-/*
+
 	Dx = MaxX-MinX;
 	Dy = MaxY-MinY;
 	
@@ -245,9 +257,10 @@ proc_data * cPosdetect::process_frame( proc_data * prev_frame, int * result )
 		tan_fi = 100.0;
 	if(Dx)
 		tan_fi =((float)Dy)/((float)Dx);
-*/		
-	if (M00) tan_fi=(2*(M11/M00)-xc*yc)/(((M20/M00)-xc*xc)-((M02/M00)-yc*yc));
+		
+	//if (M00) tan_fi=(2*(M11/M00)-xc*yc)/(((M20/M00)-xc*xc)-((M02/M00)-yc*yc));
 	pos.gesture=GESTURE_NULL;
+	float u = atan(tan_fi)/2;
 	pos.angle=atan(tan_fi)/2;
 	pos.x = (int)xc;
 	pos.y = (int)yc;

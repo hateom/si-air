@@ -38,6 +38,7 @@ public:
 protected:
 	int temp_param;
 	int alloc_mem;
+	int initVal;
 	//int Hmax,Hmin,Vmax,Vmin,Smin;
 	
 	int_range Hmax,Hmin,Vmax,Vmin,Smin;;

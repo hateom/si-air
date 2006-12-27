@@ -85,6 +85,7 @@ proc_data * piGeneral::process_frame( proc_data * prev_frame, int * status )
 	static proc_data p_data = { 0, 0, 0, 0 };
 	static float * piTable = NULL;
 	float maxVal = 0.0f; 
+	int offs1, offs2;
 
 	static_frame.depth = 4;
 	static_frame.width = inFrame->width;
@@ -109,35 +110,44 @@ proc_data * piGeneral::process_frame( proc_data * prev_frame, int * status )
 	}
 
 	// petla po wszystkich pikselach, tablica wygl¹da nastêpuj¹co
-	for( int x=0; x<(int)width; ++x )
+	for( int y=0; y<(int)height; ++y )
 	{
-		for( int y=0; y<(int)height; ++y )
+		offs1 = y*width;
+		for( int x=0; x<(int)width; ++x )
 		{
-			B = inFrame->bits[(x+y*width)*4+0];
-			G = inFrame->bits[(x+y*width)*4+1];
-			R = inFrame->bits[(x+y*width)*4+2];
+			offs2 = (x+offs1)*4;
+
+			B = inFrame->bits[offs2+0];
+			G = inFrame->bits[offs2+1];
+			R = inFrame->bits[offs2+2];
 
 			RGBtoHSV( R, G, B, H, S, V );
 
-			piTable[x+y*width] = 0.0;
+			piTable[x+offs1] = 0.0;
 
 			if( ( H >= Hmin ) && ( H < Hmax ) && ( V >= Vmin ) && ( V < Vmax ) && ( Smin < S ) )
 			{
-				if (initVal) piTable[x+y*width] = 1.0;
+				if (initVal) piTable[x+offs1] = 1.0;
 			}
 			if( ( V >= Vmin ) && ( V < Vmax ) && ( Smin < S ) )
-				if (histogram->histMaxVal) piTable[x+y*width] += (float)histogram->hist_vals[ int(H)]/histogram->histMaxVal;
+			{
+				if ( histogram->histMaxVal )
+				{
+					piTable[x+offs1] += 
+						(float)histogram->hist_vals[ int(H)]/histogram->histMaxVal;
+				}
+			}
 			if( preview_param )
 			{
-				float chVal = piTable[x+y*width]*255.0f;
+				float chVal = piTable[x+offs1]*255.0f;
 				chVal = (chVal > 255.0f) ? 255.0f : chVal;
 
-				static_frame.bits[(x+y*width)*4+0] = (unsigned char)chVal;
-				static_frame.bits[(x+y*width)*4+1] = (unsigned char)chVal;
-				static_frame.bits[(x+y*width)*4+2] = (unsigned char)chVal;
-				static_frame.bits[(x+y*width)*4+3] = 0;
+				static_frame.bits[offs2+0] = (unsigned char)chVal;
+				static_frame.bits[offs2+1] = (unsigned char)chVal;
+				static_frame.bits[offs2+2] = (unsigned char)chVal;
+				//static_frame.bits[offs2+3] = 0;
 			}
-			if (piTable[x+y*width] > maxVal) maxVal = piTable[x+y*width];
+			if (piTable[x+offs1] > maxVal) maxVal = piTable[x+offs1];
 		}
 	}
 
@@ -176,7 +186,8 @@ void piGeneral::mouse_select(int sx, int sy, int sw, int sh )
 
 	for (int i=0;i<sh;i++) 
 	{
-		memcpy((selected_region->bits+i*sw*depth),(inFrame->bits+((i+sy)*inFrame->width+sx)*depth),sw*depth);
+		memcpy( selected_region->bits+i*sw*depth,
+				inFrame->bits + ( (i+sy)*inFrame->width + sx )*depth ,sw*depth );
 	}
 
 	hist();
@@ -196,6 +207,7 @@ void piGeneral::hist()
 		MaxH = -1,
 		MinH = -1;
 //	int Smin = Smin_r.value;
+	int offs1, offs2;
 
 	width = selected_region->width;
 	height = selected_region->height;
@@ -205,13 +217,15 @@ void piGeneral::hist()
 //	for (int i=0;i<360;i++) histogram->hist_vals[i]=0;
 	memset( histogram->hist_vals, 0, 360*sizeof(int) );
 
-	for( int x=0; x<(int)width; ++x )
+	for( int y=0; y<(int)height; ++y )
 	{
-		for( int y=0; y<(int)height; ++y )
+		offs1 = y*width;
+		for( int x=0; x<(int)width; ++x )
 		{
-			B = selected_region->bits[(x+y*width)*4+0];
-			G = selected_region->bits[(x+y*width)*4+1];
-			R = selected_region->bits[(x+y*width)*4+2];
+			offs2 = (x+offs1)*4;
+			B = selected_region->bits[offs2+0];
+			G = selected_region->bits[offs2+1];
+			R = selected_region->bits[offs2+2];
 			RGBtoHSV( R, G, B, H, S, V );
 			
 			if(H >= 0)

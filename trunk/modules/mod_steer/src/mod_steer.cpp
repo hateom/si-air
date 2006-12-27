@@ -22,7 +22,7 @@ LRESULT CALLBACK KeyboardProc( int nCode, WPARAM wParam, LPARAM lParam )
 
 	if( ptr->vkCode == VK_F12 )
 	{
-		if( wParam == WM_KEYDOWN )
+		/*if( wParam == WM_KEYDOWN )
 		{
 			if( g_modSteer->get_control_state() != 1 )
 			{
@@ -30,10 +30,13 @@ LRESULT CALLBACK KeyboardProc( int nCode, WPARAM wParam, LPARAM lParam )
 				g_modSteer->set_control_state( 1 );
 			}
 		}
-		else if( wParam == WM_KEYUP )
+		else */
+		if( wParam == WM_KEYUP )
 		{
-			printf( ">>> off\n" );
-			g_modSteer->set_control_state( 0 );
+			//printf( ">>> off\n" );
+			//g_modSteer->set_control_state( 0 );
+			if (g_modSteer->get_control_state()) g_modSteer->set_control_state(0);
+			else g_modSteer->set_control_state(1);
 		}
 	}
 
@@ -91,6 +94,7 @@ int modSteer::init( PropertyMgr * pm )
 void modSteer::free()
 {
 	g_modSteer = NULL;
+	UnhookWindowsHookEx(hook);
 }
 
 //////////////////////////////////////////////////////////////////////////

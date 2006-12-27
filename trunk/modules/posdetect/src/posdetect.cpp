@@ -79,6 +79,7 @@ proc_data * cPosdetect::process_frame( proc_data * prev_frame, int * result )
 	static int xs = 0, xk = width, ys = 0, yk = height, ObjHeight=0, ObjWidth=0, s = 0;
 	float xc = 0.0f, yc = 0.0f;
 	maxVal = prev_frame->max_prob;
+	bool retry=0;
 	for( int k=0; k<2; k++ )
 	{
 		if( k )
@@ -139,16 +140,18 @@ proc_data * cPosdetect::process_frame( proc_data * prev_frame, int * result )
 				///////////////////////////////////////////////////////////////////////
 			}
 		}
-		if (M00 < 20)
+		if ((M00 < 20) && (!retry))
 		{
 			xs=0;
 			ys=0;
 			xk=width;
 			yk=height;
+			retry=1;
+			k=-1;
 		}
 		if( maxVal ) s = (int)sqrtf( M00/maxVal );
 	}
-
+	retry=1;
 	// kod z poprzedniego roq.
 
 	int MinX = width,                              // Zmienne sluzace do zapisania krancowych punktow objektu

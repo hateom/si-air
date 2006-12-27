@@ -395,7 +395,8 @@ int ModuleMgr::get_proper_modules( std::vector<moduleBase*> & list )
 				list.push_back( mod );
 			}
 		}
-		else if(  last_on_path()->output_type() == mod->input_type() )
+		else if( last_on_path()->output_type() == mod->input_type() && 
+				 last_on_path()->output_type() != MT_NONE )
 		{
 			list.push_back( mod );
 		}

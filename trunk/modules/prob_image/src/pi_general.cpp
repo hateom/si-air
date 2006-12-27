@@ -26,6 +26,7 @@ piGeneral::piGeneral() : alloc_mem(0), selected_region(NULL), histogram(NULL)
 //	REG_PARAM( PT_INT, Vmin,			"Wart. minimalna V", 20 );
 //	REG_PARAM( PT_INT, Smin,			"5. Wart. minimalna S", 0 );
 
+	REG_PARAM(PT_BOOL, initVal, "Dodac 1 do prawd.", 1);
 	REG_PARAM( PT_INT_RANGE, Hmax, "Wart. maxymalna H", int_range(  35, 0, 360 ) );
 	REG_PARAM( PT_INT_RANGE, Hmin, "Wart. minimalna H", int_range(  10, 0, 360 ) );
 	REG_PARAM( PT_INT_RANGE, Vmax, "Wart. maxymalna V", int_range( 255, 0, 255 ) );
@@ -122,7 +123,7 @@ proc_data * piGeneral::process_frame( proc_data * prev_frame, int * status )
 
 			if( ( H >= Hmin ) && ( H < Hmax ) && ( V >= Vmin ) && ( V < Vmax ) && ( Smin < S ) )
 			{
-				piTable[x+y*width] = 1.0;
+				if (initVal) piTable[x+y*width] = 1.0;
 			}
 			if( ( V >= Vmin ) && ( V < Vmax ) && ( Smin < S ) )
 				if (histogram->histMaxVal) piTable[x+y*width] += (float)histogram->hist_vals[ int(H)]/histogram->histMaxVal;

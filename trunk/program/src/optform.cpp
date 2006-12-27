@@ -150,7 +150,7 @@ OptForm::OptForm( moduleBase * base, QWidget* parent, const char* name, WFlags f
 //	connect( btn_cancel, SIGNAL(clicked()), this, SLOT(close()) );
 
 	languageChange();
-	resize( QSize( 525, space_height + 20 ).expandedTo(minimumSizeHint()) );
+	resize( QSize( 248, 55+i*52 + 20 ).expandedTo(minimumSizeHint()) );
 	clearWState( WState_Polished );
 }
 

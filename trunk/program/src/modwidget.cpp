@@ -12,7 +12,8 @@
 
 //////////////////////////////////////////////////////////////////////////
 
-modWidget::modWidget( long new_id, moduleBase * mod, OptionsBox * opt_f, QWidget * parent, const char * name ) : 
+modWidget::modWidget( long new_id, moduleBase * mod, OptionsBox * opt_f, 
+					 QWidget * parent, const char * name ) : 
 	id(new_id), module(mod), QGroupBox( parent, name ), opt_form(opt_f),
 	del_btn( (const char**) btn2_data ), cfg_btn((const char**) btn0_data),
 	prv_btn( (const char**) btn5_data )
@@ -108,9 +109,12 @@ void modWidget::configure_mod()
 {
 	OptForm * optForm;
 	opt_form->remove_last_cfg_form();
-	optForm = new OptForm( module, opt_form );
+//	optForm = new OptForm( module, opt_form );
+	optForm = new OptForm( module, opt_form->viewport() );
 	opt_form->set_current_cfg_form( optForm );
-	optForm->setGeometry( QRect( 5, 15, 250, 320 ) );
+//	optForm->setGeometry( QRect( 5, 15, 250, 320 ) );
+//	sview->addChild( optForm );
+	opt_form->addChild( optForm );
 	optForm->show();
 	qApp->processEvents();
 }

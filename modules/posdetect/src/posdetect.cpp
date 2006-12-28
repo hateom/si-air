@@ -125,15 +125,16 @@ proc_data * cPosdetect::process_frame( proc_data * prev_frame, int * result )
 		}
 		if( M00 > 20)
 		{
-			xc = M10/M00;
-			yc = M01/M00;
+			float inv_M00 = 1/M00;
+			xc = M10*inv_M00;
+			yc = M01*inv_M00;
 
 			if( k )
 			{
 				float a,b,c, sqtmp, lptmp;
-				a = (M20/M00) - (xc*xc);
-				b = 2*((M11/M00) - (xc*yc));
-				c = (M02/M00) - (yc*yc);
+				a = (M20*inv_M00) - (xc*xc);
+				b = 2*((M11*inv_M00) - (xc*yc));
+				c = (M02*inv_M00) - (yc*yc);
 				//lptmp = (b*b)+((a-c)*(a-c));
 				lptmp = (b*b)-((a-c)*(a-c));
 				if(lptmp > 0) sqtmp = sqrt(lptmp);
@@ -157,7 +158,7 @@ proc_data * cPosdetect::process_frame( proc_data * prev_frame, int * result )
 		if( maxVal ) s = (int)sqrtf( M00/maxVal );
 	}
 	// kod z poprzedniego roq.
-
+/*
 	int MinX = width,                              // Zmienne sluzace do zapisania krancowych punktow objektu
 		MinY = height,
 		MaxX = 0,
@@ -264,10 +265,20 @@ proc_data * cPosdetect::process_frame( proc_data * prev_frame, int * result )
 		tan_fi = 100.0;
 	if(Dx)
 		tan_fi =((float)Dy)/((float)Dx);
-	*/	
-	if (M00) tan_fi=(2*(M11/M00)-xc*yc)/(((M20/M00)-xc*xc)-((M02/M00)-yc*yc));
-	//pos.gesture=GESTURE_NULL;
-	float u = atan(tan_fi)/2;
+	*/
+	float licz=0, mian=1;
+	if (M00) {
+		float inv_M00 = 1/M00;
+		licz=(2*((M11*inv_M00)-xc*yc));
+		float a = M20 * inv_M00;
+		float b = M11 * inv_M00;
+		float c = M02 * inv_M00;
+		float square = sqrt( 4 * b * b + (a - c) * (a - c) );
+		mian=(((M20*inv_M00)-xc*xc)-((M02*inv_M00)-yc*yc));
+	}
+	pos.gesture=GESTURE_NULL;
+	tan_fi = licz/mian;
+	float u = atan2(licz,mian)/2;
 	if ((int)(u*57)>angle_max) 
 	{
 		pos.gesture=GESTURE_RMBDOWN;

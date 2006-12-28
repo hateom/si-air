@@ -284,7 +284,8 @@ proc_data * cPosdetect::process_frame( proc_data * prev_frame, int * result )
 		pos.gesture=GESTURE_RMBDOWN;
 	}
 	else pos.gesture=GESTURE_NULL;
-	pos.angle=atan(tan_fi)/2;
+	//pos.angle=atan(tan_fi)/2;
+	pos.angle=u;
 	pos.x = (int)xc;
 	pos.y = (int)yc;
 	*result = ST_OK;

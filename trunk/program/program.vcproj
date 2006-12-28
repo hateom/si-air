@@ -193,6 +193,9 @@
 					RelativePath=".\src\moc_prevform.cpp">
 				</File>
 				<File
+					RelativePath=".\src\moc_previewwidget.cpp">
+				</File>
+				<File
 					RelativePath=".\src\moc_processing_panel.cpp">
 				</File>
 				<File
@@ -221,6 +224,12 @@
 				</File>
 				<File
 					RelativePath=".\src\prevform.h">
+				</File>
+				<File
+					RelativePath=".\src\previewwidget.cpp">
+				</File>
+				<File
+					RelativePath=".\src\previewwidget.h">
 				</File>
 				<File
 					RelativePath=".\src\processing_panel.cpp">

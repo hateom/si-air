@@ -40,9 +40,11 @@ private:
 	void draw_frame_marker( frame_data * frame, int posx, int posy, float angle );
 
 protected:
-	int or_mask_size;
-	int alloc_mem;
-	int angle_max;
+	int		or_mask_size;
+	int		alloc_mem;
+	int		angle_max;
+	float	angle;
+	preview angle_prv;
 };
 
 //////////////////////////////////////////////////////////////////////////

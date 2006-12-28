@@ -26,8 +26,26 @@
 #define PT_FILENAME		0x07
 #define PT_INT_RANGE	0x08
 #define PT_FLOAT_RANGE	0x09
+#define PT_PREVIEW		0x0A
 
 //////////////////////////////////////////////////////////////////////////
+
+class preview
+{
+public:
+	preview() {}
+
+	template<typename T>
+	preview( int type_, long update_rat, T * data ) : type(type_), update_rate(update_rat)
+	{ ptr = (void *)data; }
+
+	template<typename T>
+	T get_data() { return( *(T*)ptr ); }
+
+	int		type;
+	void *	ptr;
+	long	update_rate;
+};
 
 class int_range
 {

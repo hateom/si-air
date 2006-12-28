@@ -9,6 +9,7 @@
 #include <qcheckbox.h>
 #include "fnwidget.h"
 #include "rangewidget.h"
+#include "previewwidget.h"
 
 //////////////////////////////////////////////////////////////////////////
 
@@ -124,6 +125,16 @@ OptForm::OptForm( moduleBase * base, QWidget* parent, const char* name, WFlags f
 					info = create_wdg_info( rnw, PT_INT_RANGE );
 				}
 				break;
+			case PT_PREVIEW:
+				{
+					previewWidget * pnw;
+					preview * prv;
+					prv = (preview*)(base->get_param(k)->data);
+					pnw = new previewWidget( prv, this, tr("param_prv_") + tr(temp) );
+					pnw->show();
+					info = create_wdg_info( pnw, PT_PREVIEW );
+				}
+				break;
 			default:
 				sprintf( temp, "" );
 				break;
@@ -211,6 +222,9 @@ void OptForm::save_conf()
 			ir->value = ((rangeWidget*)(wdg_list[i]->wdg))->get_value();
 			ir->maxv = ((rangeWidget*)(wdg_list[i]->wdg))->get_max();
 			ir->minv = ((rangeWidget*)(wdg_list[i]->wdg))->get_min();
+			break;
+		case PT_PREVIEW:
+			// nope :-)
 			break;
 		}
 		i++;

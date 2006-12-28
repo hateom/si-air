@@ -17,10 +17,12 @@
 
 //////////////////////////////////////////////////////////////////////////
 
-cPosdetect::cPosdetect() : alloc_mem(0)
+cPosdetect::cPosdetect() : alloc_mem(0), angle(0.0f)
 {
 	REG_PARAM( PT_INT, or_mask_size,  "Size of the orientation mask", 4 );
 	REG_PARAM( PT_INT, angle_max,	  "Kat graniczny", 45 );
+
+	REG_PARAM( PT_PREVIEW, angle_prv, "Angle", preview( PT_FLOAT, 200, &angle ) );
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -312,6 +314,8 @@ proc_data * cPosdetect::process_frame( proc_data * prev_frame, int * result )
 	p_data.input_frame = prev_frame->input_frame;
 	p_data.frame = &frame;
 	p_data.position = &pos;
+
+	angle = pos.angle;
 
 	return ( &p_data );
 }

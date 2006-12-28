@@ -146,6 +146,7 @@ proc_data * cPosdetect::process_frame( proc_data * prev_frame, int * result )
 				///////////////////////////////////////////////////////////////////////
 			}
 		}
+		//rozciagamy okno poszukiwan na cala klatke i jedziemy!
 		else if (!retry)
 		{
 			xs=0;

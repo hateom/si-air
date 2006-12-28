@@ -84,7 +84,7 @@ proc_data * piGeneral::process_frame( proc_data * prev_frame, int * status )
 	static frame_data static_frame = { 0, 0, 0, 0 };
 	static proc_data p_data = { 0, 0, 0, 0 };
 	static float * piTable = NULL;
-	float maxVal = 0.0f; 
+	float maxVal = 0.0f;
 	int offs1, offs2;
 
 	static_frame.depth = 4;
@@ -134,7 +134,7 @@ proc_data * piGeneral::process_frame( proc_data * prev_frame, int * status )
 				if ( histogram->histMaxVal )
 				{
 					piTable[x+offs1] += 
-						(float)histogram->hist_vals[ int(H)]/histogram->histMaxVal;
+						(float)histogram->hist_vals[ int(H)]*inv_maxVal;
 				}
 			}
 			if( preview_param )
@@ -267,6 +267,7 @@ void piGeneral::hist()
 	histogram->minV = MinV;
 	histogram->histMaxVal = HHistMaxValue;
 	histogram->h_size=360;
+	if (HHistMaxValue) inv_maxVal = (float)1/(float)HHistMaxValue;
 
 }
 
@@ -278,6 +279,7 @@ int piGeneral::init( PropertyMgr * pm )
 
 	histogram = new hist_data();
 	histogram->hist_vals = new int[360];
+	inv_maxVal = 0.0f;
 
 	return( ST_OK );
 }

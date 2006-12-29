@@ -26,7 +26,12 @@ cPosdetect::cPosdetect() : alloc_mem(0), angle(0.0f)
 				float_range(0.65f, 0.0f, 1.5f) );
 	REG_PARAM( PT_FLOAT_RANGE, treshold, "Angle treshold",
 		float_range(0.1f, 0.0f, 0.2f) );
+	REG_PARAM( PT_INT_RANGE, buff_size, "Buffer size",
+		int_range(5, 1, 15) );
 	REG_PARAM( PT_PREVIEW, angle_prv, "Angle", preview( PT_FLOAT, 200, &angle ) );
+	REG_PARAM(PT_BOOL,thirdBtn,"Third Button Emulation",0);
+
+	buffer = NULL;
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -160,12 +165,18 @@ proc_data * cPosdetect::process_frame( proc_data * prev_frame, int * result )
 	//pos.gesture=GESTURE_NULL;
 	tan_fi = licz/mian;
 	u = atan2(licz,mian)/2.0f;
-	if (u<angle_max && u>0.0f) 
+
+	if (ObjWidth>0.75*ObjHeight && thirdBtn) 
+	{
+		pos.gesture = GESTURE_MIDDLEBTNDOWN;
+		last_gesture = GESTURE_MIDDLEBTNDOWN;
+	}
+	else if (u<angle_max && u>0.0f && (!thirdBtn || ObjWidth<0.6*ObjHeight)) 
 	{
 		pos.gesture = GESTURE_LMBDOWN;
 		last_gesture = GESTURE_LMBDOWN;
 	}
-	else if(u>-angle_max && u<-0.0f)
+	else if(u>-angle_max && u<-0.0f && (!thirdBtn ||ObjWidth<0.6*ObjHeight))
 	{
 		pos.gesture = GESTURE_RMBDOWN;
 		last_gesture = GESTURE_RMBDOWN;
@@ -251,8 +262,11 @@ void cPosdetect::draw_frame_marker( frame_data * frame, int posx, int posy, floa
 				frame->bits[offs1+0] = marker[offs2+0];
 				frame->bits[offs1+1] = marker[offs2+1];
 				frame->bits[offs1+2] = marker[offs2+2];
-				if (angle<angle_max && angle>0.0f) frame->bits[offs1+2] = 100;
-				if (angle>-angle_max && angle<0.0f) frame->bits[offs1+1] = 150;
+				//if (angle<angle_max && angle>0.0f) frame->bits[offs1+2] = 100;
+				//if (angle>-angle_max && angle<0.0f) frame->bits[offs1+1] = 150;
+				if (last_gesture == GESTURE_LMBDOWN) frame->bits[offs1+2] = 100;
+				if (last_gesture == GESTURE_RMBDOWN) frame->bits[offs1+1] = 150;
+				if (last_gesture == GESTURE_MIDDLEBTNDOWN) frame->bits[offs1+0] = 150;
 			}
 		}
 	}
@@ -264,6 +278,12 @@ int cPosdetect::init( PropertyMgr * pm )
 {
 	USE_PROPERTY_MGR( pm );
 	xc=0.0f, yc=0.0f;
+	if (buffer)
+	{
+		delete [] buffer;
+		buffer = NULL;
+	}
+	buffer = new float[buff_size];
 	last_gesture = GESTURE_NULL;
 	return( ST_OK );
 }
@@ -272,6 +292,11 @@ int cPosdetect::init( PropertyMgr * pm )
 
 void cPosdetect::free()
 {
+	if (buffer) 
+	{
+		delete [] buffer;
+	}
+	buffer = NULL;
 }
 
 //////////////////////////////////////////////////////////////////////////

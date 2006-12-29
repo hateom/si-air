@@ -18,7 +18,8 @@
 
 //////////////////////////////////////////////////////////////////////////
 
-piGeneral::piGeneral() : alloc_mem(0), selected_region(NULL), histogram(NULL)
+piGeneral::piGeneral() : alloc_mem(0), selected_region(NULL), histogram(NULL),
+	hist_probability(NULL)
 {
 //	REG_PARAM( PT_INT, Hmax,			"Wart. maxymalna H", 35 );
 //	REG_PARAM( PT_INT, Hmin,			"Wart. minimalna H", 10 );
@@ -26,12 +27,12 @@ piGeneral::piGeneral() : alloc_mem(0), selected_region(NULL), histogram(NULL)
 //	REG_PARAM( PT_INT, Vmin,			"Wart. minimalna V", 20 );
 //	REG_PARAM( PT_INT, Smin,			"5. Wart. minimalna S", 0 );
 
-	REG_PARAM(PT_BOOL, initVal, "Dodac 1 do prawd.", 1);
-	REG_PARAM( PT_INT_RANGE, Hmax, "Wart. maxymalna H", int_range(  35, 0, 360 ) );
-	REG_PARAM( PT_INT_RANGE, Hmin, "Wart. minimalna H", int_range(  10, 0, 360 ) );
-	REG_PARAM( PT_INT_RANGE, Vmax, "Wart. maxymalna V", int_range( 255, 0, 255 ) );
-	REG_PARAM( PT_INT_RANGE, Vmin, "Wart. minimalna V", int_range(  20, 0, 255 ) );
-	REG_PARAM( PT_INT_RANGE, Smin, "Wart. minimalna S", int_range(   0, 0, 200 ) );
+	REG_PARAM(PT_BOOL, initVal, "Add 1 to probability", 1);
+	REG_PARAM( PT_INT_RANGE, Hmax, "Maximum H value", int_range(  35, 0, 360 ) );
+	REG_PARAM( PT_INT_RANGE, Hmin, "Minimum H value", int_range(  10, 0, 360 ) );
+	REG_PARAM( PT_INT_RANGE, Vmax, "Maximum V value", int_range( 255, 0, 255 ) );
+	REG_PARAM( PT_INT_RANGE, Vmin, "Minimum V value", int_range(  20, 0, 255 ) );
+	REG_PARAM( PT_INT_RANGE, Smin, "Minimum S value", int_range(   0, 0, 200 ) );
 }
 
 //////////////////////////////////////////////////////////////////////////

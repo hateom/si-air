@@ -1,4 +1,5 @@
 #define MOD_CPP
+#define TWO_BY_SQRT_TWO 1.41421356237310f
 #include "posdetect.h"
 #include "../../module_base/src/types.h"
 #include "../../module_base/src/status_codes.h"
@@ -19,9 +20,9 @@
 
 cPosdetect::cPosdetect() : alloc_mem(0), angle(0.0f)
 {
-	REG_PARAM( PT_INT, or_mask_size,  "Size of the orientation mask", 4 );
-	REG_PARAM( PT_INT, angle_max,	  "Kat graniczny", 45 );
-
+//	REG_PARAM( PT_INT, or_mask_size,  "Size of the orientation mask", 4 );
+	REG_PARAM( PT_FLOAT_RANGE, angle_max, "Rotation treated like Click (in radianz) ! <0..1.5>",
+				float_range(0.65f, 0.0f, 1.5f) );
 	REG_PARAM( PT_PREVIEW, angle_prv, "Angle", preview( PT_FLOAT, 200, &angle ) );
 }
 
@@ -140,9 +141,9 @@ proc_data * cPosdetect::process_frame( proc_data * prev_frame, int * result )
 				if(lptmp > 0) sqtmp = sqrt(lptmp);
 				if(lptmp <= 0) sqtmp = 0;
 				//if(a+c+sqtmp > 0) ObjHeight = sqrt((a+c+sqtmp)/2);
-				if( a+c+sqtmp > 0.0f ) ObjHeight = (int)1.41421356237310*sqrtf((a+c+sqtmp));
+				if( a+c+sqtmp > 0.0f ) ObjHeight = (int)(TWO_BY_SQRT_TWO*sqrtf((a+c+sqtmp)));
 				//if(a+c-sqtmp > 0) ObjWidth = sqrt((a+c-sqtmp)/2);
-				if( a+c-sqtmp > 0.0f ) ObjWidth = (int)1.41421356237310*sqrtf((a+c-sqtmp));
+				if( a+c-sqtmp > 0.0f ) ObjWidth = (int)(TWO_BY_SQRT_TWO*sqrtf((a+c-sqtmp)));
 				///////////////////////////////////////////////////////////////////////
 			}
 		}
@@ -271,25 +272,21 @@ proc_data * cPosdetect::process_frame( proc_data * prev_frame, int * result )
 	if (M00) {
 		float inv_M00 = 1/M00;
 		licz=(2*((M11*inv_M00)-xc*yc));
-		/*
-		float a = M20 * inv_M00;
-		float b = M11 * inv_M00;
-		float c = M02 * inv_M00;
-		float square = sqrt( 4 * b * b + (a - c) * (a - c) );
-		*/
 		mian=(((M20*inv_M00)-xc*xc)-((M02*inv_M00)-yc*yc));
 	}
-	pos.gesture=GESTURE_NULL;
+	//pos.gesture=GESTURE_NULL;
 	tan_fi = licz/mian;
 	float u = atan2(licz,mian)/2;
-	/*
-	if ((int)(u*57)>angle_max) 
+	if (u<angle_max && u>0.0f) 
 	{
-		pos.gesture=GESTURE_RMBDOWN;
+		pos.gesture = GESTURE_RMBDOWN;
 	}
-	*/
-	//else
-		pos.gesture=GESTURE_NULL;
+	else if(u>-angle_max && u<-0.0f)
+		pos.gesture = GESTURE_LMBDOWN;
+	else
+	{
+		pos.gesture = GESTURE_NULL;
+	}
 	//pos.angle=atan(tan_fi)/2;
 	pos.angle=u;
 	pos.x = (int)xc;
@@ -365,8 +362,8 @@ void cPosdetect::draw_frame_marker( frame_data * frame, int posx, int posy, floa
 				frame->bits[offs1+0] = marker[offs2+0];
 				frame->bits[offs1+1] = marker[offs2+1];
 				frame->bits[offs1+2] = marker[offs2+2];
-				if (angle*57>angle_max) frame->bits[offs1+2] = 100;
-				if (angle*57<-angle_max) frame->bits[offs1+2] = 200;
+				if (angle<angle_max && angle>0.0f) frame->bits[offs1+2] = 100;
+				if (angle>-angle_max && angle<0.0f) frame->bits[offs1+1] = 150;
 			}
 		}
 	}

@@ -58,6 +58,7 @@ protected:
 	bool			retry;
 	int				offs1, offs2;
 	float			u;
+	int				last_gesture;
 };
 
 //////////////////////////////////////////////////////////////////////////

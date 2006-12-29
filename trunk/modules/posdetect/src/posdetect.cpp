@@ -21,7 +21,7 @@
 cPosdetect::cPosdetect() : alloc_mem(0), angle(0.0f)
 {
 //	REG_PARAM( PT_INT, or_mask_size,  "Size of the orientation mask", 4 );
-	REG_PARAM( PT_FLOAT_RANGE, angle_max, "Rotation treated like Click (in radianz) ! <0..1.5>",
+	REG_PARAM( PT_FLOAT_RANGE, angle_max, "Rotation treated as Click (in radianz)!",
 				float_range(0.65f, 0.0f, 1.5f) );
 	REG_PARAM( PT_FLOAT_RANGE, treshold, "Angle treshold",
 		float_range(0.1f, 0.0f, 0.2f) );
@@ -162,13 +162,19 @@ proc_data * cPosdetect::process_frame( proc_data * prev_frame, int * result )
 	if (u<angle_max && u>0.0f) 
 	{
 		pos.gesture = GESTURE_RMBDOWN;
+		last_gesture = GESTURE_RMBDOWN;
 	}
 	else if(u>-angle_max && u<-0.0f)
+	{
 		pos.gesture = GESTURE_LMBDOWN;
-	else
+		last_gesture = GESTURE_LMBDOWN;
+	}
+	else if(u>angle_max+treshold && u<-angle_max-treshold)
 	{
 		pos.gesture = GESTURE_NULL;
+		last_gesture = GESTURE_NULL;
 	}
+	else pos.gesture = last_gesture;
 	//pos.angle=atan(tan_fi)/2;
 	pos.angle=u;
 	pos.x = (int)xc;
@@ -257,6 +263,7 @@ int cPosdetect::init( PropertyMgr * pm )
 {
 	USE_PROPERTY_MGR( pm );
 	xc=0.0f, yc=0.0f;
+	last_gesture = GESTURE_NULL;
 	return( ST_OK );
 }
 

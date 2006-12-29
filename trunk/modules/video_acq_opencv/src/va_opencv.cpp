@@ -21,8 +21,8 @@
 
 vaOpenCV::vaOpenCV() : capture(NULL), alloc_mem(0)
 {
-	REG_PARAM( PT_INT,      device,   "device no", 0 );
-	REG_PARAM( PT_FILENAME, filename, "filename", 0 );
+	REG_PARAM( PT_INT,      device,   "Device id number", 0 );
+	REG_PARAM( PT_FILENAME, filename, "Video filename", 0 );
 
 	set_param( "preview_param", 1 );
 }

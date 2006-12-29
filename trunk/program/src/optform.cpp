@@ -143,9 +143,19 @@ OptForm::OptForm( moduleBase * base, QWidget* parent, const char* name, WFlags f
 		info->wdg->setGeometry( QRect( 10, 25+i*52, 230, 24 ) );
 		wdg_list.push_back( info );
 
-		label[i] = new QLabel( this, tr(base->get_param(k)->name ) );
+		label[i] = new QLabel( this, tr(base->get_param(k)->name) );
 		label[i]->setGeometry( QRect( 10, i*52, 230, 24 ) );
-		label[i]->setText( tr(base->get_param(k)->name) );
+		if( type != PT_BOOL )
+		{
+			label[i]->setText( 
+				tr(base->get_param(k)->description) + tr(" ( ") + 
+				tr(base->get_param(k)->name) + tr( " )" )
+			);
+		}
+		else 
+		{
+			label[i]->setText( tr(base->get_param(k)->name) );
+		}
 		i++;
 	}
 

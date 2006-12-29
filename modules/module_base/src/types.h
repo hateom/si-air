@@ -5,7 +5,7 @@
 	plik:    	types
 	autorzy:	Tomasz Huczek, Andrzej Jasiñski
 	
-    cel:	    
+    cel:	    Plik zawiera potrzebne w programie struktury i definicje
 *********************************************************************/
 
 #ifndef __INCLUDE_H__
@@ -41,9 +41,13 @@
 /// struktura przechowujaca informacje o jednej klatce obrazu
 struct frame_data
 {
-	unsigned int  width;		/// szerokosc obrazu w pixelach
-	unsigned int  height;		/// wysokosc obrazu w pixelach
-	unsigned int  depth;		/// Ilosc bajtow na pixel - dla RGB 3
+	/// szerokosc obrazu w pixelach
+	unsigned int  width;
+	/// wysokosc obrazu w pixelach
+	unsigned int  height;
+	/// Ilosc bajtow na pixel - dla RGB 4 (RGB0)
+	unsigned int  depth;
+	/// wskaznik do pixeli obrazu
 	/** Tablica wartosci pikseli, jedno wymiarowowa o dlugosci width*height*depth
 	    Jeden piksel to 4 kolejne elementy w kolejnoœci G B R 0
 	    P1          |P2         |P3         .....
@@ -51,7 +55,7 @@ struct frame_data
 	    |G  B  R  0 |G  B  R  0 |G  B  R  0|
 	*/
 
-	unsigned char * bits;		/// wskaznik do pixeli obrazu
+	unsigned char * bits;
 };
 
 //////////////////////////////////////////////////////////////////////////
@@ -59,9 +63,12 @@ struct frame_data
 /// Struktura do opisu po³ozenia obiektu int x,y; float angle;
 struct pd_data
 {
-	int x,y;		/// pozycja myszy
-	int gesture;	/// gest (definicje powyzej)
-	float angle;	/// kat
+	/// pozycja myszy
+	int x,y;
+	/// gest
+	int gesture;
+	/// kat
+	float angle;
 };
 
 //////////////////////////////////////////////////////////////////////////
@@ -70,13 +77,18 @@ struct pd_data
 /// przekazywane na wejscie modulom
 struct proc_data
 {
-	frame_data  *	input_frame;	/// ramka obrazu z modulu wejsciowego
-	frame_data	*	frame;			/// ramka obrazu
-	pd_data		*	position;		/// informacje o pozycji kursowa, gestach
-	float		*	prob;			/// obraz prawdopodobienstwa
-	float			max_prob;		/// maksymalna wartosc prawdopodobienstwa
-	void		*	user_data0;		/// niezdefiniowane
-	void		*	user_data1;		/// j/w
+	/// ramka obrazu z modulu wejsciowego
+	frame_data  *	input_frame;
+	/// ramka obrazu
+	frame_data	*	frame;
+	/// informacje o pozycji kursowa, gestach
+	pd_data		*	position;
+	/// obraz prawdopodobienstwa
+	float		*	prob;
+	/// maksymalna wartosc prawdopodobienstwa
+	float			max_prob;
+	//void		*	user_data0;
+	//void		*	user_data1;		/// j/w
 };
 
 //////////////////////////////////////////////////////////////////////////
@@ -84,9 +96,13 @@ struct proc_data
 /// struktura przechowuje informacje o histogramie
 struct hist_data
 {
+	/// Histogram
 	int *	hist_vals;
+	/// Wielkosc histogramu
 	int		h_size;
+	/// Najwieksza wartosc w histogramie
 	int		histMaxVal;
+	/// maksymalna i minimalna wartosc jasnosci, oraz minimalna wartosc nasycenia
 	float	maxV, minV, minS;
 };
 //////////////////////////////////////////////////////////////////////////

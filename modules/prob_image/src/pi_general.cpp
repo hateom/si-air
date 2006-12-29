@@ -194,6 +194,8 @@ void piGeneral::mouse_select(int sx, int sy, int sw, int sh )
 	hist();
 }
 //////////////////////////////////////////////////////////////////////////
+
+/// Funkcja oblicza histogram zaznaczonego obszaru.
 void piGeneral::hist()
 {
 	int width,height,size,depth; //x, y

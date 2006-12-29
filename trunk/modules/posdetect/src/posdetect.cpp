@@ -23,6 +23,8 @@ cPosdetect::cPosdetect() : alloc_mem(0), angle(0.0f)
 //	REG_PARAM( PT_INT, or_mask_size,  "Size of the orientation mask", 4 );
 	REG_PARAM( PT_FLOAT_RANGE, angle_max, "Rotation treated like Click (in radianz) ! <0..1.5>",
 				float_range(0.65f, 0.0f, 1.5f) );
+	REG_PARAM( PT_FLOAT_RANGE, treshold, "Angle treshold",
+		float_range(0.1f, 0.0f, 0.2f) );
 	REG_PARAM( PT_PREVIEW, angle_prv, "Angle", preview( PT_FLOAT, 200, &angle ) );
 }
 
@@ -60,30 +62,18 @@ proc_data * cPosdetect::process_frame( proc_data * prev_frame, int * result )
 {
 	static pd_data pos;
 	static proc_data p_data = { 0, 0, 0, 0 };
-
-	float M00;
-	float M10;
-	float M01;
-	float M20;
-	float M02;
-	float M11;
 	static float tan_fi;
-	int InitialValue = 1;
-	int offs1, offs2;
+	//int InitialValue = 1;
+	static int width, height;
+	static int xs = 0, xk = width, ys = 0, yk = height, ObjHeight=0, ObjWidth=0, s = 0;
 
-	int width, height;
-	float maxVal;
-	float * piTable;
-
+	maxVal = prev_frame->max_prob;
 	width = prev_frame->frame->width;
 	height = prev_frame->frame->height;
-	//maxVal = 1.0f;
 	piTable = prev_frame->prob;
-	
-	static int xs = 0, xk = width, ys = 0, yk = height, ObjHeight=0, ObjWidth=0, s = 0;
-	float xc = 0.0f, yc = 0.0f;
-	maxVal = prev_frame->max_prob;
-	bool retry=0;
+	retry = 0;
+	xc=0.0f, yc=0.0f;
+
 	for( int k=0; k<2; k++ )
 	{
 		if( k )
@@ -124,9 +114,9 @@ proc_data * cPosdetect::process_frame( proc_data * prev_frame, int * result )
 				M11 += piTable[offs2]*(float)x*(float)y;
 			}
 		}
-		if( M00 > 20)
+		if( M00 > 20.0f)
 		{
-			float inv_M00 = 1/M00;
+			float inv_M00 = 1.0f/M00;
 			xc = M10*inv_M00;
 			yc = M01*inv_M00;
 
@@ -159,124 +149,16 @@ proc_data * cPosdetect::process_frame( proc_data * prev_frame, int * result )
 		}
 		if( maxVal ) s = (int)sqrtf( M00/maxVal );
 	}
-	// kod z poprzedniego roq.
-/*
-	int MinX = width,                              // Zmienne sluzace do zapisania krancowych punktow objektu
-		MinY = height,
-		MaxX = 0,
-		MaxY = 0,
-		_Xp = xs,             // Wartosci graniczne przeszukiwania petli
-		_Xk = xk,
-		_Yp = ys,
-		_Yk = yk,
-		Dx,                                        // Do wyznaczenie tangensa kata
-		Dy;
-	float sum = 0.0;                               // Aktualna suma w masce
-	bool min_coord = false;                        // True - znaleziono juz MinX i MinY
-	bool max_coord = false;                        // True - znaleziono juz MaxX i MaxY
-	int X1 = 0, X2 = 0, Y1 = 0, Y2 = 0;
 
-	for( int y=_Yp;y<_Yk;y++)
-	{
-		min_coord = false;
-		for( int x=_Xp;x<_Xk;x+=(or_mask_size-(int)sum))
-		{
-			sum = 0.0;
-			if((x < 0) || (y < 0) || (x+or_mask_size > width) || (y+or_mask_size > height))
-				continue;
-
-			for(int i=0;i<or_mask_size;i++)
-				sum += piTable[x+i+(y+i)*width];
-
-			// Gdy elemet obiektu
-			if((sum >= (float)or_mask_size) || ((!InitialValue) && (sum >= (float)or_mask_size-1)))
-			{
-				if(!min_coord)
-				{
-					//MinX = x;
-					//MinY = y;
-					X1 = x;
-					Y1 = y;
-					min_coord = true;
-					//x = _Xk;
-					//y = _Yk;
-					//break;
-				}
-				X2 = x;
-				Y2 = y;
-			}
-
-			// Jezeli wyjdzie ze bedziemy musieli sie przesunac o zero lub mniej
-			if((or_mask_size-(int)sum) <= 0)
-				sum = 0.0;
-		}
-
-		if(X2 != X1)
-			break;
-	}
-	MinX = (int)(0.5f*((float)X2+(float)X1));
-	MinY = (int)(0.5f*((float)Y2+(float)Y1));
-
-	X1 = 0;
-	X2 = 0;
-	Y1 = 0;
-	Y2 = 0;
-	sum = 0.0;
-	for( int y=_Yk-1;y>=_Yp;y--)
-	{
-		max_coord = false;
-		for( int x=_Xk-1;x>=_Xp;x-=(or_mask_size-(int)sum))
-		{
-			sum = 0.0;
-			if((x < 0) || (y < 0) || (x+or_mask_size > width) || (y+or_mask_size > height))
-				continue;
-			for(int i=0;i<or_mask_size;i++)
-				sum +=piTable[x+i+(y+i)*width];
-
-			// Gdy elemet obiektu
-			if((sum >= (float)or_mask_size) || ((!InitialValue) && (sum >= (float)or_mask_size-1)))
-			{
-				if(!max_coord)
-				{
-					//MaxX = x;
-					//MaxY = y;
-					X1 = x;
-					Y1 = y;
-					max_coord = true;
-					//x = _Xp;
-					//y = _Yp;
-					//break;
-				}
-				X2 = x;
-				Y2 = y;
-			}
-
-			if((or_mask_size-(int)sum) <= 0)
-				sum = 0.0;
-		}
-		if(X2 != X1)
-			break;
-	}
-	MaxX = (int)(0.5f*((float)X2+(float)X1));
-	MaxY = (int)(0.5f*((float)Y2+(float)Y1));
-
-	Dx = MaxX-MinX;
-	Dy = MaxY-MinY;
-	/*
-	if(!Dx)
-		tan_fi = 100.0;
-	if(Dx)
-		tan_fi =((float)Dy)/((float)Dx);
-	*/
-	float licz=0, mian=1;
+	float licz=0.0f, mian=1.0f;
 	if (M00) {
-		float inv_M00 = 1/M00;
+		float inv_M00 = 1.0f/M00;
 		licz=(2*((M11*inv_M00)-xc*yc));
 		mian=(((M20*inv_M00)-xc*xc)-((M02*inv_M00)-yc*yc));
 	}
 	//pos.gesture=GESTURE_NULL;
 	tan_fi = licz/mian;
-	float u = atan2(licz,mian)/2;
+	u = atan2(licz,mian)/2.0f;
 	if (u<angle_max && u>0.0f) 
 	{
 		pos.gesture = GESTURE_RMBDOWN;
@@ -374,6 +256,7 @@ void cPosdetect::draw_frame_marker( frame_data * frame, int posx, int posy, floa
 int cPosdetect::init( PropertyMgr * pm )
 {
 	USE_PROPERTY_MGR( pm );
+	xc=0.0f, yc=0.0f;
 	return( ST_OK );
 }
 

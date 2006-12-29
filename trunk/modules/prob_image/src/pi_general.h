@@ -39,11 +39,20 @@ protected:
 	int				temp_param;
 	int				alloc_mem;
 	int				initVal;
+	/// odwrotnosc najwiekszej wart. w histogramie - do przyspieszenia obliczen
+	/// (eliminacja dzielen)
 	float			inv_maxVal;
+	/// Maksymlana i minimalna wartosc koloru, max i min wartosc jasnosci
+	/// Smin - minimalna wartosc saturacji
 	int_range		Hmax,Hmin,Vmax,Vmin,Smin;;
+	/// ramka wejsciowa
 	frame_data	*	inFrame;
+	/// zmienna przechowujaca wybrany region
 	frame_data	*	selected_region;
+	/// przechowuje histogram wraz z jego skladowymi
 	hist_data	*	histogram;
+	/// histogram z wartosciami wydzielonymi przez histMaxVal
+	/// stworzony, aby uniknac wielokrotnego dzielenia tego samego
 	float		*	hist_probability;
 	/// funkcja konwertujaca z formatu RGB do HSV
 	/// \return void

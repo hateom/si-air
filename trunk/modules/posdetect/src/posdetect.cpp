@@ -1,4 +1,5 @@
 #define MOD_CPP
+/// 2/SQRT(2) - w celu unikniecia dzielenia
 #define TWO_BY_SQRT_TWO 1.41421356237310f
 #include "posdetect.h"
 #include "../../module_base/src/types.h"

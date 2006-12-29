@@ -112,7 +112,7 @@ proc_data * mod_camshift_opencv::process_frame( proc_data * prev_frame, int * re
 	float* hranges = hranges_arr;
 	int vmin = 10, vmax = 256, smin = 30;
 
-	frame = (IplImage*) prev_frame->user_data0;
+//	frame = (IplImage*) prev_frame->user_data0;
 	if( !image )
 	{
 		/* allocate all the buffers */

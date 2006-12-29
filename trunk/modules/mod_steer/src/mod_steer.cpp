@@ -10,7 +10,7 @@
 static modSteer * g_modSteer = NULL;
 
 //////////////////////////////////////////////////////////////////////////
-
+/// CALLBACK hooka klawiatury
 LRESULT CALLBACK KeyboardProc( int nCode, WPARAM wParam, LPARAM lParam )
 {
 	if( nCode < 0 )
@@ -35,7 +35,14 @@ LRESULT CALLBACK KeyboardProc( int nCode, WPARAM wParam, LPARAM lParam )
 		{
 			//printf( ">>> off\n" );
 			//g_modSteer->set_control_state( 0 );
-			if (g_modSteer->get_control_state()) g_modSteer->set_control_state(0);
+			if (g_modSteer->get_control_state()) 
+			{
+				g_modSteer->set_control_state(0);
+				INPUT ip; ZeroMemory(&ip,sizeof(ip)); ip.type=INPUT_MOUSE; ip.mi.dwFlags=MOUSEEVENTF_LEFTUP;
+				SendInput(1,&ip,sizeof(ip));
+				ZeroMemory(&ip,sizeof(ip)); ip.type=INPUT_MOUSE; ip.mi.dwFlags=MOUSEEVENTF_RIGHTUP;
+				SendInput(1,&ip,sizeof(ip));
+			}
 			else g_modSteer->set_control_state(1);
 		}
 	}
@@ -95,6 +102,10 @@ void modSteer::free()
 {
 	g_modSteer = NULL;
 	UnhookWindowsHookEx( hook );
+	INPUT ip; ZeroMemory(&ip,sizeof(ip)); ip.type=INPUT_MOUSE; ip.mi.dwFlags=MOUSEEVENTF_LEFTUP;
+	SendInput(1,&ip,sizeof(ip));
+	ZeroMemory(&ip,sizeof(ip)); ip.type=INPUT_MOUSE; ip.mi.dwFlags=MOUSEEVENTF_RIGHTUP;
+	SendInput(1,&ip,sizeof(ip));
 }
 
 //////////////////////////////////////////////////////////////////////////

@@ -32,15 +32,20 @@ public:
 	virtual int output_type();
 
 	virtual proc_data * process_frame( proc_data * prev_frame, int * result );
-
+	/// Funkcja zwracajaca wartosc parametru on_off
+	/// \return int - wartosc parametru on_off (wl/wyl sterowania wskaznikiem myszy)
 	int get_control_state ();
+	/// Funkcja do ustawiania parametru on_off
+	/// \return void
 	void set_control_state( int param );
 
 private:
 	long alloc_mem;
 	float_range factor;
-
+	/// zmienna przechowuje informacje o tym czy ma byc wlaczone sterowanie
+	/// wskaznikiem myszy, czy nie
 	int	on_off;
+	/// hook do klawiatury
 	HHOOK hook;
 
 	//LRESULT CALLBACK KeyboardProc (int nCode, WPARAM wParam, LPARAM lParam);

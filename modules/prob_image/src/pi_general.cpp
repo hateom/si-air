@@ -133,8 +133,8 @@ proc_data * piGeneral::process_frame( proc_data * prev_frame, int * status )
 			{
 				if ( histogram->histMaxVal )
 				{
-					piTable[x+offs1] += 
-						(float)histogram->hist_vals[ int(H)]*inv_maxVal;
+					piTable[x+offs1] += hist_probability[ int(H)];
+						//(float)histogram->hist_vals[ int(H)]*inv_maxVal;
 				}
 			}
 			if( preview_param )
@@ -268,6 +268,10 @@ void piGeneral::hist()
 	histogram->histMaxVal = HHistMaxValue;
 	histogram->h_size=360;
 	if (HHistMaxValue) inv_maxVal = (float)1/(float)HHistMaxValue;
+	for (int i=0; i<histogram->h_size;i++) 
+	{
+		hist_probability[i]=histogram->hist_vals[i]*inv_maxVal;
+	}
 
 }
 
@@ -279,6 +283,7 @@ int piGeneral::init( PropertyMgr * pm )
 
 	histogram = new hist_data();
 	histogram->hist_vals = new int[360];
+	hist_probability = new float[360];
 	inv_maxVal = 0.0f;
 
 	return( ST_OK );
@@ -303,6 +308,11 @@ void piGeneral::free()
 
 		delete histogram;
 		histogram = NULL;
+	}
+	if (hist_probability)
+	{
+		delete [] hist_probability;
+		hist_probability = NULL;
 	}
 }
 

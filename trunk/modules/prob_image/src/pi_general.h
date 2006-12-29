@@ -18,6 +18,8 @@
 
 //////////////////////////////////////////////////////////////////////////
 
+/// klasa (modul) sluzaca przedewszystkim do obliczania prawdopodobienstw przynaleznosi
+/// piksela do obiektu. Po tym module powinen znajdowac sie modul wyznaczajacy pozycje
 class EXPORT_MODULE piGeneral: public moduleBase
 {
 public:

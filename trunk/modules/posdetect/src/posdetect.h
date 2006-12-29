@@ -18,6 +18,8 @@
 
 //////////////////////////////////////////////////////////////////////////
 
+/// klasa(modul) odpowiedzialna za wyznaczenie pozycji oraz orientacji obiektu
+/// po tym module powinien byc modul generacji polecen dla OS
 class EXPORT_MODULE cPosdetect: public moduleBase
 {
 public:

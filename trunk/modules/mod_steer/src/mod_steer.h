@@ -17,6 +17,8 @@
 
 //////////////////////////////////////////////////////////////////////////
 
+/// Klasa (modul) do majaca za zadanie generowanie polecen dla systemu operacyjnego
+/// to jest ostatni modul w torze
 class EXPORT_MODULE modSteer: public moduleBase
 {
 public:

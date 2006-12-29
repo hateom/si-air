@@ -134,7 +134,7 @@ proc_data * modSteer::process_frame( proc_data * prev_frame, int * result )
 			INPUT ip; ZeroMemory(&ip,sizeof(ip)); ip.type=INPUT_MOUSE; ip.mi.dwFlags=MOUSEEVENTF_RIGHTDOWN;
 			SendInput(1,&ip,sizeof(ip));
 		}
-		else  if (prev_frame->position->gesture==GESTURE_NULL && prev_gest == GESTURE_LMBDOWN) 
+		else  if (prev_frame->position->gesture==GESTURE_LMBDOWN && prev_gest == GESTURE_NULL) 
 		{
 			INPUT ip; ZeroMemory(&ip,sizeof(ip)); ip.type=INPUT_MOUSE; ip.mi.dwFlags=MOUSEEVENTF_LEFTDOWN;
 			SendInput(1,&ip,sizeof(ip));	

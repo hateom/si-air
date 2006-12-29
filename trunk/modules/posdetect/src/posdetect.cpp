@@ -161,15 +161,15 @@ proc_data * cPosdetect::process_frame( proc_data * prev_frame, int * result )
 	u = atan2(licz,mian)/2.0f;
 	if (u<angle_max && u>0.0f) 
 	{
-		pos.gesture = GESTURE_RMBDOWN;
-		last_gesture = GESTURE_RMBDOWN;
-	}
-	else if(u>-angle_max && u<-0.0f)
-	{
 		pos.gesture = GESTURE_LMBDOWN;
 		last_gesture = GESTURE_LMBDOWN;
 	}
-	else if(u>angle_max+treshold && u<-angle_max-treshold)
+	else if(u>-angle_max && u<-0.0f)
+	{
+		pos.gesture = GESTURE_RMBDOWN;
+		last_gesture = GESTURE_RMBDOWN;
+	}
+	else if((u>angle_max+treshold && u<=1.5f) || (u<-angle_max-treshold && u>=-1.5f))
 	{
 		pos.gesture = GESTURE_NULL;
 		last_gesture = GESTURE_NULL;

@@ -36,17 +36,15 @@ public:
 	virtual void free();
 
 protected:
-	int temp_param;
-	int alloc_mem;
-	int initVal;
-	float inv_maxVal;
-	//int Hmax,Hmin,Vmax,Vmin,Smin;
-	
-	int_range Hmax,Hmin,Vmax,Vmin,Smin;;
-
-	frame_data * inFrame;
-	frame_data * selected_region;
-	hist_data  * histogram;
+	int				temp_param;
+	int				alloc_mem;
+	int				initVal;
+	float			inv_maxVal;
+	int_range		Hmax,Hmin,Vmax,Vmin,Smin;;
+	frame_data	*	inFrame;
+	frame_data	*	selected_region;
+	hist_data	*	histogram;
+	float		*	hist_probability;
 	/// funkcja konwertujaca z formatu RGB do HSV
 	/// \return void
 	void piGeneral::RGBtoHSV(int& r, int& g, int& b, float& h, float& s, float& v);

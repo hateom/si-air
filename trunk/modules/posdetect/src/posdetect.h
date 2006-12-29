@@ -76,6 +76,11 @@ protected:
 	float			u;
 	/// zmienna przechowujaca ostatnia wartosc wykrytego gestu
 	int				last_gesture;
+	/// bufor pamietajacy kilka ostatnich proporcji wys/szer obiektu
+	float			*buffer;
+	/// rozmiar bufora proporcji
+	int_range		buff_size;
+	int				thirdBtn;
 };
 
 //////////////////////////////////////////////////////////////////////////

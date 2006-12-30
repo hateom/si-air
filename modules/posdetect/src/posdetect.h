@@ -31,6 +31,7 @@ public:
 	virtual int output_type();
 
 	virtual proc_data * process_frame( proc_data * prev_frame, int * result );
+	void mouse_select(int sx, int sy, int sw, int sh );
 
 	virtual int  init( PropertyMgr * pm = NULL );
 	virtual void free();
@@ -80,7 +81,12 @@ protected:
 	float			*buffer;
 	/// rozmiar bufora proporcji
 	int_range		buff_size;
+	/// jaki ma byc stosunek wyspocz/wyskonc
+	float_range		ratio;
+	/// czy uzywac emulacji 3-go przycisku
 	int				thirdBtn;
+	/// czy analizowana ramka jest pierwsza
+	bool			isFirst;
 };
 
 //////////////////////////////////////////////////////////////////////////

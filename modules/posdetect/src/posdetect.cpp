@@ -26,10 +26,11 @@ cPosdetect::cPosdetect() : alloc_mem(0), angle(0.0f)
 				float_range(0.65f, 0.0f, 1.5f) );
 	REG_PARAM( PT_FLOAT_RANGE, treshold, "Angle treshold",
 		float_range(0.1f, 0.0f, 0.2f) );
-	REG_PARAM( PT_INT_RANGE, buff_size, "Buffer size",
-		int_range(5, 1, 15) );
-	REG_PARAM( PT_PREVIEW, angle_prv, "Angle", preview( PT_FLOAT, 200, &angle ) );
+	//REG_PARAM( PT_INT_RANGE, buff_size, "Buffer size",
+		//int_range(5, 1, 15) );
+	REG_PARAM(PT_FLOAT_RANGE, ratio, "Stosunek hakt/hpocz do 3 klaw.", float_range(0.75f, 0.2f, 0.95f));
 	REG_PARAM(PT_BOOL,thirdBtn,"Third Button Emulation",0);
+	REG_PARAM( PT_PREVIEW, angle_prv, "Angle", preview( PT_FLOAT, 200, &angle ) );
 
 	buffer = NULL;
 }
@@ -72,6 +73,7 @@ proc_data * cPosdetect::process_frame( proc_data * prev_frame, int * result )
 	//int InitialValue = 1;
 	static int width, height;
 	static int xs = 0, xk = width, ys = 0, yk = height, ObjHeight=0, ObjWidth=0, s = 0;
+	static int initialLenght;
 
 	maxVal = prev_frame->max_prob;
 	width = prev_frame->frame->width;
@@ -138,6 +140,7 @@ proc_data * cPosdetect::process_frame( proc_data * prev_frame, int * result )
 				if(lptmp <= 0) sqtmp = 0;
 				//if(a+c+sqtmp > 0) ObjHeight = sqrt((a+c+sqtmp)/2);
 				if( a+c+sqtmp > 0.0f ) ObjHeight = (int)(TWO_BY_SQRT_TWO*sqrtf((a+c+sqtmp)));
+				if (isFirst) {initialLenght = ObjHeight; isFirst=false;}
 				//if(a+c-sqtmp > 0) ObjWidth = sqrt((a+c-sqtmp)/2);
 				if( a+c-sqtmp > 0.0f ) ObjWidth = (int)(TWO_BY_SQRT_TWO*sqrtf((a+c-sqtmp)));
 				///////////////////////////////////////////////////////////////////////
@@ -166,17 +169,17 @@ proc_data * cPosdetect::process_frame( proc_data * prev_frame, int * result )
 	tan_fi = licz/mian;
 	u = atan2(licz,mian)/2.0f;
 
-	if (ObjWidth>0.75*ObjHeight && thirdBtn) 
+	if (ratio*initialLenght>ObjHeight && thirdBtn) 
 	{
 		pos.gesture = GESTURE_MIDDLEBTNDOWN;
 		last_gesture = GESTURE_MIDDLEBTNDOWN;
 	}
-	else if (u<angle_max && u>0.0f && (!thirdBtn || ObjWidth<0.6*ObjHeight)) 
+	else if (u<angle_max && u>0.0f && (!thirdBtn || ObjHeight>ratio*initialLenght)) 
 	{
 		pos.gesture = GESTURE_LMBDOWN;
 		last_gesture = GESTURE_LMBDOWN;
 	}
-	else if(u>-angle_max && u<-0.0f && (!thirdBtn ||ObjWidth<0.6*ObjHeight))
+	else if(u>-angle_max && u<-0.0f && (!thirdBtn || ObjHeight>ratio*initialLenght))
 	{
 		pos.gesture = GESTURE_RMBDOWN;
 		last_gesture = GESTURE_RMBDOWN;
@@ -278,6 +281,7 @@ int cPosdetect::init( PropertyMgr * pm )
 {
 	USE_PROPERTY_MGR( pm );
 	xc=0.0f, yc=0.0f;
+	buff_size=3;
 	if (buffer)
 	{
 		delete [] buffer;
@@ -285,6 +289,7 @@ int cPosdetect::init( PropertyMgr * pm )
 	}
 	buffer = new float[buff_size];
 	last_gesture = GESTURE_NULL;
+	isFirst = true;
 	return( ST_OK );
 }
 
@@ -300,6 +305,13 @@ void cPosdetect::free()
 }
 
 //////////////////////////////////////////////////////////////////////////
+
+void cPosdetect::mouse_select(int sx, int sy, int sw, int sh )
+{
+	isFirst = true;
+}
+//////////////////////////////////////////////////////////////////////////
+
 /// export funkcji exportujacej
 
 extern "C" {

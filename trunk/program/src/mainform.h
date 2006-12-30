@@ -70,6 +70,8 @@ public slots:
 	virtual void load_modules();
 	virtual void module_removed();
 
+	virtual void showAbout();
+
 protected slots:
 	virtual void languageChange();
 	virtual void update_popup();

@@ -63,14 +63,11 @@ protected:
 	/// Moment M11
 	float			M11;
 	/// maksymalna wartosc w histogramie
-	float			maxVal;
+	//float			maxVal;
 	/// wartosci prawdopodobienst przyn. piksela do obiektu
-	float			*piTable;
+	//float			*piTable;
 	/// wspolrzedne srodka masy
 	float			xc, yc;
-	/// zmienna informujaca o tym czy nastapilo roszerzenie okna poszukiwan 
-	/// (w przypadku zgubienia obiektu)
-	bool			retry;
 	/// zmienne pomocnicze do wyznaczania pozycji piksela
 	int				offs1, offs2;
 	/// przewrotnie nazwana wartosc kata

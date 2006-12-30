@@ -10,7 +10,7 @@
 
 #ifndef __POSDETECT_H__
 #define __POSDETECT_H__
-
+#define MOMENTS_SIZE 6
 //////////////////////////////////////////////////////////////////////////
 
 #include "../../module_base/src/module_base.h"

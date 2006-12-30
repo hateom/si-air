@@ -84,83 +84,34 @@ proc_data * cPosdetect::process_frame( proc_data * prev_frame, int * result )
 	piTable = prev_frame->prob;
 	retry = 0;
 	xc=0.0f, yc=0.0f;
-
-	for( int k=0; k<2; k++ )
-	{
-		if( k )
-		{
-			xs=(int)xc;
-			ys=(int)yc;
-			xk=(int)xc;
-			yk=(int)yc;
-			xs -= s;
-			xk += s;
-			ys -= (int)( 1.2f*(float)s );
-			yk += (int)( 1.2f*(float)s );
-
-			if( xs < 0 ) xs = 0;
-			if( xk > height ) xk = height;
-			if( ys < 0 ) ys=0;
-			if( yk > height ) yk = height;
-		}
+	M00 = prev_frame->moments[0];
+	M10 = prev_frame->moments[1];
+	M01 = prev_frame->moments[2];
+	M20 = prev_frame->moments[3];
+	M02 = prev_frame->moments[4];
+	M11 = prev_frame->moments[5];
 		
-		M00 = 0.0f;
-		M10 = 0.0f;
-		M01 = 0.0f;
-		M20 = 0.0f;
-		M02 = 0.0f;
-		M11 = 0.0f;
-		
-		for (int y=ys; y<yk; y++ )
-		{
-			offs1 = y*width;
-			for (int x=xs; x<xk; x++ )
-			{
-				offs2 = (x+offs1);
-				M00 += piTable[offs2];
-				M10 += piTable[offs2]*(float)x;
-				M01 += piTable[offs2]*(float)y;
-				M20 += piTable[offs2]*(float)x*(float)x;
-				M02 += piTable[offs2]*(float)y*(float)y;
-				M11 += piTable[offs2]*(float)x*(float)y;
-			}
-		}
-		if( M00 > 20.0f)
+		if( M00 > 0.0f)
 		{
 			float inv_M00 = 1.0f/M00;
 			xc = M10*inv_M00;
 			yc = M01*inv_M00;
-
-			if( k )
-			{
-				float a,b,c, sqtmp, lptmp;
-				a = (M20*inv_M00) - (xc*xc);
-				b = 2*((M11*inv_M00) - (xc*yc));
-				c = (M02*inv_M00) - (yc*yc);
-				lptmp = (b*b)+((a-c)*(a-c));
-				//lptmp = (b*b)-((a-c)*(a-c));
-				if(lptmp > 0) sqtmp = sqrt(lptmp);
-				if(lptmp <= 0) sqtmp = 0;
-				//if(a+c+sqtmp > 0) ObjHeight = sqrt((a+c+sqtmp)/2);
-				if( a+c+sqtmp > 0.0f ) ObjHeight = (int)(TWO_BY_SQRT_TWO*sqrtf((a+c+sqtmp)));
-				if (isFirst) {initialLenght = ObjHeight; isFirst=false;}
-				//if(a+c-sqtmp > 0) ObjWidth = sqrt((a+c-sqtmp)/2);
-				if( a+c-sqtmp > 0.0f ) ObjWidth = (int)(TWO_BY_SQRT_TWO*sqrtf((a+c-sqtmp)));
-				///////////////////////////////////////////////////////////////////////
-			}
+			float a,b,c, sqtmp, lptmp;
+			a = (M20*inv_M00) - (xc*xc);
+			b = 2*((M11*inv_M00) - (xc*yc));
+			c = (M02*inv_M00) - (yc*yc);
+			lptmp = (b*b)+((a-c)*(a-c));
+			//lptmp = (b*b)-((a-c)*(a-c));
+			if(lptmp > 0) sqtmp = sqrt(lptmp);
+			if(lptmp <= 0) sqtmp = 0;
+			//if(a+c+sqtmp > 0) ObjHeight = sqrt((a+c+sqtmp)/2);
+			if( a+c+sqtmp > 0.0f ) ObjHeight = (int)(TWO_BY_SQRT_TWO*sqrtf((a+c+sqtmp)));
+			if (isFirst) {initialLenght = ObjHeight; isFirst=false;}
+			//if(a+c-sqtmp > 0) ObjWidth = sqrt((a+c-sqtmp)/2);
+			if( a+c-sqtmp > 0.0f ) ObjWidth = (int)(TWO_BY_SQRT_TWO*sqrtf((a+c-sqtmp)));
+			///////////////////////////////////////////////////////////////////////
 		}
 		//rozciagamy okno poszukiwan na cala klatke i jedziemy!
-		else if (!retry)
-		{
-			xs=0;
-			ys=0;
-			xk=width;
-			yk=height;
-			retry=1;
-			k=-1;
-		}
-		if( maxVal ) s = (int)sqrtf( M00/maxVal );
-	}
 
 	float licz=0.0f, mian=1.0f;
 	if (M00) {

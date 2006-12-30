@@ -88,6 +88,8 @@ struct proc_data
 	float		*	prob;
 	/// maksymalna wartosc prawdopodobienstwa
 	float			max_prob;
+	/// momenty
+	float * moments;
 	//void		*	user_data0;
 	//void		*	user_data1;		/// j/w
 };

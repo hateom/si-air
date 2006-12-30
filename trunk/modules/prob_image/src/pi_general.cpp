@@ -1,4 +1,5 @@
 #define MOD_CPP
+#define MOMENTS_SIZE 6
 #include "pi_general.h"
 #include "../../module_base/src/types.h"
 #include "../../module_base/src/status_codes.h"
@@ -33,6 +34,7 @@ piGeneral::piGeneral() : alloc_mem(0), selected_region(NULL), histogram(NULL),
 	REG_PARAM( PT_INT_RANGE, Vmax, "Maximum V value", int_range( 255, 0, 255 ) );
 	REG_PARAM( PT_INT_RANGE, Vmin, "Minimum V value", int_range(  20, 0, 255 ) );
 	REG_PARAM( PT_INT_RANGE, Smin, "Minimum S value", int_range(   0, 0, 200 ) );
+	moments_local = NULL;
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -83,11 +85,14 @@ proc_data * piGeneral::process_frame( proc_data * prev_frame, int * status )
 	unsigned int height=inFrame->height, width=inFrame->width, depth = inFrame->depth;
 
 	static frame_data static_frame = { 0, 0, 0, 0 };
-	static proc_data p_data = { 0, 0, 0, 0 };
+	static proc_data p_data = { 0, 0, 0, 0, 0 };
 	static float * piTable = NULL;
 	float maxVal = 0.0f;
-	int offs1, offs2;
-
+//	float inv_maxVal;
+	static int offs1, offs2, offs3;
+	static unsigned int xs = 0, xk = width, ys = 0, yk = height, s = 0;
+	
+	retry = 0;
 	static_frame.depth = 4;
 	static_frame.width = inFrame->width;
 	static_frame.height = inFrame->height;
@@ -96,6 +101,11 @@ proc_data * piGeneral::process_frame( proc_data * prev_frame, int * status )
 	{
 		alloc_mem = static_frame.depth*static_frame.height*static_frame.width;
 		static_frame.bits = new unsigned char[alloc_mem];
+		if (p_data.moments) 
+		{
+			delete [] p_data.moments;
+		}
+		p_data.moments = new float[MOMENTS_SIZE];
 		piTable = new float[height*width];
 	}
 	else
@@ -111,51 +121,122 @@ proc_data * piGeneral::process_frame( proc_data * prev_frame, int * status )
 	}
 
 	// petla po wszystkich pikselach, tablica wygl¹da nastêpuj¹co
+	/*
 	for( int y=0; y<(int)height; ++y )
 	{
 		offs1 = y*width;
 		for( int x=0; x<(int)width; ++x )
 		{
-			offs2 = (x+offs1)*4;
-
-			B = inFrame->bits[offs2+0];
-			G = inFrame->bits[offs2+1];
-			R = inFrame->bits[offs2+2];
-
-			RGBtoHSV( R, G, B, H, S, V );
-
-			piTable[x+offs1] = 0.0;
-
-			if( ( H >= Hmin ) && ( H < Hmax ) && ( V >= Vmin ) && ( V < Vmax ) && ( Smin < S ) )
-			{
-				if (initVal) piTable[x+offs1] = 1.0;
-			}
-			if( ( V >= Vmin ) && ( V < Vmax ) && ( Smin < S ) )
-			{
-				if ( histogram->histMaxVal )
-				{
-					piTable[x+offs1] += hist_probability[ int(H)];
-						//(float)histogram->hist_vals[ int(H)]*inv_maxVal;
-				}
-			}
-			if( preview_param )
-			{
-				float chVal = piTable[x+offs1]*255.0f;
-				chVal = (chVal > 255.0f) ? 255.0f : chVal;
-
-				static_frame.bits[offs2+0] = (unsigned char)chVal;
-				static_frame.bits[offs2+1] = (unsigned char)chVal;
-				static_frame.bits[offs2+2] = (unsigned char)chVal;
-				//static_frame.bits[offs2+3] = 0;
-			}
-			if (piTable[x+offs1] > maxVal) maxVal = piTable[x+offs1];
+			
 		}
 	}
+	*/
+	
+	for( int k=0; k<2; k++ )
+	{
+		if( k )
+		{
+			xs=(int)xc;
+			ys=(int)yc;
+			xk=(int)xc;
+			yk=(int)yc;
+			xs -= s;
+			xk += s;
+			ys -= (int)( 1.2f*(float)s );
+			yk += (int)( 1.2f*(float)s );
 
+			if( xs < 0 ) xs = 0;
+			if( xk > height ) xk = height;
+			if( ys < 0 ) ys=0;
+			if( yk > height ) yk = height;
+		}
+
+		M00 = 0.0f;
+		M10 = 0.0f;
+		M01 = 0.0f;
+		M20 = 0.0f;
+		M02 = 0.0f;
+		M11 = 0.0f;
+		if (!k) memset(piTable,0,width*height);
+		for (unsigned int y=ys; y<yk; y++ )
+		{
+			offs1 = y*width;
+			for (unsigned int x=xs; x<xk; x++ )
+			{
+				if (!k)
+				{
+					offs2 = (x+offs1)*4;
+					B = inFrame->bits[offs2+0];
+					G = inFrame->bits[offs2+1];
+					R = inFrame->bits[offs2+2];
+	
+					RGBtoHSV( R, G, B, H, S, V );
+	
+					piTable[x+offs1] = 0.0;
+	
+					if( ( H >= Hmin ) && ( H < Hmax ) && ( V >= Vmin ) && ( V < Vmax ) && ( Smin < S ) )
+					{
+						if (initVal) piTable[x+offs1] = 1.0;
+					}
+					if( ( V >= Vmin ) && ( V < Vmax ) && ( Smin < S ) )
+					{
+						if ( histogram->histMaxVal )
+						{
+							piTable[x+offs1] += hist_probability[ int(H)];
+							//(float)histogram->hist_vals[ int(H)]*inv_maxVal;
+						}
+					}
+					if( preview_param )
+					{
+						float chVal = piTable[x+offs1]*255.0f;
+						chVal = (chVal > 255.0f) ? 255.0f : chVal;
+
+						static_frame.bits[offs2+0] = (unsigned char)chVal;
+						static_frame.bits[offs2+1] = (unsigned char)chVal;
+						static_frame.bits[offs2+2] = (unsigned char)chVal;
+						//static_frame.bits[offs2+3] = 0;
+					}
+				}
+				if (piTable[x+offs1] > maxVal) maxVal = piTable[x+offs1];
+				offs3 = (x+offs1);
+				M00 += piTable[offs3];
+				M10 += piTable[offs3]*(float)x;
+				M01 += piTable[offs3]*(float)y;
+				M20 += piTable[offs3]*(float)x*(float)x;
+				M02 += piTable[offs3]*(float)y*(float)y;
+				M11 += piTable[offs3]*(float)x*(float)y;
+			}
+		}
+		if( M00 > 20.0f)
+		{
+			float inv_M00 = 1.0f/M00;
+			xc = M10*inv_M00;
+			yc = M01*inv_M00;
+		}
+		//rozciagamy okno poszukiwan na cala klatke i jedziemy!
+		else if (!retry)
+		{
+			xs=0;
+			ys=0;
+			xk=width;
+			yk=height;
+			retry=1;
+			k=-1;
+		}
+		if( maxVal ) s = (int)sqrtf( M00/maxVal );
+	}
 	// kopiowanie do struktury i zwrocenie
 	p_data.input_frame = prev_frame->input_frame;
 	p_data.frame =  &static_frame;
 	p_data.prob = piTable;
+
+	p_data.moments[0]=M00;
+	p_data.moments[1]=M10;
+	p_data.moments[2]=M01;
+	p_data.moments[3]=M20;
+	p_data.moments[4]=M02;
+	p_data.moments[5]=M11;
+
 	p_data.max_prob = maxVal;
 
 	*status = ST_OK;
@@ -288,7 +369,11 @@ int piGeneral::init( PropertyMgr * pm )
 	histogram->hist_vals = new int[360];
 	hist_probability = new float[360];
 	inv_maxVal = 0.0f;
-
+	if (moments_local)
+	{
+		delete [] moments_local;
+	}
+	moments_local = new float[MOMENTS_SIZE];
 	return( ST_OK );
 }
 
@@ -312,10 +397,16 @@ void piGeneral::free()
 		delete histogram;
 		histogram = NULL;
 	}
+
 	if (hist_probability)
 	{
 		delete [] hist_probability;
 		hist_probability = NULL;
+	}
+	if (moments_local) 
+	{
+		delete [] moments_local;
+		moments_local = NULL;
 	}
 }
 

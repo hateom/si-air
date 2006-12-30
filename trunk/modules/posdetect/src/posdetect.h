@@ -85,6 +85,8 @@ protected:
 	float_range		ratio;
 	/// czy uzywac emulacji 3-go przycisku
 	int				thirdBtn;
+	/// czy korygowac polozenie
+	int correctPlacement;
 	/// czy analizowana ramka jest pierwsza
 	bool			isFirst;
 };

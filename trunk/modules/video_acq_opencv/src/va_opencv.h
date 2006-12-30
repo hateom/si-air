@@ -45,6 +45,7 @@ protected:
 	int			alloc_mem;
 	int			device;		// device num parameter
 	char *		filename;	// when capturing from file
+	int			invert_x;
 };
 
 //////////////////////////////////////////////////////////////////////////

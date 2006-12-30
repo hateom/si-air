@@ -24,6 +24,8 @@ vaOpenCV::vaOpenCV() : capture(NULL), alloc_mem(0)
 	REG_PARAM( PT_INT,      device,   "Device id number", 0 );
 	REG_PARAM( PT_FILENAME, filename, "Video filename", 0 );
 
+	REG_PARAM( PT_BOOL,     invert_x, "Mirror mode (invert x)", 0 );
+
 	set_param( "preview_param", 1 );
 }
 
@@ -129,6 +131,11 @@ proc_data * vaOpenCV::process_frame( proc_data * prev_frame, int * result )
 		{
 			offs1 = (x+aof1)*4;
 			offs2 = (x+aof2)*3;
+
+			if( invert_x )
+			{
+				offs1 = (static_frame.width-1-x+aof1)*4;
+			}
 
 			static_frame.bits[offs1+0] = frame->imageData[offs2+0];
 			static_frame.bits[offs1+1] = frame->imageData[offs2+1];

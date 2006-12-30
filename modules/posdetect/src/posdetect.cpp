@@ -30,6 +30,7 @@ cPosdetect::cPosdetect() : alloc_mem(0), angle(0.0f)
 		//int_range(5, 1, 15) );
 	REG_PARAM(PT_FLOAT_RANGE, ratio, "Stosunek hakt/hpocz do 3 klaw.", float_range(0.75f, 0.2f, 0.95f));
 	REG_PARAM(PT_BOOL,thirdBtn,"Third Button Emulation",0);
+	REG_PARAM(PT_BOOL, correctPlacement, "Move center", 0);
 	REG_PARAM( PT_PREVIEW, angle_prv, "Angle", preview( PT_FLOAT, 200, &angle ) );
 
 	buffer = NULL;
@@ -74,6 +75,8 @@ proc_data * cPosdetect::process_frame( proc_data * prev_frame, int * result )
 	static int width, height;
 	static int xs = 0, xk = width, ys = 0, yk = height, ObjHeight=0, ObjWidth=0, s = 0;
 	static int initialLenght;
+	static float dx, dy;
+	static float sign;
 
 	maxVal = prev_frame->max_prob;
 	width = prev_frame->frame->width;
@@ -169,17 +172,17 @@ proc_data * cPosdetect::process_frame( proc_data * prev_frame, int * result )
 	tan_fi = licz/mian;
 	u = atan2(licz,mian)/2.0f;
 
-	if (ratio*initialLenght>ObjHeight && thirdBtn) 
+	if (thirdBtn && ratio*initialLenght>ObjHeight) 
 	{
 		pos.gesture = GESTURE_MIDDLEBTNDOWN;
 		last_gesture = GESTURE_MIDDLEBTNDOWN;
 	}
-	else if (u<angle_max && u>0.0f && (!thirdBtn || ObjHeight>ratio*initialLenght)) 
+	else if ((!thirdBtn || ObjHeight>ratio*initialLenght) && u<angle_max && u>0.0f) 
 	{
 		pos.gesture = GESTURE_LMBDOWN;
 		last_gesture = GESTURE_LMBDOWN;
 	}
-	else if(u>-angle_max && u<-0.0f && (!thirdBtn || ObjHeight>ratio*initialLenght))
+	else if((!thirdBtn || ObjHeight>ratio*initialLenght) && u>-angle_max && u<-0.0f)
 	{
 		pos.gesture = GESTURE_RMBDOWN;
 		last_gesture = GESTURE_RMBDOWN;
@@ -192,8 +195,13 @@ proc_data * cPosdetect::process_frame( proc_data * prev_frame, int * result )
 	else pos.gesture = last_gesture;
 	//pos.angle=atan(tan_fi)/2;
 	pos.angle=u;
-	pos.x = (int)xc;
-	pos.y = (int)yc;
+	if (correctPlacement && ObjHeight>ratio*initialLenght){
+		if (u>0) sign=1.0f; else sign = -1.0f;
+		dy = abs(sinf(u)*0.5f*ObjHeight);
+		dx = sign*cosf(u)*0.5f*ObjHeight;
+	} else {dx=0; dy=0;}
+	pos.x = (int)(xc+dx);
+	pos.y = (int)(yc+dy);
 	*result = ST_OK;
 
 	/// dilz add

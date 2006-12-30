@@ -266,6 +266,7 @@ void ModuleMgr::start_processing()
 	connect( sPreviewMgr, SIGNAL(mouse_select(int,int,int,int)), this, SLOT(mouse_select(int,int,int,int)) );
 
 	emit processing_started();
+	LOG( ">>> processing started...\n" );
 
 	timer->start( 40 );
 
@@ -302,6 +303,7 @@ void ModuleMgr::stop_processing()
 	sPreviewMgr->close_all();
 
 	emit processing_finished();
+	LOG( ">>> processing finished.\n" );
 }
 
 //////////////////////////////////////////////////////////////////////////

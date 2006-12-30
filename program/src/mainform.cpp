@@ -33,7 +33,7 @@
  *
  */
 MainForm::MainForm( QWidget* parent, const char* name, WFlags fl )
-    : QMainWindow( parent, name, fl ),
+    : QMainWindow( parent, name, Qt::WType_Dialog | Qt::WStyle_Minimize/*WStyle_Tool*/ ),
       image0( (const char **) image0_data ), image1((const char **) image1_data),
 	  btn_start( (const char **)btn6_data ), btn_reload( (const char **)btn7_data ), 
 	  btn_clear( (const char **)btn8_data )
@@ -166,7 +166,10 @@ MainForm::MainForm( QWidget* parent, const char* name, WFlags fl )
 	setBackgroundColor( QColor( 244, 244, 244 ) );
 
     languageChange();
-    resize( QSize(700, 530).expandedTo(minimumSizeHint()) );
+	setFixedSize( QSize( 700, 530 ) );
+	setMinimumSize( QSize( 698, 528 ) );
+//	setMaximumSize( QSize( 700, 530 ) );
+//    resize( QSize(700, 530).expandedTo(minimumSizeHint()) );
     clearWState( WState_Polished );
 }
 
@@ -353,14 +356,12 @@ void MainForm::processing_started()
 
 void MainForm::processing_finished()
 {
-	/*
 	if( startButton->text() != tr("Start") )
 	{
-		connect( startButton, SIGNAL(clicked()), this, SLOT(run()) );
 		disconnect( startButton, SIGNAL(clicked()), this, SLOT(stop()) );
+		connect( startButton, SIGNAL(clicked()), this, SLOT(run()) );
 		startButton->setTextLabel( tr( "Start" ) );
 	}
-	*/
 }
 
 //////////////////////////////////////////////////////////////////////////

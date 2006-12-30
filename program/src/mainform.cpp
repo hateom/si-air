@@ -27,6 +27,8 @@
 #include "main_arrow.h"
 #include "main_buttons.h"
 
+#include "aboutform.h"
+
 /*
  *  Constructs a MainForm as a child of 'parent', with the
  *  name 'name' and widget flags set to 'f'.
@@ -143,6 +145,7 @@ MainForm::MainForm( QWidget* parent, const char* name, WFlags fl )
 	aboutAction->addTo( About );
     MenuBarEditor->insertItem( QString(""), About, 2 );
 
+	connect( aboutAction, SIGNAL(activated()), this, SLOT(showAbout()) );
 
 	connect( buttonReset, SIGNAL(clicked()), sModuleMgr, SLOT(clear_path()) );
 	connect( reloadButton, SIGNAL(clicked()), this, SLOT(load_modules()) );
@@ -220,6 +223,15 @@ void MainForm::languageChange()
     if (MenuBarEditor->findItem(2))
         MenuBarEditor->findItem(2)->setText( tr( "&About" ) );
 }
+
+//////////////////////////////////////////////////////////////////////////
+
+void MainForm::showAbout()
+{
+	AboutForm * about;
+	about = new AboutForm( this, "aboutForm", TRUE, 0 );
+	about->show();
+}	
 
 //////////////////////////////////////////////////////////////////////////
 

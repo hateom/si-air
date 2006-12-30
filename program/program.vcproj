@@ -154,6 +154,12 @@
 				Name="qt"
 				Filter="">
 				<File
+					RelativePath=".\src\aboutform.cpp">
+				</File>
+				<File
+					RelativePath=".\src\aboutform.h">
+				</File>
+				<File
 					RelativePath=".\src\fnwidget.cpp">
 				</File>
 				<File
@@ -173,6 +179,9 @@
 				</File>
 				<File
 					RelativePath=".\src\mainform.h">
+				</File>
+				<File
+					RelativePath=".\src\moc_aboutform.cpp">
 				</File>
 				<File
 					RelativePath=".\src\moc_fnwidget.cpp">

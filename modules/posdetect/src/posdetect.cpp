@@ -111,8 +111,6 @@ proc_data * cPosdetect::process_frame( proc_data * prev_frame, int * result )
 			if( a+c-sqtmp > 0.0f ) ObjWidth = (int)(TWO_BY_SQRT_TWO*sqrtf((a+c-sqtmp)));
 			///////////////////////////////////////////////////////////////////////
 		}
-		//rozciagamy okno poszukiwan na cala klatke i jedziemy!
-
 	float licz=0.0f, mian=1.0f;
 	if (M00) {
 		float inv_M00 = 1.0f/M00;

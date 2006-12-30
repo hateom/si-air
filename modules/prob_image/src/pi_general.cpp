@@ -92,7 +92,7 @@ proc_data * piGeneral::process_frame( proc_data * prev_frame, int * status )
 	static int offs1, offs2, offs3;
 	static unsigned int xs = 0, xk = width, ys = 0, yk = height, s = 0;
 	
-	retry = 0;
+	retry = false;
 	static_frame.depth = 4;
 	static_frame.width = inFrame->width;
 	static_frame.height = inFrame->height;
@@ -120,18 +120,6 @@ proc_data * piGeneral::process_frame( proc_data * prev_frame, int * status )
 		}
 	}
 
-	// petla po wszystkich pikselach, tablica wygl¹da nastêpuj¹co
-	/*
-	for( int y=0; y<(int)height; ++y )
-	{
-		offs1 = y*width;
-		for( int x=0; x<(int)width; ++x )
-		{
-			
-		}
-	}
-	*/
-	
 	for( int k=0; k<2; k++ )
 	{
 		if( k )
@@ -140,13 +128,13 @@ proc_data * piGeneral::process_frame( proc_data * prev_frame, int * status )
 			ys=(int)yc;
 			xk=(int)xc;
 			yk=(int)yc;
-			xs -= s;
-			xk += s;
+			xs -= (int)( 1.2f*(float)s );
+			xk += (int)( 1.2f*(float)s );
 			ys -= (int)( 1.2f*(float)s );
 			yk += (int)( 1.2f*(float)s );
 
 			if( xs < 0 ) xs = 0;
-			if( xk > height ) xk = height;
+			if( xk > width ) xk = width;
 			if( ys < 0 ) ys=0;
 			if( yk > height ) yk = height;
 		}
@@ -157,7 +145,11 @@ proc_data * piGeneral::process_frame( proc_data * prev_frame, int * status )
 		M20 = 0.0f;
 		M02 = 0.0f;
 		M11 = 0.0f;
-		if (!k) memset(piTable,0,width*height);
+		if (!k) 
+			{
+				memset(piTable,0,width*height);
+				memset(static_frame.bits,0,alloc_mem);
+			}
 		for (unsigned int y=ys; y<yk; y++ )
 		{
 			offs1 = y*width;

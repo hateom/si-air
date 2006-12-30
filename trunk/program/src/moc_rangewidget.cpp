@@ -1,7 +1,7 @@
 /****************************************************************************
 ** rangeWidget meta object code from reading C++ file 'rangewidget.h'
 **
-** Created: Pn 25. gru 21:00:46 2006
+** Created: So 30. gru 20:38:22 2006
 **      by: The Qt MOC ($Id: moc_yacc.cpp,v 1.1.1.13 2006/05/05 17:43:42 chehrlic Exp $)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -64,10 +64,14 @@ QMetaObject* rangeWidget::staticMetaObject()
 	{ "slider_changed(int)", &slot_0, QMetaData::Public },
 	{ "edit_changed(const QString&)", &slot_1, QMetaData::Public }
     };
+    static const QUMethod signal_0 = {"valueChanged", 0, 0 };
+    static const QMetaData signal_tbl[] = {
+	{ "valueChanged()", &signal_0, QMetaData::Public }
+    };
     metaObj = QMetaObject::new_metaobject(
 	"rangeWidget", parentObject,
 	slot_tbl, 2,
-	0, 0,
+	signal_tbl, 1,
 #ifndef QT_NO_PROPERTIES
 	0, 0,
 	0, 0,
@@ -84,6 +88,12 @@ void* rangeWidget::qt_cast( const char* clname )
     return QWidget::qt_cast( clname );
 }
 
+// SIGNAL valueChanged
+void rangeWidget::valueChanged()
+{
+    activate_signal( staticMetaObject()->signalOffset() + 0 );
+}
+
 bool rangeWidget::qt_invoke( int _id, QUObject* _o )
 {
     switch ( _id - staticMetaObject()->slotOffset() ) {
@@ -97,7 +107,12 @@ bool rangeWidget::qt_invoke( int _id, QUObject* _o )
 
 bool rangeWidget::qt_emit( int _id, QUObject* _o )
 {
-    return QWidget::qt_emit(_id,_o);
+    switch ( _id - staticMetaObject()->signalOffset() ) {
+    case 0: valueChanged(); break;
+    default:
+	return QWidget::qt_emit(_id,_o);
+    }
+    return TRUE;
 }
 #ifndef QT_NO_PROPERTIES
 

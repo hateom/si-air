@@ -62,6 +62,7 @@ OptForm::OptForm( moduleBase * base, QWidget* parent, const char* name, WFlags f
 					sprintf( temp, "%d", (int)(*((int*)base->get_param(k)->data)) );
 					edt->setText( tr( temp ) );
 					info = create_wdg_info( edt, PT_LONG );
+					connect( edt, SIGNAL(textChanged(const QString&)), this, SLOT(save_conf()) );
 				}
 				break;
 			case PT_BOOL:
@@ -73,6 +74,7 @@ OptForm::OptForm( moduleBase * base, QWidget* parent, const char* name, WFlags f
 					on_off = (int)(*((int*)base->get_param(k)->data));
 					box->setChecked( on_off == 1 );
 					info = create_wdg_info( box, PT_BOOL );
+					connect( box, SIGNAL(clicked()), this, SLOT(save_conf()) );
 				}
 				break;
 			case PT_FLOAT:
@@ -82,6 +84,7 @@ OptForm::OptForm( moduleBase * base, QWidget* parent, const char* name, WFlags f
 					sprintf( temp, "%f", (float)(*((float*)base->get_param(k)->data)) );
 					edt->setText( tr( temp ) );
 					info = create_wdg_info( edt, PT_LONG );
+					connect( edt, SIGNAL(textChanged(const QString&)), this, SLOT(save_conf()) );
 				}
 				break;
 			case PT_STRING:
@@ -91,6 +94,7 @@ OptForm::OptForm( moduleBase * base, QWidget* parent, const char* name, WFlags f
 					sprintf( temp, "%s", (char*)(*((char**)base->get_param(k)->data)) );
 					edt->setText( tr( temp ) );
 					info = create_wdg_info( edt, PT_LONG );
+					connect( edt, SIGNAL(textChanged(const QString&)), this, SLOT(save_conf()) );
 				}
 				break;
 			case PT_FILENAME:
@@ -101,6 +105,7 @@ OptForm::OptForm( moduleBase * base, QWidget* parent, const char* name, WFlags f
 					sprintf( temp, "%s", (char*)(*((char**)base->get_param(k)->data)) );
 					fnw->setText( temp );
 					info = create_wdg_info( fnw, PT_LONG );
+					connect( fnw, SIGNAL(textChanged()), this, SLOT(save_conf()) );
 				}
 				break;
 			case PT_FLOAT_RANGE:
@@ -112,6 +117,7 @@ OptForm::OptForm( moduleBase * base, QWidget* parent, const char* name, WFlags f
 					fr = (float_range*)(base->get_param(k)->data);
 					rnwf->setup( fr->minv, fr->maxv, fr->value );
 					info = create_wdg_info( rnwf, PT_FLOAT_RANGE );
+					connect( rnwf, SIGNAL(valueChanged()), this, SLOT(save_conf()) );
 				}
 				break;
 			case PT_INT_RANGE:
@@ -123,6 +129,7 @@ OptForm::OptForm( moduleBase * base, QWidget* parent, const char* name, WFlags f
 					ir = (int_range*)(base->get_param(k)->data);
 					rnw->setup( ir->minv, ir->maxv, ir->value );
 					info = create_wdg_info( rnw, PT_INT_RANGE );
+					connect( rnw, SIGNAL(valueChanged()), this, SLOT(save_conf()) );
 				}
 				break;
 			case PT_PREVIEW:
@@ -158,7 +165,7 @@ OptForm::OptForm( moduleBase * base, QWidget* parent, const char* name, WFlags f
 		}
 		i++;
 	}
-
+/*
 	btn_ok = new QPushButton( this, tr("btnOK") );
 	btn_ok->setGeometry( QRect( 10, 25+i*52, 140, 24 ) );
 	btn_ok->setText( tr("&Apply") );
@@ -169,11 +176,11 @@ OptForm::OptForm( moduleBase * base, QWidget* parent, const char* name, WFlags f
 
 	connect( btn_ok, SIGNAL(clicked()), this, SLOT(save_conf()) );
 //	connect( btn_cancel, SIGNAL(clicked()), this, SLOT(close()) );
-
+*/
 	setPaletteBackgroundColor( QColor( 240, 240, 255 ) );
 
 	languageChange();
-	resize( QSize( 248, 55+i*52 + 20 ).expandedTo(minimumSizeHint()) );
+	resize( QSize( 248, 25+i*52 + 20 ).expandedTo(minimumSizeHint()) );
 	clearWState( WState_Polished );
 }
 

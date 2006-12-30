@@ -41,6 +41,9 @@ public:
 	float get_minf();
 	float get_maxf();
 
+signals:
+	void valueChanged();
+
 public slots:
 	void slider_changed( int sv );
 	void edit_changed( const QString & str );

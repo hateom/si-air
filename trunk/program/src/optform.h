@@ -46,7 +46,7 @@ public:
 
 private:
 	QLabel	    ** label;
-	QPushButton *  btn_ok;
+//	QPushButton *  btn_ok;
 //	QPushButton *  btn_cancel;
 
 protected slots:

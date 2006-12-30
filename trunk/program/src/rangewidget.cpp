@@ -171,6 +171,8 @@ void rangeWidget::edit_changed( const QString & str )
 		float perc = (min_valuef+valuef)/(max_valuef-min_valuef);
 		if( !slider_lock ) slider->setValue( (int)(perc*100.0f) );
 	}
+
+	emit valueChanged();
 }
 
 //////////////////////////////////////////////////////////////////////////

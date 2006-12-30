@@ -150,6 +150,11 @@ proc_data * modSteer::process_frame( proc_data * prev_frame, int * result )
 			INPUT ip; ZeroMemory(&ip,sizeof(ip)); ip.type=INPUT_MOUSE; ip.mi.dwFlags=MOUSEEVENTF_LEFTDOWN;
 			SendInput(1,&ip,sizeof(ip));	
 		}
+		else  if (prev_frame->position->gesture==GESTURE_MIDDLEBTNDOWN && prev_gest == GESTURE_NULL) 
+		{
+			INPUT ip; ZeroMemory(&ip,sizeof(ip)); ip.type=INPUT_MOUSE; ip.mi.dwFlags=MOUSEEVENTF_MIDDLEDOWN;
+			SendInput(1,&ip,sizeof(ip));	
+		}
 		else  if (prev_frame->position->gesture==GESTURE_NULL && prev_gest == GESTURE_RMBDOWN) 
 		{
 			INPUT ip; ZeroMemory(&ip,sizeof(ip)); ip.type=INPUT_MOUSE; ip.mi.dwFlags=MOUSEEVENTF_RIGHTUP;
@@ -158,6 +163,11 @@ proc_data * modSteer::process_frame( proc_data * prev_frame, int * result )
 		else  if (prev_frame->position->gesture==GESTURE_NULL && prev_gest == GESTURE_LMBDOWN) 
 		{
 			INPUT ip; ZeroMemory(&ip,sizeof(ip)); ip.type=INPUT_MOUSE; ip.mi.dwFlags=MOUSEEVENTF_LEFTUP;
+			SendInput(1,&ip,sizeof(ip));	
+		}
+		else  if (prev_frame->position->gesture==GESTURE_NULL && prev_gest == GESTURE_MIDDLEBTNDOWN) 
+		{
+			INPUT ip; ZeroMemory(&ip,sizeof(ip)); ip.type=INPUT_MOUSE; ip.mi.dwFlags=MOUSEEVENTF_MIDDLEUP;
 			SendInput(1,&ip,sizeof(ip));	
 		}
 		prev_gest = prev_frame->position->gesture;

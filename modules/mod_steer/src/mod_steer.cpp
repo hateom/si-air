@@ -137,9 +137,11 @@ proc_data * modSteer::process_frame( proc_data * prev_frame, int * result )
 	int x=(int)Xaspect*wx;
 	int y=(int)Yaspect*wy;
 	static int prev_gest = GESTURE_NULL;
+	static int last_pos_x=0, last_pos_y=0;
 	if( on_off ) 
 	{
-		SetCursorPos(x,y);
+		SetCursorPos(int(0.5*(x+last_pos_x)),int(0.5*(y+last_pos_y)));
+		last_pos_x=x; last_pos_y=y;
 		if (prev_frame->position->gesture==GESTURE_RMBDOWN && prev_gest == GESTURE_NULL)
 		{
 			INPUT ip; ZeroMemory(&ip,sizeof(ip)); ip.type=INPUT_MOUSE; ip.mi.dwFlags=MOUSEEVENTF_RIGHTDOWN;

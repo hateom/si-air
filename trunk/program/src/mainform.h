@@ -68,12 +68,13 @@ public slots:
 //	virtual void lb_selected( QListBoxItem * );
 
 	virtual void load_modules();
+	virtual void module_removed();
 
 protected slots:
 	virtual void languageChange();
+	virtual void update_popup();
 
 private:
-	void update_popup();
 	void closeEvent( QCloseEvent * ce );
 	std::vector<modWidget*>		mod_widget;
     QPixmap image0;

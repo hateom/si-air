@@ -1,7 +1,7 @@
 /****************************************************************************
 ** ModuleMgr meta object code from reading C++ file 'module_mgr.h'
 **
-** Created: Pn 25. gru 00:17:48 2006
+** Created: So 30. gru 20:58:57 2006
 **      by: The Qt MOC ($Id: moc_yacc.cpp,v 1.1.1.13 2006/05/05 17:43:42 chehrlic Exp $)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -104,18 +104,20 @@ QMetaObject* ModuleMgr::staticMetaObject()
     static const QUMethod signal_3 = {"path_cleared", 0, 0 };
     static const QUMethod signal_4 = {"processing_started", 0, 0 };
     static const QUMethod signal_5 = {"processing_finished", 0, 0 };
+    static const QUMethod signal_6 = {"module_removed", 0, 0 };
     static const QMetaData signal_tbl[] = {
 	{ "module_loaded(moduleBase*,int)", &signal_0, QMetaData::Public },
 	{ "module_unload(moduleBase*,int)", &signal_1, QMetaData::Public },
 	{ "added_to_path(moduleBase*,int)", &signal_2, QMetaData::Public },
 	{ "path_cleared()", &signal_3, QMetaData::Public },
 	{ "processing_started()", &signal_4, QMetaData::Public },
-	{ "processing_finished()", &signal_5, QMetaData::Public }
+	{ "processing_finished()", &signal_5, QMetaData::Public },
+	{ "module_removed()", &signal_6, QMetaData::Public }
     };
     metaObj = QMetaObject::new_metaobject(
 	"ModuleMgr", parentObject,
 	slot_tbl, 8,
-	signal_tbl, 6,
+	signal_tbl, 7,
 #ifndef QT_NO_PROPERTIES
 	0, 0,
 	0, 0,
@@ -195,6 +197,12 @@ void ModuleMgr::processing_finished()
     activate_signal( staticMetaObject()->signalOffset() + 5 );
 }
 
+// SIGNAL module_removed
+void ModuleMgr::module_removed()
+{
+    activate_signal( staticMetaObject()->signalOffset() + 6 );
+}
+
 bool ModuleMgr::qt_invoke( int _id, QUObject* _o )
 {
     switch ( _id - staticMetaObject()->slotOffset() ) {
@@ -221,6 +229,7 @@ bool ModuleMgr::qt_emit( int _id, QUObject* _o )
     case 3: path_cleared(); break;
     case 4: processing_started(); break;
     case 5: processing_finished(); break;
+    case 6: module_removed(); break;
     default:
 	return QObject::qt_emit(_id,_o);
     }

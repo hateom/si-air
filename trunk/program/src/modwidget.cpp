@@ -7,6 +7,7 @@
 
 #include "optform.h"
 #include "mp_logger.h"
+#include "module_mgr.h"
 
 #include "main_buttons.h"
 
@@ -103,7 +104,10 @@ void modWidget::preview_changed()
 
 void modWidget::rm_mod()
 {
-	LOG( "Unable to remove this module!\n" );
+	if( sModuleMgr->remove_module( module ) == ST_OK )
+	{
+		close( true );
+	}
 }
 
 //////////////////////////////////////////////////////////////////////////

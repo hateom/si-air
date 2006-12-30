@@ -1,7 +1,7 @@
 /****************************************************************************
 ** fnWidget meta object code from reading C++ file 'fnwidget.h'
 **
-** Created: Pn 25. gru 20:55:57 2006
+** Created: So 30. gru 20:38:22 2006
 **      by: The Qt MOC ($Id: moc_yacc.cpp,v 1.1.1.13 2006/05/05 17:43:42 chehrlic Exp $)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -53,13 +53,22 @@ QMetaObject* fnWidget::staticMetaObject()
 	return metaObj;
     QMetaObject* parentObject = QWidget::staticMetaObject();
     static const QUMethod slot_0 = {"select_file", 0, 0 };
+    static const QUParameter param_slot_1[] = {
+	{ 0, &static_QUType_QString, 0, QUParameter::In }
+    };
+    static const QUMethod slot_1 = {"inTextChanged", 1, param_slot_1 };
     static const QMetaData slot_tbl[] = {
-	{ "select_file()", &slot_0, QMetaData::Protected }
+	{ "select_file()", &slot_0, QMetaData::Protected },
+	{ "inTextChanged(const QString&)", &slot_1, QMetaData::Protected }
+    };
+    static const QUMethod signal_0 = {"textChanged", 0, 0 };
+    static const QMetaData signal_tbl[] = {
+	{ "textChanged()", &signal_0, QMetaData::Public }
     };
     metaObj = QMetaObject::new_metaobject(
 	"fnWidget", parentObject,
-	slot_tbl, 1,
-	0, 0,
+	slot_tbl, 2,
+	signal_tbl, 1,
 #ifndef QT_NO_PROPERTIES
 	0, 0,
 	0, 0,
@@ -76,10 +85,17 @@ void* fnWidget::qt_cast( const char* clname )
     return QWidget::qt_cast( clname );
 }
 
+// SIGNAL textChanged
+void fnWidget::textChanged()
+{
+    activate_signal( staticMetaObject()->signalOffset() + 0 );
+}
+
 bool fnWidget::qt_invoke( int _id, QUObject* _o )
 {
     switch ( _id - staticMetaObject()->slotOffset() ) {
     case 0: select_file(); break;
+    case 1: inTextChanged((const QString&)static_QUType_QString.get(_o+1)); break;
     default:
 	return QWidget::qt_invoke( _id, _o );
     }
@@ -88,7 +104,12 @@ bool fnWidget::qt_invoke( int _id, QUObject* _o )
 
 bool fnWidget::qt_emit( int _id, QUObject* _o )
 {
-    return QWidget::qt_emit(_id,_o);
+    switch ( _id - staticMetaObject()->signalOffset() ) {
+    case 0: textChanged(); break;
+    default:
+	return QWidget::qt_emit(_id,_o);
+    }
+    return TRUE;
 }
 #ifndef QT_NO_PROPERTIES
 

@@ -40,8 +40,12 @@ public:
 	/// metoda ustawia wartos pola edycji
 	void setText( QString txt );
 
+signals:
+	void textChanged();
+
 protected slots:
 	void select_file();
+	void inTextChanged( const QString & );
 
 private:
 	QPushButton * btn_browse;

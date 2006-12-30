@@ -18,12 +18,20 @@ fnWidget::fnWidget( QWidget* parent, const char* name, WFlags f ) : QWidget( par
 	btn_browse->setText( tr("...") );
 
 	connect( btn_browse, SIGNAL(clicked()), this, SLOT(select_file()) );
+	connect( edt_filename, SIGNAL(textChanged(const QString &)), this, SLOT(inTextChanged(const QString &)) );
 }
 
 //////////////////////////////////////////////////////////////////////////
 
 fnWidget::~fnWidget()
 {
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+void fnWidget::inTextChanged( const QString & )
+{
+	emit textChanged();
 }
 
 //////////////////////////////////////////////////////////////////////////

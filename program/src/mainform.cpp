@@ -239,21 +239,19 @@ void MainForm::lb_selected( QListBoxItem * )
 
 void MainForm::stop()
 {
-	connect( startButton, SIGNAL(clicked()), this, SLOT(run()) );
-	disconnect( startButton, SIGNAL(clicked()), this, SLOT(stop()) );
-	startButton->setTextLabel( tr( "Start" ) );
-
 	sModuleMgr->stop_processing(); 
+//	connect( startButton, SIGNAL(clicked()), this, SLOT(run()) );
+//	disconnect( startButton, SIGNAL(clicked()), this, SLOT(stop()) );
+//	startButton->setTextLabel( tr( "Start" ) );
 }
 
 //////////////////////////////////////////////////////////////////////////
 
 void MainForm::run()
 {
-	connect( startButton, SIGNAL(clicked()), this, SLOT(stop()) );
-	disconnect( startButton, SIGNAL(clicked()), this, SLOT(run()) );
-	startButton->setTextLabel( tr( "Stop" ) );
-
+//	connect( startButton, SIGNAL(clicked()), this, SLOT(stop()) );
+//	disconnect( startButton, SIGNAL(clicked()), this, SLOT(run()) );
+//	startButton->setTextLabel( tr( "Stop" ) );
 	sModuleMgr->start_processing();
 }
 
@@ -350,18 +348,21 @@ void MainForm::update_popup()
 
 void MainForm::processing_started()
 {
+	connect( startButton, SIGNAL(clicked()), this, SLOT(stop()) );
+	disconnect( startButton, SIGNAL(clicked()), this, SLOT(run()) );
+	startButton->setTextLabel( tr( "Stop" ) );
 }
 
 //////////////////////////////////////////////////////////////////////////
 
 void MainForm::processing_finished()
 {
-	if( startButton->text() != tr("Start") )
-	{
-		disconnect( startButton, SIGNAL(clicked()), this, SLOT(stop()) );
-		connect( startButton, SIGNAL(clicked()), this, SLOT(run()) );
-		startButton->setTextLabel( tr( "Start" ) );
-	}
+//	if( startButton->text() != tr("Start") )
+//	{
+	disconnect( startButton, SIGNAL(clicked()), this, SLOT(stop()) );
+	connect( startButton, SIGNAL(clicked()), this, SLOT(run()) );
+	startButton->setTextLabel( tr( "Start" ) );
+//	}
 }
 
 //////////////////////////////////////////////////////////////////////////

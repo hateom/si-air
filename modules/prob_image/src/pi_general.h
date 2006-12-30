@@ -59,7 +59,7 @@ protected:
 	float			M02;
 	/// Moment M11
 	float			M11;
-	float			*moments_local;
+	//float			*moments_local;
 	/// ramka wejsciowa
 	frame_data	*	inFrame;
 	/// zmienna przechowujaca wybrany region

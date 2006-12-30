@@ -71,18 +71,16 @@ proc_data * cPosdetect::process_frame( proc_data * prev_frame, int * result )
 	static pd_data pos;
 	static proc_data p_data = { 0, 0, 0, 0 };
 	static float tan_fi;
-	//int InitialValue = 1;
 	static int width, height;
-	static int xs = 0, xk = width, ys = 0, yk = height, ObjHeight=0, ObjWidth=0, s = 0;
+	static int ObjHeight=0, ObjWidth=0;
 	static int initialLenght;
 	static float dx, dy;
 	static float sign;
 
-	maxVal = prev_frame->max_prob;
+//	maxVal = prev_frame->max_prob;
 	width = prev_frame->frame->width;
 	height = prev_frame->frame->height;
-	piTable = prev_frame->prob;
-	retry = 0;
+	//piTable = prev_frame->prob;
 	xc=0.0f, yc=0.0f;
 	M00 = prev_frame->moments[0];
 	M10 = prev_frame->moments[1];

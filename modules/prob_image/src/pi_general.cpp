@@ -34,7 +34,7 @@ piGeneral::piGeneral() : alloc_mem(0), selected_region(NULL), histogram(NULL),
 	REG_PARAM( PT_INT_RANGE, Vmax, "Maximum V value", int_range( 255, 0, 255 ) );
 	REG_PARAM( PT_INT_RANGE, Vmin, "Minimum V value", int_range(  20, 0, 255 ) );
 	REG_PARAM( PT_INT_RANGE, Smin, "Minimum S value", int_range(   0, 0, 200 ) );
-	moments_local = NULL;
+//	moments_local = NULL;
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -90,7 +90,7 @@ proc_data * piGeneral::process_frame( proc_data * prev_frame, int * status )
 	float maxVal = 0.0f;
 //	float inv_maxVal;
 	static int offs1, offs2, offs3;
-	static unsigned int xs = 0, xk = width, ys = 0, yk = height, s = 0;
+	static int xs = 0, xk = width, ys = 0, yk = height, s = 0;
 	
 	retry = false;
 	static_frame.depth = 4;
@@ -134,9 +134,9 @@ proc_data * piGeneral::process_frame( proc_data * prev_frame, int * status )
 			yk += (int)( 1.2f*(float)s );
 
 			if( xs < 0 ) xs = 0;
-			if( xk > width ) xk = width;
+			if( xk > (int)width ) xk = width;
 			if( ys < 0 ) ys=0;
-			if( yk > height ) yk = height;
+			if( yk > (int)height ) yk = height;
 		}
 
 		M00 = 0.0f;
@@ -150,10 +150,10 @@ proc_data * piGeneral::process_frame( proc_data * prev_frame, int * status )
 				memset(piTable,0,width*height);
 				memset(static_frame.bits,0,alloc_mem);
 			}
-		for (unsigned int y=ys; y<yk; y++ )
+		for (int y=ys; y<yk; y++ )
 		{
 			offs1 = y*width;
-			for (unsigned int x=xs; x<xk; x++ )
+			for (int x=xs; x<xk; x++ )
 			{
 				if (!k)
 				{
@@ -361,11 +361,13 @@ int piGeneral::init( PropertyMgr * pm )
 	histogram->hist_vals = new int[360];
 	hist_probability = new float[360];
 	inv_maxVal = 0.0f;
+	/*
 	if (moments_local)
 	{
 		delete [] moments_local;
 	}
 	moments_local = new float[MOMENTS_SIZE];
+	*/
 	return( ST_OK );
 }
 
@@ -395,11 +397,13 @@ void piGeneral::free()
 		delete [] hist_probability;
 		hist_probability = NULL;
 	}
+	/*
 	if (moments_local) 
 	{
 		delete [] moments_local;
 		moments_local = NULL;
 	}
+	*/
 }
 
 //////////////////////////////////////////////////////////////////////////

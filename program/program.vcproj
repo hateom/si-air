@@ -150,9 +150,6 @@
 			<File
 				RelativePath=".\src\preview_mgr.h">
 			</File>
-			<File
-				RelativePath=".\resource.h">
-			</File>
 			<Filter
 				Name="qt"
 				Filter="">

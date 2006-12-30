@@ -157,6 +157,7 @@ MainForm::MainForm( QWidget* parent, const char* name, WFlags fl )
 	connect( sModuleMgr, SIGNAL(path_cleared()), this, SLOT(path_cleared()) );
 	connect( sModuleMgr, SIGNAL(processing_started()), this, SLOT(processing_started()) );
 	connect( sModuleMgr, SIGNAL(processing_finished()), this, SLOT(processing_finished()) );
+	connect( sModuleMgr, SIGNAL(module_removed()), this, SLOT(module_removed()) );
 	connect( frame3, SIGNAL(popup_exe(moduleBase*)), this, SLOT(add_module(moduleBase*)) );
 
 	QTimer * load_timer = new QTimer( this );
@@ -252,7 +253,15 @@ void MainForm::run()
 //	connect( startButton, SIGNAL(clicked()), this, SLOT(stop()) );
 //	disconnect( startButton, SIGNAL(clicked()), this, SLOT(run()) );
 //	startButton->setTextLabel( tr( "Stop" ) );
-	sModuleMgr->start_processing();
+	if( mod_widget.size() == 0 )
+	{
+		LOG( ">>> There is no module loaded into processing path!\n" );
+		LOG( ">>> Right click, and select appropriate module from the list.\n" );
+	}
+	else
+	{
+		sModuleMgr->start_processing();
+	}
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -310,6 +319,14 @@ void MainForm::added_to_path( moduleBase * base, int no )
 	mod_widget.push_back( wdg );
 
 	update_popup();
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+void MainForm::module_removed()
+{
+	update_popup();
+	mod_widget.pop_back();
 }
 
 //////////////////////////////////////////////////////////////////////////

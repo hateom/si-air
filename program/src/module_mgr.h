@@ -48,6 +48,8 @@ public:
 
 	int get_proper_modules( std::vector<moduleBase*> & list );
 
+	int remove_module( moduleBase * mod );
+
 private:
 	moduleBase * last_on_path();
 
@@ -69,6 +71,7 @@ signals:
 	void path_cleared();									/// sygnal wyczyszczenia toru
 	void processing_started();								/// sygnal rozpoczenia przetwarzania
 	void processing_finished();								/// sygnal zatrzymania przetwarzania
+	void module_removed();
 
 private:
 	int load_single_module( std::string filename );			/// metoda laduje pojedynczy modul

@@ -24,6 +24,29 @@ ModuleMgr * ModuleMgr::singleton()
 
 //////////////////////////////////////////////////////////////////////////
 
+int ModuleMgr::remove_module( moduleBase * mod )
+{
+	if( !mod ) return( -1 );
+
+	int path_size = (int)path_list.size();
+
+	if( module_list[path_list[path_size-1]] == mod )
+	{
+		path_list.pop_back();
+		emit module_removed();
+		LOG( ">>> Module <%s> unloaded.\n", mod->get_module_description() );
+	}
+	else
+	{
+		LOG( ">>> ERROR: You can delete only the last module.\n" );
+		return( -1 );
+	}
+
+	return( ST_OK );
+}
+
+//////////////////////////////////////////////////////////////////////////
+
 bool has_preview( moduleBase * mod )
 {
 	int has_preview = 0;
@@ -108,7 +131,7 @@ int ModuleMgr::load_modules( std::string directory )
 	{
 		if( hfind == INVALID_HANDLE_VALUE )
 		{
-			LOG( "Invalid File Handle. GetLastError reports %d\n", GetLastError() );
+			LOG( "Invalid File Handle. GetLastError reports %d (maybe there are no modules? Chckout /modules direcory.)\n", GetLastError() );
 			break;
 		} 
 		else 

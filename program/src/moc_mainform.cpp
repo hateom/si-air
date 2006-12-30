@@ -1,7 +1,7 @@
 /****************************************************************************
 ** MainForm meta object code from reading C++ file 'mainform.h'
 **
-** Created: Cz 28. gru 16:48:22 2006
+** Created: So 30. gru 21:03:03 2006
 **      by: The Qt MOC ($Id: moc_yacc.cpp,v 1.1.1.13 2006/05/05 17:43:42 chehrlic Exp $)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -78,7 +78,9 @@ QMetaObject* MainForm::staticMetaObject()
     static const QUMethod slot_8 = {"stop", 0, 0 };
     static const QUMethod slot_9 = {"close_app", 0, 0 };
     static const QUMethod slot_10 = {"load_modules", 0, 0 };
-    static const QUMethod slot_11 = {"languageChange", 0, 0 };
+    static const QUMethod slot_11 = {"module_removed", 0, 0 };
+    static const QUMethod slot_12 = {"languageChange", 0, 0 };
+    static const QUMethod slot_13 = {"update_popup", 0, 0 };
     static const QMetaData slot_tbl[] = {
 	{ "module_loaded(moduleBase*,int)", &slot_0, QMetaData::Public },
 	{ "module_unload(moduleBase*,int)", &slot_1, QMetaData::Public },
@@ -91,11 +93,13 @@ QMetaObject* MainForm::staticMetaObject()
 	{ "stop()", &slot_8, QMetaData::Public },
 	{ "close_app()", &slot_9, QMetaData::Public },
 	{ "load_modules()", &slot_10, QMetaData::Public },
-	{ "languageChange()", &slot_11, QMetaData::Protected }
+	{ "module_removed()", &slot_11, QMetaData::Public },
+	{ "languageChange()", &slot_12, QMetaData::Protected },
+	{ "update_popup()", &slot_13, QMetaData::Protected }
     };
     metaObj = QMetaObject::new_metaobject(
 	"MainForm", parentObject,
-	slot_tbl, 12,
+	slot_tbl, 14,
 	0, 0,
 #ifndef QT_NO_PROPERTIES
 	0, 0,
@@ -127,7 +131,9 @@ bool MainForm::qt_invoke( int _id, QUObject* _o )
     case 8: stop(); break;
     case 9: close_app(); break;
     case 10: load_modules(); break;
-    case 11: languageChange(); break;
+    case 11: module_removed(); break;
+    case 12: languageChange(); break;
+    case 13: update_popup(); break;
     default:
 	return QMainWindow::qt_invoke( _id, _o );
     }

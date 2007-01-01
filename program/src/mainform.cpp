@@ -26,6 +26,7 @@
 #include "main_head.h"
 #include "main_arrow.h"
 #include "main_buttons.h"
+#include "preview_mgr.h"
 
 #include "aboutform.h"
 
@@ -163,6 +164,8 @@ MainForm::MainForm( QWidget* parent, const char* name, WFlags fl )
 	connect( sModuleMgr, SIGNAL(module_removed()), this, SLOT(module_removed()) );
 	connect( frame3, SIGNAL(popup_exe(moduleBase*)), this, SLOT(add_module(moduleBase*)) );
 
+	connect( sPreviewMgr, SIGNAL(preview_closed()), this, SLOT(update_prev()) );
+
 	QTimer * load_timer = new QTimer( this );
 	connect( load_timer, SIGNAL(timeout()), this, SLOT(load_modules()) );
 	load_timer->start( 500, TRUE );
@@ -222,6 +225,17 @@ void MainForm::languageChange()
         MenuBarEditor->findItem(1)->setText( tr( "&Processing" ) );
     if (MenuBarEditor->findItem(2))
         MenuBarEditor->findItem(2)->setText( tr( "&About" ) );
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+void MainForm::update_prev()
+{
+	int size = (int)mod_widget.size();
+	for( int i=0; i<size; ++i )
+	{
+		mod_widget[i]->update_prev();
+	}
 }
 
 //////////////////////////////////////////////////////////////////////////

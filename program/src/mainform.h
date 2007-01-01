@@ -1,6 +1,8 @@
 #ifndef MAINFORM_H
 #define MAINFORM_H
 
+//////////////////////////////////////////////////////////////////////////
+
 #include <qvariant.h>
 #include <qpixmap.h>
 #include <qmainwindow.h>
@@ -10,6 +12,8 @@
 #include "modwidget.h"
 #include "processing_panel.h"
 #include "options_box.h"
+
+//////////////////////////////////////////////////////////////////////////
 
 class QVBoxLayout;
 class QHBoxLayout;
@@ -25,6 +29,8 @@ class QGroupBox;
 class QPushButton;
 class QTextEdit;
 class QToolButton;
+
+//////////////////////////////////////////////////////////////////////////
 
 class MainForm : public QMainWindow
 {
@@ -71,6 +77,7 @@ public slots:
 	virtual void module_removed();
 
 	virtual void showAbout();
+	virtual void update_prev();
 
 protected slots:
 	virtual void languageChange();
@@ -86,5 +93,7 @@ private:
 	QPixmap btn_clear;
 	QPixmap btn_start;
 };
+
+//////////////////////////////////////////////////////////////////////////
 
 #endif // MAINFORM_H

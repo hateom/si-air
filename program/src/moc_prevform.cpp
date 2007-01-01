@@ -1,7 +1,7 @@
 /****************************************************************************
 ** PrevForm meta object code from reading C++ file 'prevform.h'
 **
-** Created: N 17. gru 15:58:53 2006
+** Created: Pn 1. sty 19:16:53 2007
 **      by: The Qt MOC ($Id: moc_yacc.cpp,v 1.1.1.13 2006/05/05 17:43:42 chehrlic Exp $)
 **
 ** WARNING! All changes made in this file will be lost!

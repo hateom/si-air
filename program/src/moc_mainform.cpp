@@ -1,7 +1,7 @@
 /****************************************************************************
 ** MainForm meta object code from reading C++ file 'mainform.h'
 **
-** Created: So 30. gru 21:41:48 2006
+** Created: Pn 1. sty 19:45:27 2007
 **      by: The Qt MOC ($Id: moc_yacc.cpp,v 1.1.1.13 2006/05/05 17:43:42 chehrlic Exp $)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -80,8 +80,9 @@ QMetaObject* MainForm::staticMetaObject()
     static const QUMethod slot_10 = {"load_modules", 0, 0 };
     static const QUMethod slot_11 = {"module_removed", 0, 0 };
     static const QUMethod slot_12 = {"showAbout", 0, 0 };
-    static const QUMethod slot_13 = {"languageChange", 0, 0 };
-    static const QUMethod slot_14 = {"update_popup", 0, 0 };
+    static const QUMethod slot_13 = {"update_prev", 0, 0 };
+    static const QUMethod slot_14 = {"languageChange", 0, 0 };
+    static const QUMethod slot_15 = {"update_popup", 0, 0 };
     static const QMetaData slot_tbl[] = {
 	{ "module_loaded(moduleBase*,int)", &slot_0, QMetaData::Public },
 	{ "module_unload(moduleBase*,int)", &slot_1, QMetaData::Public },
@@ -96,12 +97,13 @@ QMetaObject* MainForm::staticMetaObject()
 	{ "load_modules()", &slot_10, QMetaData::Public },
 	{ "module_removed()", &slot_11, QMetaData::Public },
 	{ "showAbout()", &slot_12, QMetaData::Public },
-	{ "languageChange()", &slot_13, QMetaData::Protected },
-	{ "update_popup()", &slot_14, QMetaData::Protected }
+	{ "update_prev()", &slot_13, QMetaData::Public },
+	{ "languageChange()", &slot_14, QMetaData::Protected },
+	{ "update_popup()", &slot_15, QMetaData::Protected }
     };
     metaObj = QMetaObject::new_metaobject(
 	"MainForm", parentObject,
-	slot_tbl, 15,
+	slot_tbl, 16,
 	0, 0,
 #ifndef QT_NO_PROPERTIES
 	0, 0,
@@ -135,8 +137,9 @@ bool MainForm::qt_invoke( int _id, QUObject* _o )
     case 10: load_modules(); break;
     case 11: module_removed(); break;
     case 12: showAbout(); break;
-    case 13: languageChange(); break;
-    case 14: update_popup(); break;
+    case 13: update_prev(); break;
+    case 14: languageChange(); break;
+    case 15: update_popup(); break;
     default:
 	return QMainWindow::qt_invoke( _id, _o );
     }

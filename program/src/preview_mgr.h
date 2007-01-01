@@ -47,7 +47,11 @@ public:
 	/// zamknij wszytkie okna podgladu
 	int close_all();
 
+	void show_window( int win, bool on_off );
+
 	static PreviewMgr * singleton();
+
+	void reset_positions();
 
 public slots:
 	void in_mouse_select( int sx, int sy, int sw, int sh );
@@ -55,9 +59,13 @@ public slots:
 
 signals:
 	void mouse_select( int sx, int sy, int sw, int sh );
+	void preview_closed();
 
 private:
+	void set_win_pos( PrevForm * prv );
+
 	std::vector<PrevForm*> prev_list;
+	int visible;
 };
 
 //////////////////////////////////////////////////////////////////////////

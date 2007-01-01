@@ -1,7 +1,7 @@
 /****************************************************************************
 ** modWidget meta object code from reading C++ file 'modwidget.h'
 **
-** Created: Cz 28. gru 16:48:23 2006
+** Created: Pn 1. sty 19:43:56 2007
 **      by: The Qt MOC ($Id: moc_yacc.cpp,v 1.1.1.13 2006/05/05 17:43:42 chehrlic Exp $)
 **
 ** WARNING! All changes made in this file will be lost!

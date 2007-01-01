@@ -1,7 +1,7 @@
 /****************************************************************************
 ** PreviewMgr meta object code from reading C++ file 'preview_mgr.h'
 **
-** Created: N 17. gru 15:40:47 2006
+** Created: Pn 1. sty 19:16:53 2007
 **      by: The Qt MOC ($Id: moc_yacc.cpp,v 1.1.1.13 2006/05/05 17:43:42 chehrlic Exp $)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -74,13 +74,15 @@ QMetaObject* PreviewMgr::staticMetaObject()
 	{ "sh", &static_QUType_int, 0, QUParameter::In }
     };
     static const QUMethod signal_0 = {"mouse_select", 4, param_signal_0 };
+    static const QUMethod signal_1 = {"preview_closed", 0, 0 };
     static const QMetaData signal_tbl[] = {
-	{ "mouse_select(int,int,int,int)", &signal_0, QMetaData::Public }
+	{ "mouse_select(int,int,int,int)", &signal_0, QMetaData::Public },
+	{ "preview_closed()", &signal_1, QMetaData::Public }
     };
     metaObj = QMetaObject::new_metaobject(
 	"PreviewMgr", parentObject,
 	slot_tbl, 2,
-	signal_tbl, 1,
+	signal_tbl, 2,
 #ifndef QT_NO_PROPERTIES
 	0, 0,
 	0, 0,
@@ -116,6 +118,12 @@ void PreviewMgr::mouse_select( int t0, int t1, int t2, int t3 )
     activate_signal( clist, o );
 }
 
+// SIGNAL preview_closed
+void PreviewMgr::preview_closed()
+{
+    activate_signal( staticMetaObject()->signalOffset() + 1 );
+}
+
 bool PreviewMgr::qt_invoke( int _id, QUObject* _o )
 {
     switch ( _id - staticMetaObject()->slotOffset() ) {
@@ -131,6 +139,7 @@ bool PreviewMgr::qt_emit( int _id, QUObject* _o )
 {
     switch ( _id - staticMetaObject()->signalOffset() ) {
     case 0: mouse_select((int)static_QUType_int.get(_o+1),(int)static_QUType_int.get(_o+2),(int)static_QUType_int.get(_o+3),(int)static_QUType_int.get(_o+4)); break;
+    case 1: preview_closed(); break;
     default:
 	return QObject::qt_emit(_id,_o);
     }

@@ -65,7 +65,7 @@ void modSteer::set_control_state( int param )
 //////////////////////////////////////////////////////////////////////////
 
 
-modSteer::modSteer() : alloc_mem(0L)
+modSteer::modSteer() : alloc_mem(0L), mov_w(0), mov_h(0)
 {
 	//REG_PARAM( PT_FLOAT_RANGE, factor, "Lighting factor (1.0f = neutral)", float_range( 1.0f, 0.1f, 10.0f ) );
 	REG_PARAM( PT_BOOL, on_off, "Turn steering on or off [F12]", 0 );
@@ -126,18 +126,22 @@ int modSteer::output_type()
 
 proc_data * modSteer::process_frame( proc_data * prev_frame, int * result )
 {
-	int wx=prev_frame->position->x;
-	int wy=prev_frame->position->y;
-	int screenWitdh = GetSystemMetrics(SM_CXSCREEN);
-	int screenHeight = GetSystemMetrics(SM_CYSCREEN);
-	int movieHeight = prev_frame->frame->height;
-	int movieWidth = prev_frame->frame->width;
-	float Xaspect = (float)screenWitdh/(float)movieWidth;
-	float Yaspect = (float)screenHeight/(float)movieHeight;
-	int x=(int)Xaspect*wx;
-	int y=(int)Yaspect*wy;
+
+	if( mov_w != prev_frame->frame->width || mov_h != prev_frame->frame->width )
+	{
+		mov_w = prev_frame->frame->width;
+		mov_h = prev_frame->frame->height;
+
+		x_asp = (float)GetSystemMetrics(SM_CXSCREEN) / (float)mov_w;
+		y_asp = (float)GetSystemMetrics(SM_CYSCREEN) / (float)mov_h;
+	}
+	
+	int x = (int)(x_asp*(float)prev_frame->position->x);
+	int y = (int)(y_asp*(float)prev_frame->position->y);
+	
 	static int prev_gest = GESTURE_NULL;
 	static int last_pos_x=0, last_pos_y=0;
+
 	if( on_off ) 
 	{
 		SetCursorPos(int(0.5*(x+last_pos_x)),int(0.5*(y+last_pos_y)));

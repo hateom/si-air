@@ -42,6 +42,8 @@ public:
 	void set_control_state( int param );
 
 private:
+	float x_asp, y_asp;
+	unsigned int mov_w, mov_h;
 	long alloc_mem;
 	float_range factor;
 	/// zmienna przechowuje informacje o tym czy ma byc wlaczone sterowanie

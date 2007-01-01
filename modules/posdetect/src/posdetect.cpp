@@ -157,15 +157,15 @@ proc_data * cPosdetect::process_frame( proc_data * prev_frame, int * result )
 	/// dilz add
 
 	static frame_data frame = { 0, 0, 0, 0 };
-		frame.depth = 4; //(3*frame->depth)/8;
-		frame.width = prev_frame->input_frame->width;
-		frame.height = prev_frame->input_frame->height;
-	if( preview_param )
-	{
+//	if( preview_param )
+//	{
 		if( alloc_mem == 0 )
 		{
 			alloc_mem = frame.depth*frame.height*frame.width;
 			frame.bits = new unsigned char[alloc_mem];
+			frame.depth = 4; //(3*frame->depth)/8;
+			frame.width = prev_frame->input_frame->width;
+			frame.height = prev_frame->input_frame->height;
 		}
 		else
 		{
@@ -174,8 +174,11 @@ proc_data * cPosdetect::process_frame( proc_data * prev_frame, int * result )
 				delete [] frame.bits;
 				alloc_mem = frame.depth*frame.height*frame.width;
 				frame.bits = new unsigned char[alloc_mem];
+				frame.depth = 4; //(3*frame->depth)/8;
+				frame.width = prev_frame->input_frame->width;
+				frame.height = prev_frame->input_frame->height;
 			}
-		}
+//		}
 
 		memcpy( frame.bits, prev_frame->input_frame->bits, frame.width*frame.height*frame.depth );
 

@@ -147,8 +147,8 @@ proc_data * piGeneral::process_frame( proc_data * prev_frame, int * status )
 		M11 = 0.0f;
 		if (!k) 
 			{
-				memset(piTable,0,width*height);
-				memset(static_frame.bits,0,alloc_mem);
+				memset(piTable,0,width*height*sizeof(float));
+				memset(static_frame.bits,0,alloc_mem*sizeof(char));
 			}
 		for (int y=ys; y<yk; y++ )
 		{
@@ -164,7 +164,7 @@ proc_data * piGeneral::process_frame( proc_data * prev_frame, int * status )
 	
 					RGBtoHSV( R, G, B, H, S, V );
 	
-					piTable[x+offs1] = 0.0;
+					//piTable[x+offs1] = 0.0;
 	
 					if( ( H >= Hmin ) && ( H < Hmax ) && ( V >= Vmin ) && ( V < Vmax ) && ( Smin < S ) )
 					{

@@ -22,7 +22,7 @@ PreviewMgr * PreviewMgr::singleton()
 
 //////////////////////////////////////////////////////////////////////////
 
-PreviewMgr::PreviewMgr()
+PreviewMgr::PreviewMgr() : visible(0)
 {
 }
 
@@ -41,14 +41,69 @@ int PreviewMgr::register_preview()
 	int prv_wnd = (int)prev_list.size();
 
 	form = new PrevForm( prv_wnd );
-	form->move( QPoint( poss2[prv_wnd*2], poss2[prv_wnd*2+1] ) );
-	form->show();
+//	form->move( QPoint( poss2[prv_wnd*2], poss2[prv_wnd*2+1] ) );
+//	form->show();
 
 	connect( form, SIGNAL(mouse_select(int,int,int,int)), this, SLOT(in_mouse_select(int,int,int,int)) );
 
 	prev_list.push_back( form );
 
 	return( prv_wnd );
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+void PreviewMgr::set_win_pos( PrevForm * prv )
+{
+	if( !prv ) return;
+	prv->move( QPoint( poss2[(visible-1)*2], poss2[(visible-1)*2+1] ) );
+
+	LOG( ">-> set_win_pos() for %d\n", visible-1 );
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+void PreviewMgr::reset_positions()
+{
+	int size = (int)prev_list.size();
+	int ink = 0;
+
+	for( int i=0; i<size; ++i )
+	{
+		if( prev_list[i]->isVisible() )
+		{
+			prev_list[i]->move( QPoint( poss2[ink*2], poss2[ink*2+1] ) );
+			ink++;
+		}
+	}
+
+	visible = ink;
+
+	LOG( ">-> reset_positions()\n" );
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+void PreviewMgr::show_window( int window, bool on_off )
+{
+	if( window < 0 || window >= (int)prev_list.size() ) return;
+
+	LOG( ">-> show_window %d %d\n", on_off, window );
+
+	if( on_off )
+	{
+		if( prev_list[window]->isVisible() ) return;
+		visible++;
+		prev_list[window]->show();
+		set_win_pos( prev_list[window] );
+	}
+	else
+	{
+		if( !prev_list[window]->isVisible() ) return;
+		visible--;
+		prev_list[window]->close( false );
+		reset_positions();
+	}
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -84,11 +139,13 @@ int PreviewMgr::close_preview( int preview )
 
 	if( form != NULL )
 	{
-		disconnect( form, SIGNAL(mouse_select(int,int,int,int)), this, SLOT(in_mouse_select(int,int,int,int)) );
-		form->close();
+//		disconnect( form, SIGNAL(mouse_select(int,int,int,int)), this, SLOT(in_mouse_select(int,int,int,int)) );
+		form->close( false );
 //		delete form;
-		prev_list[preview] = NULL;
+//		prev_list[preview] = NULL;
 	}
+
+	reset_positions();
 
 	return( ST_OK );
 }
@@ -104,6 +161,8 @@ int PreviewMgr::close_all()
 		close_preview( i );
 	}
 	prev_list.clear();
+
+	visible = 0;
 
 	return( ST_OK );
 }
@@ -124,13 +183,17 @@ void PreviewMgr::preview_closed( int id )
 		return;
 	}
 
-	PrevForm * form = prev_list[id];
+//	PrevForm * form = prev_list[id];
 
-	if( form != NULL )
-	{
-		disconnect( form, SIGNAL(mouse_select(int,int,int,int)), this, SLOT(in_mouse_select(int,int,int,int)) );
-		prev_list[id] = NULL;
-	}
+//	if( form != NULL )
+//	{
+//		disconnect( form, SIGNAL(mouse_select(int,int,int,int)), this, SLOT(in_mouse_select(int,int,int,int)) );
+//		prev_list[id] = NULL;
+//	}
+
+//	visible--;
+	reset_positions();
+	emit preview_closed();
 }
 
 //////////////////////////////////////////////////////////////////////////

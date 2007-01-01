@@ -42,6 +42,7 @@ public:
 public:
 	bool has_preview();
 	void language_changed();
+	void update_prev();
 
 public slots:
 	void configure_mod();

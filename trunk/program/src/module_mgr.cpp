@@ -276,11 +276,12 @@ void ModuleMgr::start_processing()
 
 		if( has_preview( mod ) )
 		{
-			prev_list.push_back( sPreviewMgr->register_preview() );
+			prev_list.push_back( sPreviewMgr->register_preview() + (1<<16) );
+			sPreviewMgr->show_window( prev_list[i] & 0x0000FFFF, true );
 		}
 		else
 		{
-			prev_list.push_back( NO_PREVIEW );
+			prev_list.push_back( sPreviewMgr->register_preview() + (NO_PREVIEW<<16) );
 		}
 	}
 
@@ -352,11 +353,11 @@ void ModuleMgr::process_frame()
 				return;
 			}
 
-			if( prev_list[i] != NO_PREVIEW )
+			if( ( prev_list[i] >> 16 ) != NO_PREVIEW )
 			{
-				sPreviewMgr->render_frame( prev_list[i], res->frame );
+//				sPreviewMgr->show_window( prev_list[i] & 0x0000FFFF, true );
+				sPreviewMgr->render_frame( prev_list[i] & 0x0000FFFF, res->frame );
 			}
-
 			arg = res;
 		}
 	}
@@ -383,22 +384,68 @@ void ModuleMgr::mouse_select( int sx, int sy, int sw, int sh )
 
 //////////////////////////////////////////////////////////////////////////
 
+int ModuleMgr::find_module_preview( moduleBase * mod )
+{
+	if( !mod ) return( -1 );
+
+	for( int i=0; i<(int)module_list.size(); ++i )
+	{
+		if( module_list[i] == mod )
+		{
+			for( int j=0; j<(int)path_list.size(); ++j )
+			{
+				if( i == path_list[j] )
+				{
+					return( j );
+				}
+			}
+		}
+	}
+
+	return( -1 );
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+void ModuleMgr::switch_preview( moduleBase * mod, bool on )
+{
+	if( !is_running ) return;
+	for( int i=0; i<(int)module_list.size(); ++i )
+	{
+		if( mod == module_list[i] )
+		{
+			switch_preview( i, on );
+			return;
+		}
+	}
+}
+
+//////////////////////////////////////////////////////////////////////////
+
 void ModuleMgr::switch_preview( int module, bool on )
 {
+	if( !is_running ) return;
 	if( module < 0 || module >= (int)module_list.size() ) return;
 
 	moduleBase * mod;
 	mod = module_list[module];
 	if( !mod ) return;
 
+	int prv_wnd;
+	if( (prv_wnd = find_module_preview( mod )) < 0 ) return;
+
 	if( on )
 	{
-		mod->set_param( "preview_param", 1 );
+		sPreviewMgr->show_window( prev_list[prv_wnd] & 0x0000FFFF, true );
+		prev_list[prv_wnd] = prev_list[prv_wnd] & 0x0000FFFF + (1<<16);
 	}
 	else
 	{
-		mod->set_param( "preview_param", 0 );
+		sPreviewMgr->show_window( prev_list[prv_wnd] & 0x0000FFFF, false );
+		prev_list[prv_wnd] = prev_list[prv_wnd] & 0x0000FFFF + (NO_PREVIEW<<16);
 	}
+
+
 }
 
 //////////////////////////////////////////////////////////////////////////

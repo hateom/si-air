@@ -14,7 +14,7 @@
 //////////////////////////////////////////////////////////////////////////
 
 PrevForm::PrevForm( int nid, QWidget* parent, const char* name, bool modal, WFlags fl )
-: QDialog( parent, name, modal, fl ), timer(NULL), sx(0), sy(0), sw(0), sh(0), select_time(0), 
+: QDialog( parent, name, modal, WStyle_Tool ), timer(NULL), sx(0), sy(0), sw(0), sh(0), select_time(0), 
   moving(false), id(nid)
 {
 	if ( !name ) setName( "PrevForm" );

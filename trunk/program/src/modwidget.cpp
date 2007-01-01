@@ -41,7 +41,7 @@ modWidget::modWidget( long new_id, moduleBase * mod, OptionsBox * opt_f,
 	connect( button_conf, SIGNAL(clicked()), this, SLOT(configure_mod()) );
 	connect( button_del, SIGNAL(clicked()), this, SLOT(rm_mod()) );
 	connect( check_prev, SIGNAL(clicked()), this, SLOT(preview_changed()) );
-
+/*
 	int check;
 	if( module->get_param( "preview_param", &check ) == 0 && check == 1 )
 	{
@@ -55,7 +55,8 @@ modWidget::modWidget( long new_id, moduleBase * mod, OptionsBox * opt_f,
 		check_prev->setOn( false );
 		setPaletteBackgroundColor( QColor( 255, 220, 220 ) );
 	}
-
+*/
+	update_prev();
 	language_changed();
 	resize( QSize( 310, 40 ) );
 }
@@ -78,6 +79,26 @@ void modWidget::language_changed()
 
 //////////////////////////////////////////////////////////////////////////
 
+void modWidget::update_prev()
+{
+	int par;
+
+	if( module->get_param( "preview_param", &par ) != 0 ) return;
+
+	if( par )
+	{
+		check_prev->setOn( true );
+		setPaletteBackgroundColor( QColor( 220, 255, 220 ) );
+	}
+	else
+	{
+		setPaletteBackgroundColor( QColor( 255, 220, 220 ) );
+		check_prev->setOn( false );
+	}
+}
+
+//////////////////////////////////////////////////////////////////////////
+
 void modWidget::preview_changed()
 {
 	mb_param * par;
@@ -91,13 +112,17 @@ void modWidget::preview_changed()
 		//*((int*)(par->data)) = 1;
 		module->set_param( "preview_param", 1 );
 		setPaletteBackgroundColor( QColor( 220, 255, 220 ) );
+		sModuleMgr->switch_preview( module, 1 );
 	}
 	else
 	{
 		//*((int*)(par->data)) = 0;
 		module->set_param( "preview_param", 0 );
 		setPaletteBackgroundColor( QColor( 255, 220, 220 ) );
+		sModuleMgr->switch_preview( module, 0 );
 	}
+
+	
 }
 
 //////////////////////////////////////////////////////////////////////////

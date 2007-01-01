@@ -49,6 +49,7 @@ public:
 	int get_proper_modules( std::vector<moduleBase*> & list );
 
 	int remove_module( moduleBase * mod );
+	int find_module_preview( moduleBase * mod );
 
 private:
 	moduleBase * last_on_path();
@@ -63,6 +64,7 @@ public slots:
 	void mouse_select( int sx, int sy, int sw, int sh );	/// zaznaczenie fragmentu okna podgladu
 
 	void switch_preview( int module, bool on );				/// zamkniecie lub otworzenie okna podgladu
+	void switch_preview( moduleBase * mod, bool on );
 
 signals:
 	void module_loaded( moduleBase * base, int no );		/// sygnal zaladowania modulu

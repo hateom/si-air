@@ -1,7 +1,7 @@
 /****************************************************************************
 ** ModuleMgr meta object code from reading C++ file 'module_mgr.h'
 **
-** Created: So 30. gru 20:58:57 2006
+** Created: Pn 1. sty 19:43:56 2007
 **      by: The Qt MOC ($Id: moc_yacc.cpp,v 1.1.1.13 2006/05/05 17:43:42 chehrlic Exp $)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -76,6 +76,11 @@ QMetaObject* ModuleMgr::staticMetaObject()
 	{ "on", &static_QUType_bool, 0, QUParameter::In }
     };
     static const QUMethod slot_7 = {"switch_preview", 2, param_slot_7 };
+    static const QUParameter param_slot_8[] = {
+	{ "mod", &static_QUType_ptr, "moduleBase", QUParameter::In },
+	{ "on", &static_QUType_bool, 0, QUParameter::In }
+    };
+    static const QUMethod slot_8 = {"switch_preview", 2, param_slot_8 };
     static const QMetaData slot_tbl[] = {
 	{ "clear_path()", &slot_0, QMetaData::Public },
 	{ "add_to_path(int)", &slot_1, QMetaData::Public },
@@ -84,7 +89,8 @@ QMetaObject* ModuleMgr::staticMetaObject()
 	{ "stop_processing()", &slot_4, QMetaData::Public },
 	{ "process_frame()", &slot_5, QMetaData::Public },
 	{ "mouse_select(int,int,int,int)", &slot_6, QMetaData::Public },
-	{ "switch_preview(int,bool)", &slot_7, QMetaData::Public }
+	{ "switch_preview(int,bool)", &slot_7, QMetaData::Public },
+	{ "switch_preview(moduleBase*,bool)", &slot_8, QMetaData::Public }
     };
     static const QUParameter param_signal_0[] = {
 	{ "base", &static_QUType_ptr, "moduleBase", QUParameter::In },
@@ -116,7 +122,7 @@ QMetaObject* ModuleMgr::staticMetaObject()
     };
     metaObj = QMetaObject::new_metaobject(
 	"ModuleMgr", parentObject,
-	slot_tbl, 8,
+	slot_tbl, 9,
 	signal_tbl, 7,
 #ifndef QT_NO_PROPERTIES
 	0, 0,
@@ -214,6 +220,7 @@ bool ModuleMgr::qt_invoke( int _id, QUObject* _o )
     case 5: process_frame(); break;
     case 6: mouse_select((int)static_QUType_int.get(_o+1),(int)static_QUType_int.get(_o+2),(int)static_QUType_int.get(_o+3),(int)static_QUType_int.get(_o+4)); break;
     case 7: switch_preview((int)static_QUType_int.get(_o+1),(bool)static_QUType_bool.get(_o+2)); break;
+    case 8: switch_preview((moduleBase*)static_QUType_ptr.get(_o+1),(bool)static_QUType_bool.get(_o+2)); break;
     default:
 	return QObject::qt_invoke( _id, _o );
     }

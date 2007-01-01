@@ -17,6 +17,9 @@
 
 #include "marker_data.h" /// marker zapisany jako tablica pixeli
 
+static const int marker_w_2 = MARKER_W/2;
+static const int marker_h_2 = MARKER_H/2;
+
 //////////////////////////////////////////////////////////////////////////
 
 cPosdetect::cPosdetect() : alloc_mem(0), angle(0.0f)
@@ -197,34 +200,72 @@ proc_data * cPosdetect::process_frame( proc_data * prev_frame, int * result )
 
 void cPosdetect::draw_frame_marker( frame_data * frame, int posx, int posy, float angle )
 {
-	static long yoffs1, yoffs2, offs1, offs2;
+	static long ox1, ox2, oy1, oy2;
 
-	if( posx < 0 ) posx = 0;
-	if( posy < 0 ) posy = 0;
+//	if( posx < 0 ) posx = 0;
+//	if( posy < 0 ) posy = 0;
 
-	if( posx > (int)frame->width-MARKER_W-1 ) posx = frame->width-MARKER_W-1;
-	if( posy > (int)frame->height-MARKER_H-1 ) posy = frame->height-MARKER_H-1;
-
+//	if( posx > (int)frame->width-MARKER_W-1 ) posx = frame->width-MARKER_W-1;
+//	if( posy > (int)frame->height-MARKER_H-1 ) posy = frame->height-MARKER_H-1;
+/*
 	for( int y=0; y<MARKER_H; ++y )
 	{
-		yoffs1 = (posy+y)*frame->width;
+		yoffs1 = (posy+y-MARKER_H/2)*frame->width;
 		yoffs2 = y*MARKER_W;
 
 		for( int x=0; x<MARKER_W; ++x )	
 		{
-			if( marker[(x+y*MARKER_W)*3+0] != 0 )
+			if( posx+x >= (int)frame->width ||
+				posy+y >= (int)frame->height ||
+				posx+x < 0 ||
+				posy+y < 0 )
 			{
-				offs1 = (posx+x+yoffs1)*4;
+				continue;
+			}
+
+			if( marker[(x-MARKER_W/2+y*MARKER_W)*3+0] != 0 )
+			{
+				offs1 = (posx+x-MARKER_W/2+yoffs1)*4;
 				offs2 = (x+yoffs2)*3;
 
+				
 				frame->bits[offs1+0] = marker[offs2+0];
 				frame->bits[offs1+1] = marker[offs2+1];
 				frame->bits[offs1+2] = marker[offs2+2];
+	
 				//if (angle<angle_max && angle>0.0f) frame->bits[offs1+2] = 100;
 				//if (angle>-angle_max && angle<0.0f) frame->bits[offs1+1] = 150;
+				
 				if (last_gesture == GESTURE_LMBDOWN) frame->bits[offs1+2] = 100;
 				if (last_gesture == GESTURE_RMBDOWN) frame->bits[offs1+1] = 150;
 				if (last_gesture == GESTURE_MIDDLEBTNDOWN) frame->bits[offs1+0] = 150;
+			}
+		}
+	}
+*/
+	
+	for( int y=0; y<MARKER_H; ++y )
+	{
+		oy1 = (posy+y-marker_h_2)*frame->width;
+		oy2 = y*MARKER_W;
+		for( int x=0; x<MARKER_W; ++x )
+		{
+			ox1 = (posx+x-marker_w_2+oy1)*4;
+			ox2 = (x+oy2)*3;
+			if( posx+x-marker_w_2 < 0 || posx+x-marker_w_2 >= (int)frame->width ||
+				posy+y-marker_h_2 < 0 || posy+y-marker_h_2 >= (int)frame->height )
+			{
+				continue;
+			}
+			if( marker[ox2+0] != 0 )
+			{
+				frame->bits[ox1+0] = marker[ox2+0];
+				frame->bits[ox1+1] = marker[ox2+1];
+				frame->bits[ox1+2] = marker[ox2+2];
+
+				if (last_gesture == GESTURE_LMBDOWN)		frame->bits[ox1+2] = 100;
+				if (last_gesture == GESTURE_RMBDOWN)		frame->bits[ox1+1] = 150;
+				if (last_gesture == GESTURE_MIDDLEBTNDOWN)	frame->bits[ox1+0] = 150;
 			}
 		}
 	}

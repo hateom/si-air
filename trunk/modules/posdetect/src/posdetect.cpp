@@ -157,14 +157,11 @@ proc_data * cPosdetect::process_frame( proc_data * prev_frame, int * result )
 	/// dilz add
 
 	static frame_data frame = { 0, 0, 0, 0 };
-
-	if( preview_param )
-	{
-
 		frame.depth = 4; //(3*frame->depth)/8;
 		frame.width = prev_frame->input_frame->width;
 		frame.height = prev_frame->input_frame->height;
-
+	if( preview_param )
+	{
 		if( alloc_mem == 0 )
 		{
 			alloc_mem = frame.depth*frame.height*frame.width;

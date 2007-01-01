@@ -24,7 +24,7 @@ vaOpenCV::vaOpenCV() : capture(NULL), alloc_mem(0)
 	REG_PARAM( PT_INT,      device,   "Device id number", 0 );
 	REG_PARAM( PT_FILENAME, filename, "Video filename", 0 );
 
-	REG_PARAM( PT_BOOL,     invert_x, "Mirror mode (invert x)", 0 );
+	REG_PARAM( PT_BOOL,     invert_x, "Mirror mode (invert x)", 1 );
 
 	set_param( "preview_param", 1 );
 }

@@ -72,7 +72,7 @@ int cPosdetect::output_type()
 proc_data * cPosdetect::process_frame( proc_data * prev_frame, int * result )
 {
 	static pd_data pos;
-	static proc_data p_data = { 0, 0, 0, 0 };
+	static proc_data p_data = { 0, 0, 0, 0, 0 };
 	static float tan_fi;
 	static int width, height;
 	static int ObjHeight=0, ObjWidth=0;
@@ -157,30 +157,27 @@ proc_data * cPosdetect::process_frame( proc_data * prev_frame, int * result )
 	/// dilz add
 
 	static frame_data frame = { 0, 0, 0, 0 };
-//	if( preview_param )
-//	{
+	if( preview_param )
+	{
 		if( alloc_mem == 0 )
 		{
-			alloc_mem = frame.depth*frame.height*frame.width;
+			alloc_mem = prev_frame->frame->depth*height*width;
 			frame.bits = new unsigned char[alloc_mem];
 			frame.depth = 4; //(3*frame->depth)/8;
-			frame.width = prev_frame->input_frame->width;
-			frame.height = prev_frame->input_frame->height;
 		}
 		else
 		{
 			if( alloc_mem != frame.depth*frame.height*frame.width )
 			{
 				delete [] frame.bits;
-				alloc_mem = frame.depth*frame.height*frame.width;
+				alloc_mem = alloc_mem = prev_frame->frame->depth*height*width;;
 				frame.bits = new unsigned char[alloc_mem];
 				frame.depth = 4; //(3*frame->depth)/8;
-				frame.width = prev_frame->input_frame->width;
-				frame.height = prev_frame->input_frame->height;
-			}
-//		}
 
-		memcpy( frame.bits, prev_frame->input_frame->bits, frame.width*frame.height*frame.depth );
+			}
+		}
+
+		memcpy( frame.bits, prev_frame->input_frame->bits, frame.width*frame.height*frame.depth);
 
 		draw_frame_marker( &frame, pos.x, pos.y, pos.angle );
 	}
@@ -188,9 +185,10 @@ proc_data * cPosdetect::process_frame( proc_data * prev_frame, int * result )
 	/// ---
 
 	p_data.input_frame = prev_frame->input_frame;
+	frame.width = prev_frame->input_frame->width;
+	frame.height = prev_frame->input_frame->height;
 	p_data.frame = &frame;
 	p_data.position = &pos;
-
 	angle = pos.angle;
 
 	return ( &p_data );
@@ -286,6 +284,7 @@ int cPosdetect::init( PropertyMgr * pm )
 	buffer = new float[buff_size];
 	last_gesture = GESTURE_NULL;
 	isFirst = true;
+	alloc_mem = 0;
 	return( ST_OK );
 }
 

@@ -50,6 +50,7 @@ private:
 	long alloc_mem;
 	float_range factor;
 	float_range steer_speed;
+	int_range window_size;
 	/// zmienna przechowuje informacje o tym czy ma byc wlaczone sterowanie
 	/// wskaznikiem myszy, czy nie
 	int	on_off;

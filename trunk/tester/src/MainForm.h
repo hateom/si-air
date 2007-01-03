@@ -12,6 +12,8 @@
 
 #include <qvariant.h>
 #include <qmainwindow.h>
+#include <vector>
+#include "my_button.h"
 
 class QVBoxLayout;
 class QHBoxLayout;
@@ -21,6 +23,7 @@ class QAction;
 class QActionGroup;
 class QToolBar;
 class QPopupMenu;
+class QPushButton;
 
 class MainForm : public QMainWindow
 {
@@ -30,12 +33,16 @@ public:
     MainForm( QWidget* parent = 0, const char* name = 0, WFlags fl = WType_TopLevel );
     ~MainForm();
 
-
 protected:
 
 protected slots:
     virtual void languageChange();
+	virtual void on_click( int id );
 
+private:
+	std::vector<myButton*> btn_list;
+
+	int position;
 };
 
 #endif // MAINFORM_H

@@ -1,7 +1,7 @@
 /****************************************************************************
 ** MainForm meta object code from reading C++ file 'MainForm.h'
 **
-** Created: ?r 3. sty 22:25:17 2007
+** Created: ?r 3. sty 23:02:29 2007
 **      by: The Qt MOC ($Id: moc_yacc.cpp,v 1.1.1.13 2006/05/05 17:43:42 chehrlic Exp $)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -53,12 +53,17 @@ QMetaObject* MainForm::staticMetaObject()
 	return metaObj;
     QMetaObject* parentObject = QMainWindow::staticMetaObject();
     static const QUMethod slot_0 = {"languageChange", 0, 0 };
+    static const QUParameter param_slot_1[] = {
+	{ "id", &static_QUType_int, 0, QUParameter::In }
+    };
+    static const QUMethod slot_1 = {"on_click", 1, param_slot_1 };
     static const QMetaData slot_tbl[] = {
-	{ "languageChange()", &slot_0, QMetaData::Protected }
+	{ "languageChange()", &slot_0, QMetaData::Protected },
+	{ "on_click(int)", &slot_1, QMetaData::Protected }
     };
     metaObj = QMetaObject::new_metaobject(
 	"MainForm", parentObject,
-	slot_tbl, 1,
+	slot_tbl, 2,
 	0, 0,
 #ifndef QT_NO_PROPERTIES
 	0, 0,
@@ -80,6 +85,7 @@ bool MainForm::qt_invoke( int _id, QUObject* _o )
 {
     switch ( _id - staticMetaObject()->slotOffset() ) {
     case 0: languageChange(); break;
+    case 1: on_click((int)static_QUType_int.get(_o+1)); break;
     default:
 	return QMainWindow::qt_invoke( _id, _o );
     }

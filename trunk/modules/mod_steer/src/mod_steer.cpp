@@ -5,7 +5,7 @@
 
 //////////////////////////////////////////////////////////////////////////
 
-#include "marker_data.h" /// marker zapisany jako tablica pixeli
+#include "../../posdetect/src/marker_data.h" /// marker zapisany jako tablica pixeli
 
 static const int marker_w_2 = MARKER_W/2;
 static const int marker_h_2 = MARKER_H/2;

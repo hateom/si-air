@@ -50,6 +50,10 @@ MainForm::MainForm( QWidget* parent, const char* name, WFlags fl )
 	btn_list.push_back( btn );
 	btn->setGeometry( QRect( width()/2-50, height()/2-30, 100, 60 ));
 	btn->setText( tr("START") );
+	
+	QFont ft( tr("Trebuchet MS"), 14 );
+	ft.setBold( true );
+	btn->setFont( ft );
 
 	connect( btn, SIGNAL(clicked(int)), this, SLOT(on_click(int)) );
 
@@ -64,6 +68,7 @@ MainForm::MainForm( QWidget* parent, const char* name, WFlags fl )
 		btn_list.push_back( btn );
 
 		btn->setGeometry( QRect( x-50, y-30, 100, 60 ));
+		btn->setFont( ft );
 		connect( btn, SIGNAL(clicked(int)), this, SLOT(on_click(int)) );
 
 		if( ink == BUTTONS+1 ) break;

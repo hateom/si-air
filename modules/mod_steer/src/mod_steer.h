@@ -76,6 +76,8 @@ private:
 	/// 
 	/// \return Funkcja nic nie zwraca (void)
 	void send_input( int gesture );
+	/// rysowanie markera
+	void draw_frame_marker( frame_data * frame, int posx, int posy, float angle );
 };
 
 //////////////////////////////////////////////////////////////////////////

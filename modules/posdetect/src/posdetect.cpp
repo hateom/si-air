@@ -167,7 +167,7 @@ proc_data * cPosdetect::process_frame( proc_data * prev_frame, int * result )
 		}
 		else
 		{
-			if( alloc_mem != frame.depth*frame.height*frame.width )
+			if( alloc_mem != prev_frame->frame->depth*height*width )
 			{
 				delete [] frame.bits;
 				alloc_mem = alloc_mem = prev_frame->frame->depth*height*width;;
@@ -180,6 +180,11 @@ proc_data * cPosdetect::process_frame( proc_data * prev_frame, int * result )
 		memcpy( frame.bits, prev_frame->input_frame->bits, frame.width*frame.height*frame.depth);
 
 		draw_frame_marker( &frame, pos.x, pos.y, pos.angle );
+		p_data.frame = &frame;
+	} 
+	else
+	{
+		p_data.frame = prev_frame->frame;
 	}
 
 	/// ---
@@ -187,7 +192,6 @@ proc_data * cPosdetect::process_frame( proc_data * prev_frame, int * result )
 	p_data.input_frame = prev_frame->input_frame;
 	frame.width = prev_frame->input_frame->width;
 	frame.height = prev_frame->input_frame->height;
-	p_data.frame = &frame;
 	p_data.position = &pos;
 	angle = pos.angle;
 

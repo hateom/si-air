@@ -110,6 +110,9 @@ proc_data * piGeneral::process_frame( proc_data * prev_frame, int * status )
 		}
 		p_data.moments = new float[MOMENTS_SIZE];
 		piTable = new float[height*width];
+		static_frame.width = width;
+		static_frame.height = height;
+		static_frame.depth = depth;
 	}
 	else
 	{
@@ -119,6 +122,9 @@ proc_data * piGeneral::process_frame( proc_data * prev_frame, int * status )
 			delete [] piTable;
 			alloc_mem = static_frame.depth*static_frame.height*static_frame.width;
 			static_frame.bits = new unsigned char[alloc_mem];
+			static_frame.width = width;
+			static_frame.height = height;
+			static_frame.depth = depth;
 			piTable = new float[height*width];
 		}
 	}

@@ -10,6 +10,7 @@ int main( int argc, char * argv[] )
 	MainForm mf;
 
 	mf.show();
+	app.setMainWidget( &mf );
 
 	return( app.exec() );
 }

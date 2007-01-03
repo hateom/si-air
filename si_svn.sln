@@ -35,6 +35,10 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "mod_steer", "modules\mod_st
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tester", "tester\tester.vcproj", "{BE75101D-A136-4BC9-B973-F8EA74C6FE4B}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfiguration) = preSolution
 		Debug = Debug
@@ -77,6 +81,10 @@ Global
 		{64D63C9F-BE02-4FB0-A2AA-CB1807E3F261}.Debug.Build.0 = Debug|Win32
 		{64D63C9F-BE02-4FB0-A2AA-CB1807E3F261}.Release.ActiveCfg = Release|Win32
 		{64D63C9F-BE02-4FB0-A2AA-CB1807E3F261}.Release.Build.0 = Release|Win32
+		{BE75101D-A136-4BC9-B973-F8EA74C6FE4B}.Debug.ActiveCfg = Debug|Win32
+		{BE75101D-A136-4BC9-B973-F8EA74C6FE4B}.Debug.Build.0 = Debug|Win32
+		{BE75101D-A136-4BC9-B973-F8EA74C6FE4B}.Release.ActiveCfg = Release|Win32
+		{BE75101D-A136-4BC9-B973-F8EA74C6FE4B}.Release.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 	EndGlobalSection

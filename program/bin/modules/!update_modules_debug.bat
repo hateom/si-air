@@ -1,3 +1,4 @@
+@del *dll
 @copy ..\..\..\modules\video_acq_opencv\bin\*_debug.dll
 @copy ..\..\..\modules\prob_image\bin\*_debug.dll
 @copy ..\..\..\modules\posdetect\bin\*_debug.dll

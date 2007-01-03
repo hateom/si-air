@@ -41,18 +41,40 @@ public:
 	/// \return void
 	void set_control_state( int param );
 
+	int get_last_gesture (void);
+
 private:
 	float x_asp, y_asp;
+	int x,y;
 	unsigned int mov_w, mov_h;
 	long alloc_mem;
 	float_range factor;
+	float_range steer_speed;
 	/// zmienna przechowuje informacje o tym czy ma byc wlaczone sterowanie
 	/// wskaznikiem myszy, czy nie
 	int	on_off;
+	/// typ sterowania
+	int steer_type_position;
+	/// szerokosc ekranu
+	int screen_width,
+		/// wysokosc ekranu
+		screen_height;
 	/// hook do klawiatury
 	HHOOK hook;
-
-	//LRESULT CALLBACK KeyboardProc (int nCode, WPARAM wParam, LPARAM lParam);
+	/// ostatni gest
+	int prev_gest;
+	/// funkcja realizujaca sterowanie pozycja wprost
+	/// 
+	/// \return Funkcja nic nie zwraca (void)
+	void position_steer( int xpos, int ypos, int gesture);
+	/// funkcja realizujaca sterowanie predkosciowe
+	/// 
+	/// \return Funkcja nic nie zwraca (void)
+	void speed_steer ( int xpos, int ypos, int gesture);
+	/// funkcja realizujaca wysylanie zdarzen od klawiszy myszy
+	/// 
+	/// \return Funkcja nic nie zwraca (void)
+	void send_input( int gesture );
 };
 
 //////////////////////////////////////////////////////////////////////////

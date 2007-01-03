@@ -326,22 +326,27 @@ void modSteer::draw_frame_marker( frame_data * frame, int posx, int posy, float 
 		xc = (int)(0.5*mov_w);
 		yc = (int)(0.5*mov_h);
 /// rysowanie wskaznikow
+		/// gorny pionowy
 		for (int u=0;u<yc-(int)(0.5f*window_size);u++)
 		{
 			frame->bits[(u*mov_w+xc)*4+2] = 255;
 		}
+		/// dolny pionowy
 		for (int u=yc+(int)(0.5f*window_size);u<(int)mov_h;u++)
 		{
 			frame->bits[(u*mov_w+xc)*4+2] = 255;
 		}
+		/// lewy poziomy
 		for (int u=0;u<xc-(int)(0.5f*window_size);u++)
 		{
 			frame->bits[(yc*mov_w+u)*4+2] = 255;
 		}
+		//prawy poziomy
 		for (int u=xc+(int)(0.5f*window_size);u<(int)mov_w;u++)
 		{
 			frame->bits[(yc*mov_w+u)*4+2] = 255;
 		}
+		/// pionowa czesc okienka
 		for (int u=0;u<2;u++) 
 		{
 			int y_line = (int)(yc+(-0.5+u)*window_size);
@@ -350,6 +355,7 @@ void modSteer::draw_frame_marker( frame_data * frame, int posx, int posy, float 
 				frame->bits[(y_line*mov_w+i)*4] = 255;
 			}
 		}
+		/// pozioma czesc okienka
 		for (int u=0;u<2;u++) 
 		{
 			int x_line = (int)(xc+(-0.5+u)*window_size);
@@ -358,6 +364,7 @@ void modSteer::draw_frame_marker( frame_data * frame, int posx, int posy, float 
 				frame->bits[(i*mov_w+x_line)*4] = 255;
 			}
 		}
+		/// znaczniki wychylenia - w poziomie
 		if (abs(xc-posx)>(int)(window_size*0.5))
 		{
 			for (int u=yc-10;u<yc+10;u++)
@@ -365,6 +372,7 @@ void modSteer::draw_frame_marker( frame_data * frame, int posx, int posy, float 
 				frame->bits[(u*mov_w+posx)*4+1] = 255;
 			}
 		}
+		/// znaczniki wychylenia - w pionie
 		if (abs(yc-posy)>(int)(window_size*0.5))
 		{
 			for (int u=xc-10;u<xc+10;u++)

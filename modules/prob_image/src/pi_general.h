@@ -46,7 +46,9 @@ protected:
 	float			inv_maxVal;
 	/// Maksymlana i minimalna wartosc koloru, max i min wartosc jasnosci
 	/// Smin - minimalna wartosc saturacji
-	int_range		Hmax,Hmin,Vmax,Vmin,Smin;;
+	int_range		Hmax,Hmin,Vmax,Vmin,Smin;
+	/// ilosc krokow Camshifta
+	int_range		steps;
 	/// moment M00
 	float			M00;
 	/// Moment M10

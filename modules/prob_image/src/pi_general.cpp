@@ -34,6 +34,7 @@ piGeneral::piGeneral() : alloc_mem(0), selected_region(NULL), histogram(NULL),
 	REG_PARAM( PT_INT_RANGE, Vmax, "Maximum V value", int_range( 255, 0, 255 ) );
 	REG_PARAM( PT_INT_RANGE, Vmin, "Minimum V value", int_range(  20, 0, 255 ) );
 	REG_PARAM( PT_INT_RANGE, Smin, "Minimum S value", int_range(   0, 0, 200 ) );
+	REG_PARAM( PT_INT_RANGE, steps, "Camshift steps", int_range(   1, 1, 10 ) );
 //	moments_local = NULL;
 }
 
@@ -90,7 +91,9 @@ proc_data * piGeneral::process_frame( proc_data * prev_frame, int * status )
 	float maxVal = 0.0f;
 //	float inv_maxVal;
 	static int offs1, offs2, offs3;
-	static int xs = 0, xk = width, ys = 0, yk = height, s = 0;
+	static int xs = 0, xk = (int)width, ys = 0, yk = (int)height, s = 0;
+	//static float last_M00 = 0.0f;
+	bool dupa=0;
 	
 	retry = false;
 	static_frame.depth = 4;
@@ -119,44 +122,30 @@ proc_data * piGeneral::process_frame( proc_data * prev_frame, int * status )
 			piTable = new float[height*width];
 		}
 	}
-
-	for( int k=0; k<2; k++ )
+	int k=0;
+	while( k<steps /* ||  epsilon<abs(M00-last_M00)*/ )
 	{
-		if( k )
-		{
-			xs=(int)xc;
-			ys=(int)yc;
-			xk=(int)xc;
-			yk=(int)yc;
-			xs -= (int)( 1.2f*(float)s );
-			xk += (int)( 1.2f*(float)s );
-			ys -= (int)( 1.2f*(float)s );
-			yk += (int)( 1.2f*(float)s );
-
-			if( xs < 0 ) xs = 0;
-			if( xk > (int)width ) xk = width;
-			if( ys < 0 ) ys=0;
-			if( yk > (int)height ) yk = height;
-		}
-
+		//last_M00 = M00;
 		M00 = 0.0f;
 		M10 = 0.0f;
 		M01 = 0.0f;
 		M20 = 0.0f;
 		M02 = 0.0f;
 		M11 = 0.0f;
-		if (!k) 
-			{
+
+		//if (1) 
+		//	{
 				memset(piTable,0,width*height*sizeof(float));
 				memset(static_frame.bits,0,alloc_mem*sizeof(char));
-			}
+		//	}
+		
 		for (int y=ys; y<yk; y++ )
 		{
 			offs1 = y*width;
 			for (int x=xs; x<xk; x++ )
 			{
-				if (!k)
-				{
+				//if (1)
+				//{
 					offs2 = (x+offs1)*4;
 					B = inFrame->bits[offs2+0];
 					G = inFrame->bits[offs2+1];
@@ -188,7 +177,7 @@ proc_data * piGeneral::process_frame( proc_data * prev_frame, int * status )
 						static_frame.bits[offs2+2] = (unsigned char)chVal;
 						//static_frame.bits[offs2+3] = 0;
 					}
-				}
+				//}
 				if (piTable[x+offs1] > maxVal) maxVal = piTable[x+offs1];
 				offs3 = (x+offs1);
 				M00 += piTable[offs3];
@@ -204,6 +193,7 @@ proc_data * piGeneral::process_frame( proc_data * prev_frame, int * status )
 			float inv_M00 = 1.0f/M00;
 			xc = M10*inv_M00;
 			yc = M01*inv_M00;
+			if( maxVal ) s = (int)sqrtf( M00/maxVal );
 		}
 		//rozciagamy okno poszukiwan na cala klatke i jedziemy!
 		else if (!retry)
@@ -213,9 +203,28 @@ proc_data * piGeneral::process_frame( proc_data * prev_frame, int * status )
 			xk=width;
 			yk=height;
 			retry=1;
+			dupa=1;
 			k=-1;
 		}
-		if( maxVal ) s = (int)sqrtf( M00/maxVal );
+		
+		if (!dupa) 
+		{
+			xs=(int)xc;
+			ys=(int)yc;
+			xk=(int)xc;
+			yk=(int)yc;
+			xs -= (int)( 1.2f*(float)s );
+			xk += (int)( 1.2f*(float)s );
+			ys -= (int)( 1.2f*(float)s );
+			yk += (int)( 1.2f*(float)s );
+
+			if( xs < 0 ) xs = 0;
+			if( xk > (int)width ) xk = (int)width;
+			if( ys < 0 ) ys=0;
+			if( yk > (int)height ) yk = (int)height;
+		}
+		dupa=0;
+		k++;
 	}
 	// kopiowanie do struktury i zwrocenie
 	p_data.input_frame = prev_frame->input_frame;
@@ -368,6 +377,7 @@ int piGeneral::init( PropertyMgr * pm )
 	}
 	moments_local = new float[MOMENTS_SIZE];
 	*/
+	xc=0, yc=0;
 	return( ST_OK );
 }
 

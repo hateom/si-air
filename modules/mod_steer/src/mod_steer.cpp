@@ -84,6 +84,7 @@ modSteer::modSteer() : alloc_mem(0L), mov_w(0), mov_h(0)
 	REG_PARAM( PT_BOOL, on_off, "Turn steering on or off [F12]", 0 );
 	REG_PARAM( PT_BOOL, steer_type_position, "Steering type (1)Position (0)Speed", 1 );
 	REG_PARAM( PT_FLOAT_RANGE, steer_speed, "Steer Speed Ratio", float_range( 0.5f, 0.01f, 1.0f ));
+	REG_PARAM( PT_INT_RANGE, window_size, "Wielkosc okna neutralnego", int_range(10,5,30));
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -183,7 +184,7 @@ void modSteer::speed_steer ( int xpos, int ypos, int gesture)
 	static int xc = (int)(mov_w *0.5f) , yc = (int)(mov_h *0.5f);
 	static int last_x=(int)(screen_width*0.5f), last_y = int(screen_height*0.5f);
 
-	if (abs(xc-xpos)>10 || abs(yc-ypos)>10)
+	if (abs(xc-xpos)>window_size || abs(yc-ypos)>window_size)
 	{
 		x = last_x - (int)(x_asp*( steer_speed*(xc-xpos) ));
 		y = last_y - (int)(y_asp*( steer_speed*(yc-ypos) ));

@@ -5,6 +5,11 @@
 
 //////////////////////////////////////////////////////////////////////////
 
+#include "marker_data.h" /// marker zapisany jako tablica pixeli
+
+static const int marker_w_2 = MARKER_W/2;
+static const int marker_h_2 = MARKER_H/2;
+
 #define MIN( A, B ) (A)<(B)?(A):(B)
 
 static modSteer * g_modSteer = NULL;
@@ -84,7 +89,7 @@ modSteer::modSteer() : alloc_mem(0L), mov_w(0), mov_h(0)
 	REG_PARAM( PT_BOOL, on_off, "Turn steering on or off [F12]", 0 );
 	REG_PARAM( PT_BOOL, steer_type_position, "Steering type (1)Position (0)Speed", 1 );
 	REG_PARAM( PT_FLOAT_RANGE, steer_speed, "Steer Speed Ratio", float_range( 0.5f, 0.01f, 1.0f ));
-	REG_PARAM( PT_INT_RANGE, window_size, "Wielkosc okna neutralnego", int_range(10,5,30));
+	REG_PARAM( PT_INT_RANGE, window_size, "Wielkosc okna neutralnego", int_range(40,20,100));
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -144,6 +149,11 @@ int modSteer::output_type()
 proc_data * modSteer::process_frame( proc_data * prev_frame, int * result )
 {
 
+	static proc_data p_data = { 0, 0, 0, 0, 0 };
+	static frame_data frame = { 0, 0, 0, 0 };
+	static int xpos, ypos;
+	static int alloc_mem;
+
 	if( mov_w != prev_frame->frame->width || mov_h != prev_frame->frame->width )
 	{
 		mov_w = prev_frame->frame->width;
@@ -153,17 +163,50 @@ proc_data * modSteer::process_frame( proc_data * prev_frame, int * result )
 		x_asp = (float) screen_width / (float)mov_w;
 		y_asp = (float) screen_height / (float)mov_h;
 	}
-
+	xpos = prev_frame->position->x;
+	ypos = prev_frame->position->y;
 	if( on_off ) 
 	{
 		if(steer_type_position)
-			position_steer( prev_frame->position->x, prev_frame->position->y,
+			position_steer( xpos, ypos,
 							prev_frame->position->gesture);
 		else 
-			speed_steer(prev_frame->position->x, prev_frame->position->y,
+			speed_steer(xpos, ypos,
 						prev_frame->position->gesture);
 	}
-	return prev_frame;
+	
+	if( preview_param )
+	{
+		if( alloc_mem == 0 )
+		{
+			alloc_mem = prev_frame->frame->depth*prev_frame->frame->height*prev_frame->frame->width;
+			frame.bits = new unsigned char[alloc_mem];
+			frame.depth = 4; //(3*frame->depth)/8;
+			frame.width=mov_w;
+			frame.height=mov_h;
+		}
+		else
+		{
+			if( alloc_mem != frame.depth*frame.height*frame.width )
+			{
+				delete [] frame.bits;
+				alloc_mem =  prev_frame->frame->depth*prev_frame->frame->height*prev_frame->frame->width;
+				frame.bits = new unsigned char[alloc_mem];
+				frame.depth = 4; //(3*frame->depth)/8;
+				frame.width=mov_w;
+				frame.height=mov_h;
+
+			}
+		}
+
+		memcpy( frame.bits, prev_frame->input_frame->bits, mov_h*mov_w*4);
+
+		draw_frame_marker( &frame, xpos, ypos, 0.0f );
+	}
+	p_data.frame = &frame;
+	frame.width = prev_frame->input_frame->width;
+	frame.height = prev_frame->input_frame->height;
+	return &p_data;
 }
 //////////////////////////////////////////////////////////////////////////
 
@@ -248,7 +291,72 @@ int modSteer::get_last_gesture ()
 {
 	return prev_gest;
 }
+//////////////////////////////////////////////////////////////////////////
+void modSteer::draw_frame_marker( frame_data * frame, int posx, int posy, float angle )
+{
+	static long ox1, ox2, oy1, oy2;
+	for( int y=0; y<MARKER_H; ++y )
+	{
+		oy1 = (posy+y-marker_h_2)*frame->width;
+		oy2 = y*MARKER_W;
+		for( int x=0; x<MARKER_W; ++x )
+		{
+			ox1 = (posx+x-marker_w_2+oy1)*4;
+			ox2 = (x+oy2)*3;
+			if( posx+x-marker_w_2 < 0 || posx+x-marker_w_2 >= (int)frame->width ||
+				posy+y-marker_h_2 < 0 || posy+y-marker_h_2 >= (int)frame->height )
+			{
+				continue;
+			}
+			if( marker[ox2+0] != 0 )
+			{
+				frame->bits[ox1+0] = marker[ox2+0];
+				frame->bits[ox1+1] = marker[ox2+1];
+				frame->bits[ox1+2] = marker[ox2+2];
 
+				if (prev_gest == GESTURE_LMBDOWN)		frame->bits[ox1+2] = 100;
+				if (prev_gest == GESTURE_RMBDOWN)		frame->bits[ox1+1] = 150;
+				if (prev_gest == GESTURE_MIDDLEBTNDOWN)	frame->bits[ox1+0] = 150;
+			}
+		}
+	}
+	static int xc,yc;
+	xc = (int)(0.5*mov_w);
+	yc = (int)(0.5*mov_h);
+/// rysowanie wskaznikow
+	for (int u=0;u<yc-(int)(0.5f*window_size);u++)
+	{
+		frame->bits[(u*mov_w+xc)*4+2] = 255;
+	}
+	for (int u=yc+(int)(0.5f*window_size);u<(int)mov_h;u++)
+	{
+		frame->bits[(u*mov_w+xc)*4+2] = 255;
+	}
+	for (int u=0;u<xc-(int)(0.5f*window_size);u++)
+	{
+		frame->bits[(yc*mov_w+u)*4+2] = 255;
+	}
+	for (int u=xc+(int)(0.5f*window_size);u<(int)mov_w;u++)
+	{
+		frame->bits[(yc*mov_w+u)*4+2] = 255;
+	}
+	for (int u=0;u<2;u++) 
+	{
+		int y_line = (int)(yc+(-0.5+u)*window_size);
+		for (int i=(int)(xc-0.5*window_size);i<(int)(xc+0.5*window_size);i++)
+		{
+			frame->bits[(y_line*mov_w+i)*4] = 255;
+		}
+	}
+	for (int u=0;u<2;u++) 
+	{
+		int x_line = (int)(xc+(-0.5+u)*window_size);
+		for (int i=(int)(yc-0.5*window_size);i<(int)(yc+0.5*window_size);i++)
+		{
+			frame->bits[(i*mov_w+x_line)*4] = 255;
+		}
+	}
+}
 /// export funkcji exportujacej
 
 extern "C" {

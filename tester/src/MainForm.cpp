@@ -18,13 +18,14 @@
 #include <qpopupmenu.h>
 #include <qtoolbar.h>
 #include <qpushbutton.h>
-
+#include <windows.h>
 #include <cmath>
 
 #define Q_PI 3.141592653589f
 #define BUTTONS 9
-
-static int path[] = { 0, 1, 0, 2, 0, 3, 0, 4, 0, 5, 0, 6, 0, 7, 0, 8, 0, 9, 0, -1 };
+ 
+static int path[]  = { 0, 1, 0, 2, 0, 3, 0, 4, 0, 5, 0, 6, 0, 7, 0, 8, 0, 9, 0, -1 };
+static int time[9] = { 0 };
 
 /*
  *  Constructs a MainForm as a child of 'parent', with the
@@ -105,15 +106,31 @@ void MainForm::on_click( int id )
 	{
 		printf( ">>> OK\n" );
 		btn_list[path[position]]->setText( tr("") );
-		position++;
-		if( path[position] == -1 )
+		if( path[position+1] == -1 )
 		{
 			position = 0;
 			printf( ">>> TEST FINISHED!\n" );
+			for( int i=0; i<BUTTONS; ++i )
+			{
+				printf( "%3.3f; ", ((float)time[i])/1000.0f );
+			}
+			printf( "\n" );
 			btn_list[0]->setText( tr("START") );
 			return;
 		}
-		btn_list[path[position]]->setText( tr("PUSH ME!") );
+		
+		if( path[position] == 0 )
+		{
+			time[path[position+1]-1] = GetTickCount();
+		}
+		else
+		{
+			time[path[position]-1] = GetTickCount() - time[path[position]-1];
+		}
+
+		btn_list[path[position+1]]->setText( tr("PUSH ME!") );
+
+		position++;
 	}
 	else
 	{

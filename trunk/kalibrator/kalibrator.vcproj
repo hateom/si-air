@@ -123,9 +123,6 @@
 				RelativePath=".\src\mainform.h">
 			</File>
 			<File
-				RelativePath=".\src\mainform.ui.h">
-			</File>
-			<File
 				RelativePath=".\src\moc_mainform.cpp">
 			</File>
 		</Filter>

@@ -1,6 +1,9 @@
 #include <qapplication.h>
 #include "mainform.h"
 
+#pragma comment(lib,"qtmain.lib")
+#pragma comment(lib,"qt-mt3.lib")
+
 int main( int argc, char ** argv )
 {
     QApplication a( argc, argv );

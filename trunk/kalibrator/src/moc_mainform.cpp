@@ -1,7 +1,7 @@
 /****************************************************************************
 ** MainForm meta object code from reading C++ file 'mainform.h'
 **
-** Created: N 7. sty 16:14:52 2007
+** Created: N 7. sty 16:28:19 2007
 **      by: The Qt MOC ($Id: moc_yacc.cpp,v 1.1.1.13 2006/05/05 17:43:42 chehrlic Exp $)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -69,16 +69,18 @@ QMetaObject* MainForm::staticMetaObject()
     };
     static const QUMethod slot_3 = {"btn0_func", 1, param_slot_3 };
     static const QUMethod slot_4 = {"languageChange", 0, 0 };
+    static const QUMethod slot_5 = {"init", 0, 0 };
     static const QMetaData slot_tbl[] = {
 	{ "btn1_func()", &slot_0, QMetaData::Public },
 	{ "btn2_func()", &slot_1, QMetaData::Public },
 	{ "btn3_func()", &slot_2, QMetaData::Public },
 	{ "btn0_func()", &slot_3, QMetaData::Public },
-	{ "languageChange()", &slot_4, QMetaData::Protected }
+	{ "languageChange()", &slot_4, QMetaData::Protected },
+	{ "init()", &slot_5, QMetaData::Protected }
     };
     metaObj = QMetaObject::new_metaobject(
 	"MainForm", parentObject,
-	slot_tbl, 5,
+	slot_tbl, 6,
 	0, 0,
 #ifndef QT_NO_PROPERTIES
 	0, 0,
@@ -104,6 +106,7 @@ bool MainForm::qt_invoke( int _id, QUObject* _o )
     case 2: static_QUType_int.set(_o,btn3_func()); break;
     case 3: static_QUType_int.set(_o,btn0_func()); break;
     case 4: languageChange(); break;
+    case 5: init(); break;
     default:
 	return QDialog::qt_invoke( _id, _o );
     }

@@ -57,6 +57,7 @@ protected:
 
 protected slots:
     virtual void languageChange();
+	virtual void init ();
 
 private:
 	int count;

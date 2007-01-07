@@ -33,3 +33,7 @@ int MainForm::btn0_func()
     btn1->setEnabled(true);
     return 0;
 }
+
+void MainForm::init ()
+{
+}

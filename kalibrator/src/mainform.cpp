@@ -19,7 +19,7 @@
 #include <qimage.h>
 #include <qpixmap.h>
 
-#include "mainform.ui.h"
+//#include "mainform.ui.h"
 /*
  *  Constructs a MainForm as a child of 'parent', with the
  *  name 'name' and widget flags set to 'f'.
@@ -159,3 +159,32 @@ void MainForm::languageChange()
     end_btn->setText( tr( "Zamknij" ) );
 }
 
+
+int MainForm::btn1_func()
+{
+	return 0;
+}
+
+
+int MainForm::btn2_func()
+{
+	return 0;
+}
+
+
+int MainForm::btn3_func()
+{
+	return 0;
+}
+
+
+int MainForm::btn0_func()
+{
+	btn1->setEnabled(true);
+	btn2->setEnabled(true);
+	return 0;
+}
+
+void MainForm::init ()
+{
+}

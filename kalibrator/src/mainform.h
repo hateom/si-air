@@ -13,6 +13,8 @@
 #include <qvariant.h>
 #include <qdialog.h>
 
+#define BUTTONS_COUNT 3
+
 class QVBoxLayout;
 class QHBoxLayout;
 class QGridLayout;
@@ -20,6 +22,7 @@ class QSpacerItem;
 class QLabel;
 class QPushButton;
 class QLineEdit;
+class QTime;
 
 class MainForm : public QDialog
 {
@@ -43,9 +46,11 @@ public:
     QLabel* textLabel2_2_2;
     QLabel* time_0;
     QLabel* time_2;
+	QLabel* info_label;
     QPushButton* startBtn;
     QPushButton* btn1;
     QPushButton* end_btn;
+	QTime* click_time;
 
 public slots:
     virtual int btn1_func();
@@ -61,7 +66,17 @@ protected slots:
 
 private:
 	int count;
-	float time1, time2, time3,a,b;
+	bool onMove;
+	int time_table[BUTTONS_COUNT];
+	float a,b;
+	char buff[20];
+	/// warn. to sa zmienne ktore trzeba by przeliczyc po zmianie rozmiarow czy polozenie
+	/// przyciskow !!!!
+	/// xn = log2(2A/W + 1) dla kolejnych przyciskow
+	float x[BUTTONS_COUNT];
+
+
+	void calculate();
 
 };
 

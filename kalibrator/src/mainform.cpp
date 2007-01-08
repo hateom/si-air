@@ -18,6 +18,7 @@
 #include <qwhatsthis.h>
 #include <qimage.h>
 #include <qpixmap.h>
+#include <qdatetime.h>
 
 //#include "mainform.ui.h"
 /*
@@ -61,17 +62,20 @@ MainForm::MainForm( QWidget* parent, const char* name, bool modal, WFlags fl )
     b_edit = new QLineEdit( this, "b_edit" );
     b_edit->setGeometry( QRect( 450, 470, 178, 22 ) );
 
+	info_label = new QLabel(this, "info_label");
+	info_label->setGeometry( QRect( 400, 500, 178, 22 ));
+
     textLabel2_4 = new QLabel( this, "textLabel2_4" );
-    textLabel2_4->setGeometry( QRect( 50, 440, 79, 14 ) );
+    textLabel2_4->setGeometry( QRect( 10, 440, 110, 14 ) );
 
     time_1 = new QLabel( this, "time_1" );
     time_1->setGeometry( QRect( 140, 460, 158, 14 ) );
 
     textLabel2_3_2 = new QLabel( this, "textLabel2_3_2" );
-    textLabel2_3_2->setGeometry( QRect( 50, 480, 79, 14 ) );
+    textLabel2_3_2->setGeometry( QRect( 10, 480, 110, 14 ) );
 
     textLabel2_2_2 = new QLabel( this, "textLabel2_2_2" );
-    textLabel2_2_2->setGeometry( QRect( 50, 460, 79, 14 ) );
+    textLabel2_2_2->setGeometry( QRect( 10, 460, 110, 14 ) );
 
     time_0 = new QLabel( this, "time_0" );
     time_0->setGeometry( QRect( 140, 440, 158, 14 ) );
@@ -90,6 +94,9 @@ MainForm::MainForm( QWidget* parent, const char* name, bool modal, WFlags fl )
 
     end_btn = new QPushButton( this, "end_btn" );
     end_btn->setGeometry( QRect( 500, 530, 221, 81 ) );
+
+	click_time = new QTime();
+
     languageChange();
     resize( QSize(748, 627).expandedTo(minimumSizeHint()) );
     clearWState( WState_Polished );
@@ -105,6 +112,7 @@ MainForm::MainForm( QWidget* parent, const char* name, bool modal, WFlags fl )
     setTabOrder( startBtn, btn1 );
     setTabOrder( btn1, btn3 );
     setTabOrder( btn3, btn2 );
+	init();
 }
 
 /*
@@ -121,7 +129,7 @@ MainForm::~MainForm()
  */
 void MainForm::languageChange()
 {
-    setCaption( tr( "Anus" ) );
+    setCaption( tr( "Kalibrator" ) );
     textLabel1->setText( trUtf8( "\x3c\x74\x74\x3e\x4b\x41\x4c\x49\x42\x52\x41\x54\x4f\x52\x3c\x2f\x74\x74\x3e\x3c\x62"
     "\x72\x3e\xa\x4b\x6c\x69\x6b\x6e\x69\x6a\x20\x6e\x61\x20\x70\x72\x7a\x79\x63"
     "\x69\x73\x6b\x75\x20\x73\x74\x61\x72\x74\x2c\x20\x61\x62\x79\x20\x72\x6f\x7a\x70"
@@ -143,48 +151,145 @@ void MainForm::languageChange()
     "\x6d\x2e" ) );
     btn2->setText( tr( "BTN2" ) );
     btn3->setText( tr( "BT3" ) );
-    textLabel3->setText( tr( "BTN1 - W 240 D=60 (+50)\n"
-"BTN2 - W 120 D=120 (+50)\n"
-"BTN3 - W 60  D=240 (+50)" ) );
-    textLabel2_2_3->setText( tr( "Obliczone b" ) );
-    textLabel2_5->setText( tr( "Obliczone a" ) );
-    textLabel2_4->setText( tr( "Czas Start - Btn1" ) );
-    time_1->setText( tr( "N/A" ) );
-    textLabel2_3_2->setText( tr( "Czas Start - Btn3" ) );
-    textLabel2_2_2->setText( tr( "Czas Start - Btn2" ) );
+    textLabel3->setText( tr( "BTN1 - W 240 D=60 (+120)\n"
+"BTN2 - W 120 D=120 (+60)\n"
+"BTN3 - W 60  D=240 (+30)" ) );
+	textLabel2_2_3->setText( tr( "Obliczone b: " ) );
+	textLabel2_5->setText( tr( "Obliczone a: " ) );
+	textLabel2_4->setText( tr( "Czas: Start - Btn1 [ms]" ) );
+	textLabel2_3_2->setText( tr( "Czas: Start - Btn3 [ms]" ) );
+	textLabel2_2_2->setText( tr( "Czas: Start - Btn2 [ms]" ) );
     time_0->setText( tr( "N/A" ) );
+	time_1->setText( tr( "N/A" ) );
     time_2->setText( tr( "N/A" ) );
     startBtn->setText( tr( "Start" ) );
     btn1->setText( tr( "BTN1" ) );
     end_btn->setText( tr( "Zamknij" ) );
+	info_label->setText( tr("Wydajnosc: N/A") );
 }
 
-
+/// duzy btn
 int MainForm::btn1_func()
 {
+	time_table[0] = click_time->elapsed();
+	time_0->setText( tr(itoa(time_table[0],buff,10)) );
+	btn1->setEnabled(false);
+	startBtn->setEnabled(true);
 	return 0;
 }
 
-
+/// sredni btn
 int MainForm::btn2_func()
 {
+	time_table[1] = click_time->elapsed();
+	time_1->setText( tr(itoa(time_table[1],buff,10)) );
+	btn2->setEnabled(false);
+	startBtn->setEnabled(true);
 	return 0;
 }
 
-
+/// maly btn
 int MainForm::btn3_func()
 {
+	time_table[2] = click_time->elapsed();
+	time_2->setText( tr(itoa(time_table[2],buff,10)) );
+	startBtn->setText( tr("Policz!"));
+	btn3->setEnabled(false);
+	startBtn->setEnabled(true);
 	return 0;
 }
 
-
+/// start btn
 int MainForm::btn0_func()
 {
-	btn1->setEnabled(true);
-	btn2->setEnabled(true);
+		if (count == 3)
+		{
+			btn1->setEnabled(true);
+			startBtn->setEnabled(false);
+			click_time->start();
+			onMove = true;
+			count--;
+		}
+		else if (count == 2)
+		{
+			btn2->setEnabled(true);
+			startBtn->setEnabled(false);
+			click_time->start();
+			onMove = true;
+			count--;
+		}
+		else if (count == 1)
+		{
+			btn3->setEnabled(true);
+			startBtn->setEnabled(false);
+			click_time->start();
+			onMove = true;
+			count--;
+		}
+		else if (!count)
+		{
+			calculate();
+			count = 3;
+			startBtn->setText(tr("Start"));
+		}
+
+
 	return 0;
 }
 
 void MainForm::init ()
 {
+	count = 3;
+	onMove = false;
+	time_table[0] = 0;
+	time_table[1] = 0;
+	time_table[2] = 0;
+	a	  = 0.0f;
+	b	  = 0.0f;
+	//x[0]=0.5849625007211560f;
+	//x[1]=1.584962500721160f;
+	//x[2]=3.169925001442310f;
+	x[0]=1.3219280948873600f;
+	x[1]=2.0f;
+	x[2]=3.321928094887360f;
+}
+
+void MainForm::calculate()
+{
+	//a=102.1112f;
+	//b=10.1312f;
+	int result;
+	float sum_y=0.0f, sum_xx=0.0f,sum_x=0.0f, sum_xy=0.0f;
+
+	for (int i=0; i<BUTTONS_COUNT; i++) 
+	{
+		sum_y+=time_table[i]*0.001;
+		sum_xx+=x[i]*x[i];
+		sum_x+=x[i];
+		sum_xy+=x[i]*time_table[i]*0.001;
+	}
+	a=(sum_y*sum_xx-sum_x*sum_xy)/(BUTTONS_COUNT*sum_xx-(sum_x*sum_x));
+	b=(BUTTONS_COUNT*sum_xy-sum_x*sum_y)/(BUTTONS_COUNT*sum_xx-(sum_x*sum_x));
+	
+	if ( b<0.1f) 
+	{
+		info_label->setText( tr("Wydajnosc: Super!!") );
+	}
+
+	else if ( b>0.1f &&b<0.2f) 
+	{
+		info_label->setText( tr("Wydajnosc: OK") );
+	}
+	else if(b>0.2f && b<0.5f)
+	{
+		info_label->setText( tr("Wydajnosc: Srednia") );
+	}
+	else if(b>0.5f)
+	{
+		info_label->setText( tr("Wydajnosc: Slaba") );
+	}
+	result = _snprintf(buff, 20, "%.5f", a);
+	a_edit->setText( tr( buff ) );
+	result = _snprintf(buff, 20, "%.5f", b);
+	b_edit->setText( tr( buff ) );
 }

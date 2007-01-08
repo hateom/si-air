@@ -244,7 +244,7 @@ void modSteer::speed_steer ( int xpos, int ypos, int gesture)
 	last_x = x;
 	last_y = y;
 	SetCursorPos(x,y);
-	//send_input(gesture);
+	send_input(gesture);
 }
 
 //////////////////////////////////////////////////////////////////////////

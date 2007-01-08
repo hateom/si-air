@@ -39,7 +39,7 @@ MainForm::MainForm( QWidget* parent, const char* name, WFlags fl )
     if ( !name )
 	setName( "MainForm" );
 
-	resize( QSize(1000, 650).expandedTo(minimumSizeHint()) );
+	resize( QSize(650, 600).expandedTo(minimumSizeHint()) );
 
 	myButton * btn;
 

@@ -27,10 +27,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "mod_light", "modules\mod_li
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "mod_camshift_opencv", "modules\mod_camshift_opencv\mod_camshift_opencv.vcproj", "{FD48EB5D-C31B-4074-99D4-F8EAC72DFDC4}"
-	ProjectSection(ProjectDependencies) = postProject
-	EndProjectSection
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "mod_steer", "modules\mod_steer\mod_steer.vcproj", "{64D63C9F-BE02-4FB0-A2AA-CB1807E3F261}"
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
@@ -77,10 +73,6 @@ Global
 		{64D63C9F-BE02-4FB0-A2AA-CB1807E3F261}.Debug.Build.0 = Debug|Win32
 		{64D63C9F-BE02-4FB0-A2AA-CB1807E3F261}.Release.ActiveCfg = Release|Win32
 		{64D63C9F-BE02-4FB0-A2AA-CB1807E3F261}.Release.Build.0 = Release|Win32
-		{FD48EB5D-C31B-4074-99D4-F8EAC72DFDC4}.Debug.ActiveCfg = Debug|Win32
-		{FD48EB5D-C31B-4074-99D4-F8EAC72DFDC4}.Debug.Build.0 = Debug|Win32
-		{FD48EB5D-C31B-4074-99D4-F8EAC72DFDC4}.Release.ActiveCfg = Release|Win32
-		{FD48EB5D-C31B-4074-99D4-F8EAC72DFDC4}.Release.Build.0 = Release|Win32
 		{64D63C9F-BE02-4FB0-A2AA-CB1807E3F261}.Debug.ActiveCfg = Debug|Win32
 		{64D63C9F-BE02-4FB0-A2AA-CB1807E3F261}.Debug.Build.0 = Debug|Win32
 		{64D63C9F-BE02-4FB0-A2AA-CB1807E3F261}.Release.ActiveCfg = Release|Win32

@@ -1,0 +1,24 @@
+#summary si-air project features
+#labels Phase-Requirements
+
+= Introduction =
+
+SI-air is a university project for a Artifical Intelligence and Sensorics laboratory.
+The aim of the project is to improve computer control using *video camera*, and your *hand*.
+The program can detect your hand and its position, and react with specific gestures. 
+Prearranged gestures are used to simulate windows actions like:
+  * mouse clicks
+  * moving mouse cursor
+
+= Details =
+
+Project is splitted into *modular parts*. The modular design allows designers to implement various kinds of plugins and extensions, and extend functionality in almost *any direction*.
+
+The main modules included:
+  * video acquisition module 
+  * probability image generator module
+  * position and gesture detection module (based on camshift algorithm)
+  * system calls generator
+
+
+

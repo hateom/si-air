@@ -28,7 +28,7 @@ piGeneral::piGeneral() : alloc_mem(0), selected_region(NULL), histogram(NULL),
 //	REG_PARAM( PT_INT, Vmin,			"Wart. minimalna V", 20 );
 //	REG_PARAM( PT_INT, Smin,			"5. Wart. minimalna S", 0 );
 
-	REG_PARAM(PT_BOOL, initVal, "Add 1 to probability", 1);
+	REG_PARAM(PT_BOOL, initVal, "Add 1 to probability", 0);
 	REG_PARAM( PT_INT_RANGE, Hmax, "Maximum H value", int_range(  35, 0, 360 ) );
 	REG_PARAM( PT_INT_RANGE, Hmin, "Minimum H value", int_range(  10, 0, 360 ) );
 	REG_PARAM( PT_INT_RANGE, Vmax, "Maximum V value", int_range( 255, 0, 255 ) );
